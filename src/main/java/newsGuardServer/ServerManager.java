@@ -1,6 +1,6 @@
 package newsGuardServer;
-import engine.Engine;
-
+import logic.engine.Engine;
+import logic.engine.Engine;
 
 public class ServerManager {
     Engine engine;
