@@ -10,7 +10,9 @@ import logic.engine.report.Report;
 import logic.engine.report.ReportsManager;
 import logic.engine.user.User;
 import logic.engine.user.UsersManager;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Engine {
     UsersManager usersManager;
     ReportsManager reportsManager;

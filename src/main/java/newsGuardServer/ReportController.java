@@ -17,9 +17,9 @@ public class ReportController {
     Engine engine;
     ObjectMapper objectMapper;
 
-    public  ReportController(Engine theEngine)
+    public  ReportController(Engine engine)
     {
-        this.engine = theEngine;
+        this.engine = engine;
     }
 
     @GetMapping
@@ -32,29 +32,29 @@ public class ReportController {
         // Retrieve and return report by ID
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<String> createReport(@RequestParam("file") MultipartFile file) {
         try {
-            NewReportDTO createReportDTO = objectMapper.readValue(file.getInputStream(), NewReportDTO.class);
-            boolean createReportSuccessful = engine.addNewReportAndStartVerificationProcess(createReportDTO);
-
-            if (createReportSuccessful) {
-                return ResponseEntity.ok("Create new report successful");
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid report");
-            }
+            NewReportDTO newReportDTO = objectMapper.readValue(file.getInputStream(), NewReportDTO.class);
+            engine.addNewReportAndStartVerificationProcess(newReportDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Report created successfully");
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error reading JSON file");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-
     @PutMapping("/{id}")
     public Report updateReport(@PathVariable Long id, @RequestBody Report report) {
         // Update and return existing Report
+        return;
     }
-
     @DeleteMapping("/{id}")
     public void deleteReport(@PathVariable Long Report) {
         // Delete Report by ID
     }
 }
+
+
+
+
+
+
