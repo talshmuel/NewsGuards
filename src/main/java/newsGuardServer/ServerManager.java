@@ -1,9 +1,8 @@
 package newsGuardServer;
 import logic.engine.Engine;
-import logic.engine.Engine;
 
 public class ServerManager {
-    Engine engine;
+    Engine engine = new Engine();
     AuthController authController;
 
     public ServerManager()

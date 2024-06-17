@@ -1,14 +1,12 @@
 package newsGuardServer;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import data.transfer.object.LoginDTO;
 import logic.engine.Engine;
-import com.server.application.dto.UserLoginDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.IOException;
 
@@ -17,9 +15,11 @@ import java.io.IOException;
 @RequestMapping("/auth")
 public class AuthController {////
     Engine engine;
+    ObjectMapper objectMapper;
 
-    public AuthController(Engine engine) {
-        this.engine = engine;
+    public AuthController(Engine theEngine) {
+        this.engine = theEngine;
+        ObjectMapper objectMapper = new ObjectMapper();
     }
 
     @PostMapping("/login")
