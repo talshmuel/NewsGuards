@@ -14,7 +14,7 @@ import java.io.IOException;
 // UserController.java
 @RestController
 @RequestMapping("/auth")
-public class AuthController {
+public class AuthController {//
     Engine engine;
 
     public AuthController(Engine engine) {
