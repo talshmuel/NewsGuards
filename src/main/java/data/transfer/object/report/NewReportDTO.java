@@ -5,14 +5,14 @@ import java.sql.Time;
 import java.util.ArrayList;
 
 public final class NewReportDTO {
-    String text;
-    String imageURL;
-    int reporterID;
-    boolean isAnonymousReport;
-    ArrayList<Integer> IDOfUsersTags;
-    ArrayList<String> genres;
-    Location location;
-    Time timeReported;
+    private final String text;
+    private final String imageURL;
+    private final int reporterID;
+    private final boolean isAnonymousReport;
+    private final ArrayList<Integer> IDOfUsersTags;
+    private final ArrayList<String> genres;
+    private final Location location;
+    private final Time timeReported;
 
     public NewReportDTO(String text, String imageURL, int reporterID, boolean isAnonymousReport, ArrayList<Integer> IDOfUsersTags, ArrayList<String> genres, Location location, Time timeReported) {
         this.text = text;

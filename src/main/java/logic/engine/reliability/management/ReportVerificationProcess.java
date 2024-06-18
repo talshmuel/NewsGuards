@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class ReportVerificationProcess {
     static int IDGenerator = 0;
-    int ID;
-    Report report;
-    Map<User, GuardResponse> guardsResponses;
-    Rate reliabilityRate;
+    private int ID;
+    private Report report;
+    private Map<User, GuardResponse> guardsResponses;
+    private Rate reliabilityRate;
     public ReportVerificationProcess(Report reportToVerify, ArrayList<User> guards){
         ID = ++IDGenerator;
         this.report = reportToVerify;
@@ -22,6 +22,9 @@ public class ReportVerificationProcess {
         });
     }
 
+    public int getID() {
+        return ID;
+    }
 
     public void sendVerificationRequestToGuards(){
         //todo send to each guard a verification request
