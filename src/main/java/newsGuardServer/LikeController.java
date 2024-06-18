@@ -1,6 +1,5 @@
 package newsGuardServer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import logic.engine.Engine;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,6 @@ public class LikeController {
             @RequestParam("userID") int userID) {
 
     }
-
 
     @DeleteMapping("/unlikePost")
     public void unlikePost( @RequestParam("reportID") int reportID,
