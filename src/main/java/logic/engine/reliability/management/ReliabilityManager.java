@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReliabilityManager {
-    //location history of the last 24 hours
-    Map<Integer, ReportVerificationProcess> runningVerificationProcesses;
+    //todo location history of the last 24 hours
+    private Map<Integer, ReportVerificationProcess> runningVerificationProcesses;
 
     public ReliabilityManager(){
         runningVerificationProcesses = new HashMap<>();
@@ -18,7 +18,7 @@ public class ReliabilityManager {
     public void startReportVerificationProcess(Report reportToVerify){
         ArrayList<User> reportGuards = findReportGuards(reportToVerify);
         ReportVerificationProcess newVerificationProcess = new ReportVerificationProcess(reportToVerify, reportGuards);
-        runningVerificationProcesses.put(newVerificationProcess.ID, newVerificationProcess);
+        runningVerificationProcesses.put(newVerificationProcess.getID(), newVerificationProcess);
         //newVerificationProcess.sendVerificationRequestToGuards();
 
     }
@@ -27,6 +27,7 @@ public class ReliabilityManager {
     }
     private ArrayList<User> findReportGuards(Report reportToVerify){
         ArrayList<User> guards = new ArrayList<>();
+        //todo: add report to the reports that is a guard of
         //todo: find by location history
         return guards;
     }
