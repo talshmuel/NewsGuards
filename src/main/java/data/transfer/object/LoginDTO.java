@@ -1,8 +1,8 @@
 package data.transfer.object;
 
 public final class LoginDTO {
-    String email;
-    String passwordToCheck;
+    private final String email;
+    private final String passwordToCheck;
 
     public LoginDTO(String email, String password) {
         this.email = email;

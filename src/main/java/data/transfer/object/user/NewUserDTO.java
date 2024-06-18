@@ -3,17 +3,17 @@ package data.transfer.object.user;
 import java.util.ArrayList;
 
 public final class NewUserDTO {
-    String firstName;
-    String lastName;
-    String country;
-    String email;
-    String password;
-    String imageURL;
-    String phoneNumber;
-    ArrayList<String> genrePreference;
-    ArrayList<Integer> reliabilityRatePreference;
-    ArrayList<String> countriesPreference;
-    boolean locationAccessPermission;
+    private final String firstName;
+    private final String lastName;
+    private final String country;
+    private final String email;
+    private final String password;
+    private final String imageURL;
+    private final String phoneNumber;
+    private final ArrayList<String> genrePreference;
+    private final ArrayList<Integer> reliabilityRatePreference;
+    private final ArrayList<String> countriesPreference;
+    private final boolean locationAccessPermission;
 
     public NewUserDTO(String firstName, String lastName, String country, String email, String password, String imageURL, String phoneNumber, ArrayList<String> genrePreference, ArrayList<Integer> reliabilityRatePreference, ArrayList<String> countriesPreference, boolean locationAccessPermission) {
         this.firstName = firstName;

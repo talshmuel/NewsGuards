@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class UserRegistrationDetails {
-    String firstName;
-    String lastName;
-    String country;
-    String email;
-    String password;
-    String imageURL;
-    String phoneNumber;
-    ArrayList<Genre> genrePreference;
-    ArrayList<Rate> reliabilityRatePreference;
-    ArrayList<String> countriesPreference;
-    boolean locationAccessPermission;
+    private String firstName;
+    private String lastName;
+    private String country;
+    private String email;
+    private String password;
+    private String imageURL;
+    private String phoneNumber;
+    private ArrayList<Genre> genrePreference;
+    private ArrayList<Rate> reliabilityRatePreference;
+    private ArrayList<String> countriesPreference;
+    private boolean locationAccessPermission;
 
     public UserRegistrationDetails(String firstName, String lastName, String country, String email, String password, String imageURL, String phoneNumber, ArrayList<Genre> genrePreference, ArrayList<Rate> reliabilityRatePreference, ArrayList<String> countriesPreference, boolean locationAccessPermission) {
         this.firstName = firstName;

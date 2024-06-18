@@ -3,13 +3,13 @@ package logic.engine.user;
 import data.transfer.object.LoginDTO;
 import data.transfer.object.user.NewUserDTO;
 import logic.engine.exception.UserNotFoundException;
-import logic.engine.report.Report;
+import logic.engine.report.Comment;
 
 import java.util.Map;
 import java.util.Objects;
 
 public class UsersManager {
-    Map<Integer,User> usersByID;
+    private Map<Integer,User> usersByID;
 
     public void addNewUser(NewUserDTO newUserData) {
         for (Map.Entry<Integer, User> IDUserPair : usersByID.entrySet()) {
@@ -28,9 +28,6 @@ public class UsersManager {
         }
         return user.checkUserPassword(loginDTO.getPasswordToCheck());
     }
-    public void addReportToUser(int userID, Report newReport){
-        usersByID.get(userID).addNewReport(newReport);
-    }
     public User findUserByEmail(String email){
         for (Map.Entry<Integer, User> IDUserPair : usersByID.entrySet()) {
             if (Objects.equals(IDUserPair.getValue().getEmail(), email)) {
@@ -39,6 +36,15 @@ public class UsersManager {
         }
         return null;
     }
+    public User findUserByID(int ID){
+        return usersByID.get(ID);
+    }
 
+    public void addOrRemoveLike(int userID, int reportID){
+        usersByID.get(userID).addOrRemoveLike(reportID);
+    }
+    public void addNewComment(Comment comment){
+        usersByID.get(comment.getWriterID());
+    }
 
 }
