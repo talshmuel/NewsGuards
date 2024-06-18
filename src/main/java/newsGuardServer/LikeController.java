@@ -1,6 +1,7 @@
 package newsGuardServer;
 
 import logic.engine.Engine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,20 +10,16 @@ import org.springframework.web.bind.annotation.*;
 public class LikeController {
     Engine engine;
 
+    @Autowired
     public LikeController(Engine engine) {
         this.engine = engine;
     }
 
-    @GetMapping("/likePost")
-    public ResponseEntity<String> likePost(
-            @RequestParam("reportID") int reportID,
-            @RequestParam("userID") int userID) {
-
-    }
-
-    @DeleteMapping("/unlikePost")
-    public void unlikePost( @RequestParam("reportID") int reportID,
-                            @RequestParam("userID") int userID) {
-        // Unlike a specific report
+    @GetMapping("/likeOrUnlikeReport")
+    public ResponseEntity<String> likeOrUnlikeReport(
+        @RequestParam("reportID") int reportID,
+        @RequestParam("userID") int userID) {
+        engine.addOrRemoveLikeToReport(reportID, userID);
+        return ResponseEntity.ok("successful");
     }
 }
