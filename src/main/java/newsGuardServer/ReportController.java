@@ -1,7 +1,7 @@
 package newsGuardServer;
 import data.transfer.object.report.NewReportDTO;
 import logic.engine.Engine;
-import logic.engine.report.Report;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,20 +17,21 @@ public class ReportController {
     Engine engine;
     ObjectMapper objectMapper;
 
+    @Autowired
     public  ReportController(Engine engine)
     {
         this.engine = engine;
     }
-
-    @GetMapping
-    public List<Report> getAllReports() {
-        // Retrieve and return all Reports
-    }
-
-    @GetMapping("/{id}")
-    public Report getReportById(@PathVariable Long id) {
-        // Retrieve and return report by ID
-    }
+//
+//    @GetMapping
+//    public List<Report> getAllReports() {
+//        // Retrieve and return all Reports
+//    }
+//
+//    @GetMapping("/{id}")
+//    public Report getReportById(@PathVariable Long id) {
+//        // Retrieve and return report by ID
+//    }
 
     @PostMapping("/create")
     public ResponseEntity<String> createReport(@RequestParam("file") MultipartFile file) {
@@ -42,15 +43,15 @@ public class ReportController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-    @PutMapping("/{id}")
-    public Report updateReport(@PathVariable Long id, @RequestBody Report report) {
-        // Update and return existing Report
-        return;
-    }
-    @DeleteMapping("/{id}")
-    public void deleteReport(@PathVariable Long Report) {
-        // Delete Report by ID
-    }
+//    @PutMapping("/{id}")
+//    public Report updateReport(@PathVariable Long id, @RequestBody Report report) {
+//        // Update and return existing Report
+//        return;
+//    }
+//    @DeleteMapping("/{id}")
+//    public void deleteReport(@PathVariable Long Report) {
+//        // Delete Report by ID
+//    }
 }
 
 
