@@ -32,7 +32,7 @@ public class UsersManager {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/newsguardproject", "postgres", "4Xkp61jk!4Xkp61jk!");
 
             String sql = "INSERT INTO users (first_name, last_name, country, email, password, imageURL, phone_number) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";.
             stmt = conn.prepareStatement(sql);
 
             // Set parameters for the PreparedStatement
