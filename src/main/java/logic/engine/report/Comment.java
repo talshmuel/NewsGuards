@@ -4,6 +4,8 @@ import data.transfer.object.report.CommentDTO;
 import logic.engine.user.User;
 
 public class Comment {
+    private static int IDGenerator = 0;
+    private int ID;
     private int reportID;
     private String text;
     private int writerID;
@@ -14,6 +16,7 @@ public class Comment {
         this.text = text;
         this.writerID = writerID;
         this.isAGuardComment = isAGuardComment;
+        ID = ++IDGenerator;
     }
 
     public int getReportID() {
