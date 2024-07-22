@@ -15,6 +15,8 @@ import logic.engine.user.UsersManager;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
+
 @Service
 public class Engine {
     private final UsersManager usersManager;
@@ -28,7 +30,7 @@ public class Engine {
         locationHistoryManager = new LocationHistoryManager();
         reliabilityManager = new ReliabilityManager();
     }
-    public void createNewUser(NewUserDTO newUserData){
+    public void createNewUser(NewUserDTO newUserData) throws SQLException {
         usersManager.addNewUser(newUserData);
     }
     public boolean checkLoginDetails(LoginDTO loginDTO){
