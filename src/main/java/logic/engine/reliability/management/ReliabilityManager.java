@@ -20,7 +20,7 @@ public class ReliabilityManager {
         ReportVerificationProcess newVerificationProcess = new ReportVerificationProcess(reportToVerify, reportGuards);
         runningVerificationProcesses.put(newVerificationProcess.getID(), newVerificationProcess);
         //newVerificationProcess.sendVerificationRequestToGuards();
-
+        
     }
     public void getRunningVerificationProcesses(){
 
@@ -34,4 +34,5 @@ public class ReliabilityManager {
     public void setGuardVerificationResponse(int verificationProcessID, User guard, GuardResponse response){
         runningVerificationProcesses.get(verificationProcessID).setGuardResponse(guard, response);
     }
+
 }

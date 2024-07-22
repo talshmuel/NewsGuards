@@ -13,13 +13,14 @@ import logic.engine.report.ReportsManager;
 import logic.engine.user.User;
 import logic.engine.user.UsersManager;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class Engine {
-    private UsersManager usersManager;
-    private ReportsManager reportsManager;
+    private final UsersManager usersManager;
+    private final ReportsManager reportsManager;
     private LocationHistoryManager locationHistoryManager;
-    private ReliabilityManager reliabilityManager;
+    private final ReliabilityManager reliabilityManager;
 
     public Engine(){
         usersManager = new UsersManager();
@@ -27,7 +28,6 @@ public class Engine {
         locationHistoryManager = new LocationHistoryManager();
         reliabilityManager = new ReliabilityManager();
     }
-
     public void createNewUser(NewUserDTO newUserData){
         usersManager.addNewUser(newUserData);
     }
