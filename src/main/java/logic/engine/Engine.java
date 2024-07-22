@@ -13,8 +13,9 @@ import logic.engine.report.ReportsManager;
 import logic.engine.user.User;
 import logic.engine.user.UsersManager;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class Engine {
     private final UsersManager usersManager;
     private final ReportsManager reportsManager;
