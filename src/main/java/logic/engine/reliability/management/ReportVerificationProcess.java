@@ -5,20 +5,21 @@ import logic.engine.user.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ReportVerificationProcess {
     static int IDGenerator = 0;
     private int ID;
     private Report report;
-    private Map<User, GuardResponse> guardsResponses;
+    private Map<Integer, GuardResponse> guardsResponses;
     private Rate reliabilityRate;
-    public ReportVerificationProcess(Report reportToVerify, ArrayList<User> guards){
+    public ReportVerificationProcess(Report reportToVerify, List<Integer> guards){
         ID = ++IDGenerator;
         this.report = reportToVerify;
         guardsResponses = new HashMap<>();
-        guards.forEach((guard)->{
-            guardsResponses.put(guard, GuardResponse.Pending);
+        guards.forEach((guardID)->{
+            guardsResponses.put(guardID, GuardResponse.Pending);
         });
     }
 
@@ -29,7 +30,7 @@ public class ReportVerificationProcess {
     public void sendVerificationRequestToGuards(){
         //todo send to each guard a verification request
     }
-    public void setGuardResponse(User guard, GuardResponse guardResponse){
+    public void setGuardResponse(Integer guard, GuardResponse guardResponse){
         guardsResponses.put(guard, guardResponse);
     }
 }

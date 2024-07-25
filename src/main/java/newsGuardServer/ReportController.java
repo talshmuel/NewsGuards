@@ -1,4 +1,6 @@
 package newsGuardServer;
+import data.transfer.object.location.LocationDTO;
+import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
 import logic.engine.Engine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,49 +11,58 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 // ReportController.java
 @RestController
-@RequestMapping("/reports")
+@RequestMapping("/report")
 public class ReportController {
     Engine engine;
-    ObjectMapper objectMapper;
 
     @Autowired
     public  ReportController(Engine engine)
     {
         this.engine = engine;
     }
-//
-//    @GetMapping
-//    public List<Report> getAllReports() {
-//        // Retrieve and return all Reports
-//    }
-//
-//    @GetMapping("/{id}")
-//    public Report getReportById(@PathVariable Long id) {
-//        // Retrieve and return report by ID
-//    }
 
-    @PostMapping("/create")
-    public ResponseEntity<String> createReport(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/add-new-report")
+    public ResponseEntity<String> createReport(@RequestBody NewReportDTO newReportDTO) {
         try {
-            NewReportDTO newReportDTO = objectMapper.readValue(file.getInputStream(), NewReportDTO.class);
             engine.addNewReportAndStartVerificationProcess(newReportDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Report created successfully");
-        } catch (IOException e) {
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
-//    @PutMapping("/{id}")
-//    public Report updateReport(@PathVariable Long id, @RequestBody Report report) {
-//        // Update and return existing Report
-//        return;
-//    }
-//    @DeleteMapping("/{id}")
-//    public void deleteReport(@PathVariable Long Report) {
-//        // Delete Report by ID
-//    }
+
+    @PostMapping("/add-comment")
+    public ResponseEntity<String> comment(@RequestBody CommentDTO commentDTO) {
+        try {
+            engine.addCommentToReport(commentDTO);
+            return ResponseEntity.ok("Comment successfully added");
+        }catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/like-or-unlike")
+    public ResponseEntity<String> likeOrUnlikeReport(
+            @RequestParam("reportID") int reportID,
+            @RequestParam("userID") int userID) {
+        try {
+            engine.addOrRemoveLikeToReport(reportID, userID);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
+        return ResponseEntity.ok("Like added / removed successfully");
+    }
 }
 
 

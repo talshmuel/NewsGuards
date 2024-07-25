@@ -8,9 +8,7 @@ import logic.engine.report.Genre;
 import logic.engine.report.Report;
 import logic.engine.user.registration.UserRegistrationDetails;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class User {
     static int IDGenerator = 0;
@@ -20,7 +18,7 @@ public class User {
     private ArrayList<Notification> notifications;
     private ArrayList<Report> reportsThatTheUserIsAGuardOf;
     private Rate reliabilityRate;
-    private ArrayList<Integer> likedReports;
+    private Set<Integer> likedReports;
     private ArrayList<Integer> taggedReports;
     private Map<Integer, Comment> usersCommentsByReportID;
 
@@ -31,7 +29,7 @@ public class User {
         notifications = new ArrayList<>();
         reportsThatTheUserIsAGuardOf = new ArrayList<>();
         reliabilityRate = Rate.THREE;
-        likedReports = new ArrayList<>();
+        likedReports = new HashSet<>();
         taggedReports = new ArrayList<>();
         usersCommentsByReportID = new HashMap<>();
     }

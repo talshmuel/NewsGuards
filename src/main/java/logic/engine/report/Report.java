@@ -5,33 +5,31 @@ import logic.engine.reliability.management.Rate;
 import logic.engine.user.User;
 
 import javax.xml.stream.Location;
+import java.awt.geom.Point2D;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Report {
-    private int ID;
+    private final int ID;
     private static int IDGenerator = 0;
     private String text;
     private String imageURL;
-    private Set<Integer> usersWhoLiked;
-    private ArrayList<Comment> comments;
-    private ArrayList<User> guards;
+    private final Set<Integer> usersWhoLiked;
+    private final ArrayList<Comment> comments;
+    private List<Integer> guards;
     private Rate reliabilityRate;
     private User reporter;
     private boolean isAnonymousReport;
     private ArrayList<Integer> IDOfUsersTags;
     private ArrayList<Genre> genres;
-    private Location location;
-    private Time timeReported;
+    private Point2D.Double location;
+    private Date timeReported;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, ArrayList<Integer> IDOfUsersTags, ArrayList<Genre> genres, Location location, Time timeReported) {
+    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, ArrayList<Integer> IDOfUsersTags, ArrayList<Genre> genres, Point2D.Double location, Date timeReported) {
         this.text = text;
         this.imageURL = imageURL;
         this.usersWhoLiked = new HashSet<>();
         this.comments = new ArrayList<>();
-        //this.guards = guards;//todo find where to set it
         this.reporter = reporter;
         this.isAnonymousReport = isAnonymousReport;
         this.IDOfUsersTags = IDOfUsersTags;
@@ -62,4 +60,7 @@ public class Report {
         comments.add(comment);
     }
 
+    public void setGuards(List<Integer> guards) {
+        this.guards = guards;
+    }
 }

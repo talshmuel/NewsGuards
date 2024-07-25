@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/location")
 public class LocationController {
     private final Engine engine;
 
@@ -19,9 +19,9 @@ public class LocationController {
         this.engine = engine;
     }
 
-    @PostMapping("/location")
-    public ResponseEntity<String> receiveLocation(@RequestBody LocationDTO location) {
-        System.out.println(location);
+    @PostMapping("/save-location")
+    public ResponseEntity<String> receiveLocation(@RequestBody LocationDTO locationDTO) {
+        engine.saveUserLocation(locationDTO);
         return ResponseEntity.ok("Location received");
     }
 }

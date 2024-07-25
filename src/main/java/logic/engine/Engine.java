@@ -1,6 +1,7 @@
 package logic.engine;
 
 import data.transfer.object.LoginDTO;
+import data.transfer.object.location.LocationDTO;
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
 import data.transfer.object.user.NewUserDTO;
@@ -12,8 +13,9 @@ import logic.engine.report.Report;
 import logic.engine.report.ReportsManager;
 import logic.engine.user.User;
 import logic.engine.user.UsersManager;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class Engine {
@@ -31,17 +33,21 @@ public class Engine {
     public void createNewUser(NewUserDTO newUserData){
         usersManager.addNewUser(newUserData);
     }
-    public boolean checkLoginDetails(LoginDTO loginDTO){
-        return usersManager.checkLoginDetails(loginDTO);
+    public Integer checkLoginDetails(LoginDTO loginDTO){
+        return usersManager.checkLoginDetailsAndGetUserID(loginDTO);
     }
     public void addNewReportAndStartVerificationProcess(NewReportDTO newReportDTO){
         User reporter = usersManager.findUserByID(newReportDTO.getReporterID());
+        if(reporter == null){
+            throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ newReportDTO.getReporterID());
+        }
         Report newReport = reportsManager.addNewReport(newReportDTO, reporter);
-        reliabilityManager.startReportVerificationProcess(newReport);
+        List<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getDateTime(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
+        newReport.setGuards(guardsID);
+        reliabilityManager.startReportVerificationProcess(newReport, guardsID);
     }
     public void setGuardVerificationResponse(int verificationProcessID, int guardUserID, GuardResponse response){
-        User guard = usersManager.findUserByID(guardUserID);
-        reliabilityManager.setGuardVerificationResponse(verificationProcessID, guard, response);
+        reliabilityManager.setGuardVerificationResponse(verificationProcessID, guardUserID, response);
     }
     public void addOrRemoveLikeToReport(int reportID, int userID){
         reportsManager.addOrRemoveLike(reportID, userID);
@@ -51,5 +57,13 @@ public class Engine {
         Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment());
         reportsManager.addNewComment(newComment);
         usersManager.addNewComment(newComment);
+    }
+    public void saveUserLocation(LocationDTO locationDTO){
+        if(usersManager.isUserExist(locationDTO.getUserID())){
+            locationHistoryManager.saveUserLocation(locationDTO.getUserID(), locationDTO.getDateTime(), locationDTO.getLatitude(), locationDTO.getLongitude());
+        }
+        else {
+            throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ locationDTO.getUserID());
+        }
     }
 }
