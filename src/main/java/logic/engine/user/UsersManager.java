@@ -6,6 +6,11 @@ import logic.engine.exception.InvalidPasswordException;
 import logic.engine.report.Comment;
 
 import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -21,6 +26,7 @@ public class UsersManager {
         if (findUserByEmail(newUserData.getEmail()) != null) {
             throw new IllegalArgumentException("User with email " + newUserData.getEmail() + " already exists.");
         }
+
         User newUser = new User(newUserData);
         usersByID.put(newUser.getID(), newUser);
         newUser.getRegistrationDetails().pushUserToDB(newUser.getID());
