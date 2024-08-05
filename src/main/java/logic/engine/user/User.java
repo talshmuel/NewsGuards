@@ -40,6 +40,10 @@ public class User {
         return ID;
     }
 
+    public UserRegistrationDetails getRegistrationDetails() {
+        return registrationDetails;
+    }
+
     private UserRegistrationDetails getRegistrationDetails(NewUserDTO newUserData){
 
         return new UserRegistrationDetails(newUserData.getFirstName(), newUserData.getLastName(),

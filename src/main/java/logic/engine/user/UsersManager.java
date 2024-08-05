@@ -23,6 +23,7 @@ public class UsersManager {
         }
         User newUser = new User(newUserData);
         usersByID.put(newUser.getID(), newUser);
+        newUser.getRegistrationDetails().pushUserToDB(newUser.getID());
     }
     public Integer checkLoginDetailsAndGetUserID(LoginDTO loginDTO){
         User user = findUserByEmail(loginDTO.getEmail());
