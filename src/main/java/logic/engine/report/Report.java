@@ -92,7 +92,7 @@ public class Report {
     }
     public void pushReportToDB(int reporter_id)
     {
-        String sql = "INSERT INTO reports (report_id, text, user_id, likes_number, report_rate, image_url) VALUES (?, ?, ?, ?, ?, ?)";//
+        String sql = "INSERT INTO reports (report_id, text, user_id, likes_number, report_rate, image_url) VALUES (?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(sql, ID, text, reporter_id, usersWhoLiked.size(), reliabilityRate, imageURL);
     } //צריך לאתחל את report_rate
