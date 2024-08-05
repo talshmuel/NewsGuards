@@ -22,18 +22,17 @@ public class Report {
     private float reliabilityRate;
     private User reporter;
     private boolean isAnonymousReport;
-    private ArrayList<Genre> genres;
+
     private Point2D.Double location;
     private Date timeReported;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, ArrayList<Genre> genres, Point2D.Double location, Date timeReported) {
+    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.text = text;
         this.imageURL = imageURL;
         this.usersWhoLiked = new HashSet<>();
         this.comments = new ArrayList<>();
         this.reporter = reporter;
         this.isAnonymousReport = isAnonymousReport;
-        this.genres = genres;
         this.location = location;
         this.timeReported = timeReported;
         ID = ++IDGenerator;
@@ -64,13 +63,7 @@ public class Report {
         this.guards = guards;
     }
 
-    public boolean hasAtLeastOneOfGenresInlist(ArrayList<Genre> genresToCheck){
-        for(Genre genreToCheck : genresToCheck){
-            if(genresToCheck.contains(genreToCheck))
-                return true;
-        }
-        return false;
-    }
+
 
     public String getCountry() throws Exception {
         //GeocodingService geocodingService = new GeocodingService();
@@ -88,19 +81,16 @@ public class Report {
         return reliabilityRate;
     }
     public ReportDTO getReportDTO(){
-        ArrayList<String> genresStr = new ArrayList<>();
         ArrayList<CommentDTO> commentsDTO = new ArrayList<>();
 
-        for(Genre genre : genres){
-            genresStr.add(genre.toString());
-        }
+
 
         for (Comment comment : comments){
             commentsDTO.add(comment.getCommentDTO());
         }
 
         return new ReportDTO(text, imageURL, new ArrayList<>(usersWhoLiked), commentsDTO, new ArrayList<>(guards),
-                reliabilityRate, reporter.getID(), isAnonymousReport,genresStr,
+                reliabilityRate, reporter.getID(), isAnonymousReport,
                 location, timeReported);
     }
 }

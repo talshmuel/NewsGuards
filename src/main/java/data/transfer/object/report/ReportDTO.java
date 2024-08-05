@@ -15,11 +15,10 @@ public final class ReportDTO {
     private float reliabilityRate;
     private int reporterID;
     private boolean isAnonymousReport;
-    private ArrayList<String> genres;
     private Point2D.Double location;
     private Date timeReported;
 
-    public ReportDTO(String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, ArrayList<Integer> guardsID, float reliabilityRate, int reporterID, boolean isAnonymousReport, ArrayList<String> genres, Point2D.Double location, Date timeReported) {
+    public ReportDTO(String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, ArrayList<Integer> guardsID, float reliabilityRate, int reporterID, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.text = text;
         this.imageURL = imageURL;
         this.IDOfUsersWhoLiked = IDOfUsersWhoLiked;
@@ -28,7 +27,6 @@ public final class ReportDTO {
         this.reliabilityRate = reliabilityRate;
         this.reporterID = reporterID;
         this.isAnonymousReport = isAnonymousReport;
-        this.genres = genres;
         this.location = location;
         this.timeReported = timeReported;
     }
