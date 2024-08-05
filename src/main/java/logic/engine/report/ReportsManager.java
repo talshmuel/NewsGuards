@@ -4,7 +4,6 @@ import data.transfer.object.report.NewReportDTO;
 import logic.engine.user.User;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -25,7 +24,6 @@ public class ReportsManager {
 
         return newReport;
     }
-
 
     public void addOrRemoveLike(int reportID, int userID){
         Report report = reports.get(reportID);

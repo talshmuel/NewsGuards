@@ -22,7 +22,6 @@ public class Report {
     private float reliabilityRate;
     private User reporter;
     private boolean isAnonymousReport;
-
     private Point2D.Double location;
     private Date timeReported;
 
@@ -63,8 +62,6 @@ public class Report {
         this.guards = guards;
     }
 
-
-
     public String getCountry() throws Exception {
         //GeocodingService geocodingService = new GeocodingService();
         //String country = geocodingService.getCountry(location);
@@ -82,8 +79,6 @@ public class Report {
     }
     public ReportDTO getReportDTO(){
         ArrayList<CommentDTO> commentsDTO = new ArrayList<>();
-
-
 
         for (Comment comment : comments){
             commentsDTO.add(comment.getCommentDTO());

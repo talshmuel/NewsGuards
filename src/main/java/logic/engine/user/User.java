@@ -41,6 +41,7 @@ public class User {
     }
 
     private UserRegistrationDetails getRegistrationDetails(NewUserDTO newUserData){
+
         return new UserRegistrationDetails(newUserData.getFirstName(), newUserData.getLastName(),
                 newUserData.getCountry(), newUserData.getEmail(), newUserData.getPassword(),
                 newUserData.getImageURL(), newUserData.getPhoneNumber(),
@@ -66,7 +67,5 @@ public class User {
     public void addNewComment(Comment comment){
         usersCommentsByReportID.put(comment.getReportID(), comment);
     }
-    public UserRegistrationDetails getRegistrationDetails() {
-        return registrationDetails;
-    }
+
 }
