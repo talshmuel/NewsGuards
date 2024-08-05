@@ -21,7 +21,7 @@ public class ReportsManager {
                 , new Point2D.Double(newReportDTO.getLatitude(),
                 newReportDTO.getLongitude()), newReportDTO.getDateTime());
         reports.put(newReport.getID(), newReport);
-
+        newReport.pushReportToDB((reporter.getID()));
         return newReport;
     }
 
