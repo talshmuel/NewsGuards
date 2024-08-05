@@ -4,10 +4,8 @@ import data.transfer.object.user.NewUserDTO;
 import logic.engine.notification.Notification;
 import logic.engine.reliability.management.Rate;
 import logic.engine.report.Comment;
-import logic.engine.report.Genre;
 import logic.engine.report.Report;
 import logic.engine.user.registration.UserRegistrationDetails;
-import logic.engine.user.registration.UserReportsPreferences;
 
 import java.util.*;
 
@@ -43,16 +41,10 @@ public class User {
     }
 
     private UserRegistrationDetails getRegistrationDetails(NewUserDTO newUserData){
-        ArrayList<Genre> genrePreferences = new ArrayList<>();
-
-        for(String genreStr : newUserData.getGenrePreference()){
-            genrePreferences.add(Genre.convertStringToGenre(genreStr));
-        }
 
         return new UserRegistrationDetails(newUserData.getFirstName(), newUserData.getLastName(),
                 newUserData.getCountry(), newUserData.getEmail(), newUserData.getPassword(),
-                newUserData.getImageURL(), newUserData.getPhoneNumber(), genrePreferences,
-                newUserData.getReliabilityRatePreference(), newUserData.getCountriesPreference(),
+                newUserData.getImageURL(), newUserData.getPhoneNumber(),
                 newUserData.isLocationAccessPermission());
 
     }
@@ -75,7 +67,5 @@ public class User {
     public void addNewComment(Comment comment){
         usersCommentsByReportID.put(comment.getReportID(), comment);
     }
-    public UserReportsPreferences getReportsPreferences(){
-        return registrationDetails.getReportsPreferences();
-    }
+
 }

@@ -1,13 +1,9 @@
 package logic.engine.report;
 
 import data.transfer.object.report.NewReportDTO;
-import data.transfer.object.report.ReportDTO;
 import logic.engine.user.User;
-import logic.engine.user.registration.UserReportsPreferences;
 
 import java.awt.geom.Point2D;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -20,23 +16,15 @@ public class ReportsManager {
     }
 
     public Report addNewReport(NewReportDTO newReportDTO, User reporter){
-        ArrayList<Genre> genreEnumList = convertGenreStrToEnum(newReportDTO.getGenres());
         Report newReport = new Report(newReportDTO.getText(), newReportDTO.getImageURL(),
                 reporter, newReportDTO.isAnonymousReport()
-                ,genreEnumList, new Point2D.Double(newReportDTO.getLatitude(),
+                , new Point2D.Double(newReportDTO.getLatitude(),
                 newReportDTO.getLongitude()), newReportDTO.getDateTime());
         reports.put(newReport.getID(), newReport);
 
         return newReport;
     }
 
-    private ArrayList<Genre> convertGenreStrToEnum(ArrayList<String> genreStrList){
-        ArrayList<Genre> genreEnumList = new ArrayList<>();
-        genreStrList.forEach((genreStr)->{
-            genreEnumList.add(Genre.convertStringToGenre(genreStr));
-        });
-        return genreEnumList;
-    }
     public void addOrRemoveLike(int reportID, int userID){
         Report report = reports.get(reportID);
         if(report == null)
@@ -51,16 +39,5 @@ public class ReportsManager {
         report.addNewComment(comment);
     }
 
-    public ArrayList<ReportDTO> getReportsFilteredByPreferences(UserReportsPreferences preferences) throws Exception {
-        ArrayList<ReportDTO> reportsFiltered = new ArrayList<>();
-        for(Report report : reports.values()){
-            if(report.hasAtLeastOneOfGenresInlist(preferences.getGenrePreference()) &&
-                    preferences.getCountriesPreference().contains(report.getCountry())&&
-                    report.getReliabilityRate() >= preferences.getReliabilityRatePreference()){
-                reportsFiltered.add(report.getReportDTO());
-            }
-        }
-        return reportsFiltered;
-    }
 
 }
