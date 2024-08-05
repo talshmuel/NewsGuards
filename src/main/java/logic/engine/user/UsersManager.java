@@ -5,6 +5,7 @@ import data.transfer.object.user.NewUserDTO;
 import logic.engine.exception.InvalidPasswordException;
 import logic.engine.exception.UserNotFoundException;
 import logic.engine.report.Comment;
+import logic.engine.user.registration.UserReportsPreferences;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +63,14 @@ public class UsersManager {
     }
     public boolean isUserExist(int userID){
         return usersByID.containsKey(userID);
+    }
+
+    public UserReportsPreferences getUserReportsPreferences(int userID){
+        User user = usersByID.get(userID);
+        if(user == null){
+            throw new NoSuchElementException("\"Error - there is no user in the system whose ID number is: "+userID);
+        }
+        return user.getReportsPreferences();
     }
 
 }

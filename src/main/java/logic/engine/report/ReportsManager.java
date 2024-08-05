@@ -1,10 +1,12 @@
 package logic.engine.report;
 
-import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
+import data.transfer.object.report.ReportDTO;
 import logic.engine.user.User;
+import logic.engine.user.registration.UserReportsPreferences;
 
 import java.awt.geom.Point2D;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +22,7 @@ public class ReportsManager {
     public Report addNewReport(NewReportDTO newReportDTO, User reporter){
         ArrayList<Genre> genreEnumList = convertGenreStrToEnum(newReportDTO.getGenres());
         Report newReport = new Report(newReportDTO.getText(), newReportDTO.getImageURL(),
-                reporter, newReportDTO.isAnonymousReport(), newReportDTO.getIDOfUsersTags()
+                reporter, newReportDTO.isAnonymousReport()
                 ,genreEnumList, new Point2D.Double(newReportDTO.getLatitude(),
                 newReportDTO.getLongitude()), newReportDTO.getDateTime());
         reports.put(newReport.getID(), newReport);
@@ -47,6 +49,18 @@ public class ReportsManager {
             throw new NoSuchElementException("Error - there is no report in the system whose ID number is:" + comment.getReportID());
         }
         report.addNewComment(comment);
+    }
+
+    public ArrayList<ReportDTO> getReportsFilteredByPreferences(UserReportsPreferences preferences) throws Exception {
+        ArrayList<ReportDTO> reportsFiltered = new ArrayList<>();
+        for(Report report : reports.values()){
+            if(report.hasAtLeastOneOfGenresInlist(preferences.getGenrePreference()) &&
+                    preferences.getCountriesPreference().contains(report.getCountry())&&
+                    report.getReliabilityRate() >= preferences.getReliabilityRatePreference()){
+                reportsFiltered.add(report.getReportDTO());
+            }
+        }
+        return reportsFiltered;
     }
 
 }

@@ -12,18 +12,16 @@ public final class NewReportDTO {
     private final String imageURL;
     private final int reporterID;
     private final boolean isAnonymousReport;
-    private final ArrayList<Integer> IDOfUsersTags;
     private final ArrayList<String> genres;
     private Date dateTime;
     private double latitude;
     private double longitude;
 
-    public NewReportDTO(String text, String imageURL, int reporterID, boolean isAnonymousReport, ArrayList<Integer> IDOfUsersTags, ArrayList<String> genres, Date dateTime, double latitude, double longitude) {
+    public NewReportDTO(String text, String imageURL, int reporterID, boolean isAnonymousReport, ArrayList<String> genres, Date dateTime, double latitude, double longitude) {
         this.text = text;
         this.imageURL = imageURL;
         this.reporterID = reporterID;
         this.isAnonymousReport = isAnonymousReport;
-        this.IDOfUsersTags = IDOfUsersTags;
         this.genres = genres;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -44,10 +42,6 @@ public final class NewReportDTO {
 
     public boolean isAnonymousReport() {
         return isAnonymousReport;
-    }
-
-    public ArrayList<Integer> getIDOfUsersTags() {
-        return IDOfUsersTags;
     }
 
     public ArrayList<String> getGenres() {

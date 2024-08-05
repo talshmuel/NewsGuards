@@ -4,6 +4,7 @@ import data.transfer.object.LoginDTO;
 import data.transfer.object.location.LocationDTO;
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
+import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import logic.engine.location.history.management.LocationHistoryManager;
 import logic.engine.reliability.management.GuardResponse;
@@ -13,7 +14,11 @@ import logic.engine.report.Report;
 import logic.engine.report.ReportsManager;
 import logic.engine.user.User;
 import logic.engine.user.UsersManager;
+import logic.engine.user.registration.UserReportsPreferences;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -65,5 +70,10 @@ public class Engine {
         else {
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ locationDTO.getUserID());
         }
+    }
+    public ArrayList<ReportDTO> getReportsByUserPreferences(int userID)throws Exception {
+        UserReportsPreferences userReportsPreferences = usersManager.getUserReportsPreferences(userID);
+        return reportsManager.getReportsFilteredByPreferences(userReportsPreferences);
+
     }
 }

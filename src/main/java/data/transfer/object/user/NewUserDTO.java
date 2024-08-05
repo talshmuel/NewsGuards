@@ -11,11 +11,11 @@ public final class NewUserDTO {
     private final String imageURL;
     private final String phoneNumber;
     private final ArrayList<String> genrePreference;
-    private final ArrayList<Integer> reliabilityRatePreference;
+    private final float reliabilityRatePreference;
     private final ArrayList<String> countriesPreference;
     private final boolean locationAccessPermission;
 
-    public NewUserDTO(String firstName, String lastName, String country, String email, String password, String imageURL, String phoneNumber, ArrayList<String> genrePreference, ArrayList<Integer> reliabilityRatePreference, ArrayList<String> countriesPreference, boolean locationAccessPermission) {
+    public NewUserDTO(String firstName, String lastName, String country, String email, String password, String imageURL, String phoneNumber, ArrayList<String> genrePreference, float reliabilityRatePreference, ArrayList<String> countriesPreference, boolean locationAccessPermission) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
@@ -61,7 +61,7 @@ public final class NewUserDTO {
         return genrePreference;
     }
 
-    public ArrayList<Integer> getReliabilityRatePreference() {
+    public float getReliabilityRatePreference() {
         return reliabilityRatePreference;
     }
 

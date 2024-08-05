@@ -14,12 +14,10 @@ public class UserRegistrationDetails {
     private String password;
     private String imageURL;
     private String phoneNumber;
-    private ArrayList<Genre> genrePreference;
-    private ArrayList<Rate> reliabilityRatePreference;
-    private ArrayList<String> countriesPreference;
+    private UserReportsPreferences reportsPreferences;
     private boolean locationAccessPermission;
 
-    public UserRegistrationDetails(String firstName, String lastName, String country, String email, String password, String imageURL, String phoneNumber, ArrayList<Genre> genrePreference, ArrayList<Rate> reliabilityRatePreference, ArrayList<String> countriesPreference, boolean locationAccessPermission) {
+    public UserRegistrationDetails(String firstName, String lastName, String country, String email, String password, String imageURL, String phoneNumber, ArrayList<Genre> genrePreference, float reliabilityRatePreference, ArrayList<String> countriesPreference, boolean locationAccessPermission) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
@@ -27,9 +25,7 @@ public class UserRegistrationDetails {
         this.password = password;
         this.imageURL = imageURL;
         this.phoneNumber = phoneNumber;
-        this.genrePreference = genrePreference;
-        this.reliabilityRatePreference = reliabilityRatePreference;
-        this.countriesPreference = countriesPreference;
+        reportsPreferences = new UserReportsPreferences(genrePreference, reliabilityRatePreference, countriesPreference);
         this.locationAccessPermission = locationAccessPermission;
     }
 
@@ -39,5 +35,9 @@ public class UserRegistrationDetails {
 
     public boolean checkUserPassword(String passwordToCheck){
         return Objects.equals(passwordToCheck, this.password);
+    }
+
+    public UserReportsPreferences getReportsPreferences() {
+        return reportsPreferences;
     }
 }

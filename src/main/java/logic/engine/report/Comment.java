@@ -34,4 +34,7 @@ public class Comment {
     public boolean isAGuardComment() {
         return isAGuardComment;
     }
+    public CommentDTO getCommentDTO(){
+        return new CommentDTO(reportID, text, writerID, isAGuardComment);
+    }
 }

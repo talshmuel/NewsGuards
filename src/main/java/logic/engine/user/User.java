@@ -7,6 +7,7 @@ import logic.engine.report.Comment;
 import logic.engine.report.Genre;
 import logic.engine.report.Report;
 import logic.engine.user.registration.UserRegistrationDetails;
+import logic.engine.user.registration.UserReportsPreferences;
 
 import java.util.*;
 
@@ -43,18 +44,15 @@ public class User {
 
     private UserRegistrationDetails getRegistrationDetails(NewUserDTO newUserData){
         ArrayList<Genre> genrePreferences = new ArrayList<>();
-        ArrayList<Rate> ratePreferences = new ArrayList<>();
 
         for(String genreStr : newUserData.getGenrePreference()){
             genrePreferences.add(Genre.convertStringToGenre(genreStr));
         }
-        for(Integer reliabilityRateInt : newUserData.getReliabilityRatePreference()){
-            ratePreferences.add(Rate.convertIntToRate(reliabilityRateInt));
-        }
+
         return new UserRegistrationDetails(newUserData.getFirstName(), newUserData.getLastName(),
                 newUserData.getCountry(), newUserData.getEmail(), newUserData.getPassword(),
                 newUserData.getImageURL(), newUserData.getPhoneNumber(), genrePreferences,
-                ratePreferences, newUserData.getCountriesPreference(),
+                newUserData.getReliabilityRatePreference(), newUserData.getCountriesPreference(),
                 newUserData.isLocationAccessPermission());
 
     }
@@ -76,5 +74,8 @@ public class User {
 
     public void addNewComment(Comment comment){
         usersCommentsByReportID.put(comment.getReportID(), comment);
+    }
+    public UserReportsPreferences getReportsPreferences(){
+        return registrationDetails.getReportsPreferences();
     }
 }

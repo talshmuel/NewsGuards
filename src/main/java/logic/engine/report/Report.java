@@ -1,12 +1,14 @@
 package logic.engine.report;
 
 import data.transfer.object.report.CommentDTO;
+import data.transfer.object.report.ReportDTO;
+import logic.engine.location.history.management.GeocodingService;
+import logic.engine.location.history.management.NominatimExample;
 import logic.engine.reliability.management.Rate;
 import logic.engine.user.User;
 
-import javax.xml.stream.Location;
 import java.awt.geom.Point2D;
-import java.sql.Time;
+import java.io.IOException;
 import java.util.*;
 
 public class Report {
@@ -17,22 +19,20 @@ public class Report {
     private final Set<Integer> usersWhoLiked;
     private final ArrayList<Comment> comments;
     private List<Integer> guards;
-    private Rate reliabilityRate;
+    private float reliabilityRate;
     private User reporter;
     private boolean isAnonymousReport;
-    private ArrayList<Integer> IDOfUsersTags;
     private ArrayList<Genre> genres;
     private Point2D.Double location;
     private Date timeReported;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, ArrayList<Integer> IDOfUsersTags, ArrayList<Genre> genres, Point2D.Double location, Date timeReported) {
+    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, ArrayList<Genre> genres, Point2D.Double location, Date timeReported) {
         this.text = text;
         this.imageURL = imageURL;
         this.usersWhoLiked = new HashSet<>();
         this.comments = new ArrayList<>();
         this.reporter = reporter;
         this.isAnonymousReport = isAnonymousReport;
-        this.IDOfUsersTags = IDOfUsersTags;
         this.genres = genres;
         this.location = location;
         this.timeReported = timeReported;
@@ -62,5 +62,45 @@ public class Report {
 
     public void setGuards(List<Integer> guards) {
         this.guards = guards;
+    }
+
+    public boolean hasAtLeastOneOfGenresInlist(ArrayList<Genre> genresToCheck){
+        for(Genre genreToCheck : genresToCheck){
+            if(genresToCheck.contains(genreToCheck))
+                return true;
+        }
+        return false;
+    }
+
+    public String getCountry() throws Exception {
+        //GeocodingService geocodingService = new GeocodingService();
+        //String country = geocodingService.getCountry(location);
+
+        String country = NominatimExample.getCountry(location);
+
+        if (country == null) {
+            throw new NoSuchElementException("Country not found for the provided location");
+        }
+        return country;
+    }
+
+    public float getReliabilityRate() {
+        return reliabilityRate;
+    }
+    public ReportDTO getReportDTO(){
+        ArrayList<String> genresStr = new ArrayList<>();
+        ArrayList<CommentDTO> commentsDTO = new ArrayList<>();
+
+        for(Genre genre : genres){
+            genresStr.add(genre.toString());
+        }
+
+        for (Comment comment : comments){
+            commentsDTO.add(comment.getCommentDTO());
+        }
+
+        return new ReportDTO(text, imageURL, new ArrayList<>(usersWhoLiked), commentsDTO, new ArrayList<>(guards),
+                reliabilityRate, reporter.getID(), isAnonymousReport,genresStr,
+                location, timeReported);
     }
 }

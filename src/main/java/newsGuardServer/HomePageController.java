@@ -1,6 +1,8 @@
 package newsGuardServer;
+
 import data.transfer.object.LoginDTO;
 import data.transfer.object.LoginResponseDTO;
+import data.transfer.object.report.ReportDTO;
 import logic.engine.Engine;
 import logic.engine.exception.InvalidPasswordException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,35 +10,31 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @RestController
-@RequestMapping("/login")
-public class LoginController {
+@RequestMapping("/home-page")
+public class HomePageController {
     private final Engine engine;
 
     @Autowired
-    public LoginController(Engine engine) {
+    public HomePageController(Engine engine) {
         this.engine = engine;
     }
 
-    @PostMapping()
-    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginDTO userLoginDTO) {
+    @GetMapping("/get-reports-by-preferences")
+    public ResponseEntity<ArrayList<ReportDTO>> getReportsByUserPreferences(@RequestParam int userID) {
         try {
-            Integer userID = engine.checkLoginDetails(userLoginDTO);
-
-            LoginResponseDTO response = new LoginResponseDTO("Login successful", userID);
+            ArrayList<ReportDTO> response= engine.getReportsByUserPreferences(userID);
             return ResponseEntity.ok(response);
 
         } catch (InvalidPasswordException | IllegalArgumentException e) {
-            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null);
+            ArrayList<ReportDTO> response = new ArrayList<>();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 
         } catch (Exception e) {
-            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null);
+            ArrayList<ReportDTO> response = new ArrayList<>();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
-
-
 }
-
-

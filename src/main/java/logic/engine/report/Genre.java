@@ -27,4 +27,25 @@ public enum Genre {
                 return null;
         }
     }
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case TECHNOLOGY:
+                return "TECHNOLOGY";
+            case HEALTH:
+                return "HEALTH";
+            case LIFESTYLE:
+                return "LIFESTYLE";
+            case EDUCATION:
+                return "EDUCATION";
+            case ENTERTAINMENT:
+                return "ENTERTAINMENT";
+            case SPORTS:
+                return "SPORTS";
+            default:
+                //todo throw exception
+                return null;
+        }
+    }
 }
