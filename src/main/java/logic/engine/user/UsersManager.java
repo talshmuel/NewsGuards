@@ -45,7 +45,7 @@ public class UsersManager {
     }
     public User findUserByID(int ID){
         return usersByID.get(ID);
-    }
+    } //להוסיף שאם לא מצאנו אז לשחזר מהדאטה בייס!!
 
     public void addOrRemoveLike(int userID, int reportID){
         User user = usersByID.get(userID);
