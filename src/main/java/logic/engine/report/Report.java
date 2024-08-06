@@ -6,10 +6,15 @@ import logic.engine.location.history.management.GeocodingService;
 import logic.engine.location.history.management.NominatimExample;
 import logic.engine.reliability.management.Rate;
 import logic.engine.user.User;
+import newsGuardServer.DatabaseConfig;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Report {
@@ -25,7 +30,7 @@ public class Report {
     private boolean isAnonymousReport;
     private Point2D.Double location;
     private Date timeReported;
-    private JdbcTemplate jdbcTemplate;
+    private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
     public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.text = text;
@@ -92,9 +97,30 @@ public class Report {
     }
     public void pushReportToDB(int reporter_id)
     {
-        String sql = "INSERT INTO reports (report_id, text, user_id, likes_number, report_rate, image_url) VALUES (?, ?, ?, ?, ?, ?)";
+//        String sql = "INSERT INTO reports (report_id, text, user_id, likes_number, report_rate, image_url) VALUES (?, ?, ?, ?, ?, ?)";
+//
+//        jdbcTemplate.update(sql, ID, text, reporter_id, usersWhoLiked.size(), reliabilityRate, imageURL);
 
-        jdbcTemplate.update(sql, ID, text, reporter_id, usersWhoLiked.size(), reliabilityRate, imageURL);
+        String sql = "INSERT INTO reports (report_id, text, user_id, likes_number, report_rate, imageurl) VALUES (?, ?, ?, ?, ?, ?)";
+
+        // Establish a database connection
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Set the parameters
+            preparedStatement.setInt(1,ID);
+            preparedStatement.setString(2, text);
+            preparedStatement.setInt(3, reporter_id);
+            preparedStatement.setInt(4, usersWhoLiked.size());
+            preparedStatement.setFloat(5, reliabilityRate);
+            preparedStatement.setString(6, imageURL);
+
+            // Execute the insert operation
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
     } //צריך לאתחל את report_rate
 
 }
