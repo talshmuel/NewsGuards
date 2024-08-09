@@ -55,7 +55,7 @@ public class Report {
             usersWhoLiked.remove(userID);
             removeLikeFromDatabase(userID);
         }
-        else if(result)
+        else if(likeExistsInDB(userID))
         {
             removeLikeFromDatabase(userID);
         }
