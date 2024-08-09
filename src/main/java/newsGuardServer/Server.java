@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-@ComponentScan(basePackages = {"logic.engine"})
+@ComponentScan(basePackages = {"logic.engine", "newsGuardServer"})
 @SpringBootApplication()
 public class Server {
 
