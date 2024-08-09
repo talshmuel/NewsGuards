@@ -55,7 +55,7 @@ public class Report {
             usersWhoLiked.remove(userID);
             removeLikeFromDatabase(userID);
         }
-        else if(likeExistsInDB(userID))
+        else if(result)
         {
             removeLikeFromDatabase(userID);
         }
@@ -70,6 +70,7 @@ public class Report {
 
     public void addNewComment(Comment comment){
         comments.add(comment);
+        comment.addCommentToDatabase();
     }
 
     public void setGuards(List<Integer> guards) {
@@ -104,10 +105,6 @@ public class Report {
     }
     public void pushReportToDB(int reporter_id)
     {
-//        String sql = "INSERT INTO reports (report_id, text, user_id, likes_number, report_rate, image_url) VALUES (?, ?, ?, ?, ?, ?)";
-//
-//        jdbcTemplate.update(sql, ID, text, reporter_id, usersWhoLiked.size(), reliabilityRate, imageURL);
-
         String sql = "INSERT INTO reports (report_id, text, user_id, likes_number, report_rate, imageurl) VALUES (?, ?, ?, ?, ?, ?)";
 
         // Establish a database connection
@@ -145,18 +142,14 @@ public class Report {
     }
 
     public void addLikeToDatabase(int userID) {
-        String sql = "INSERT INTO likes (user_id, report_id) VALUES (?, ?)";
-        System.out.print("the userid about to enter: " + userID);
-        System.out.print("the reportid about to enter: " + ID);
-
+        String sql = "INSERT INTO likes (report_id, user_id) VALUES (?, ?)";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setInt(1, userID);
-            preparedStatement.setInt(2, ID);
-            System.out.print("HELLO");
-
+            preparedStatement.setInt(1, ID);
+            preparedStatement.setInt(2, userID);
+            preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
