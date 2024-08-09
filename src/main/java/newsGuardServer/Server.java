@@ -20,7 +20,8 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
-//        check();
+        //        checkLikes();
+  //      check();
     }
 
 //    public static void check()
@@ -34,4 +35,14 @@ public class Server {
 //        engine.addNewReportAndStartVerificationProcess(newReport1);
 //
 //    }
+
+//     public static void checkLikes()
+//     {
+//        NewUserDTO newUser = new NewUserDTO("nitzan", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
+//
+//         User user = new User(newUser);
+//         Report report = new Report("hello world","http://", user, true);
+//         report.addOrRemoveLike(user.getID());
+//     }
+
 }
