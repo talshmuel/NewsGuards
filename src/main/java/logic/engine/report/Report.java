@@ -11,11 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 public class Report {
     private final int ID;
@@ -55,9 +53,18 @@ public class Report {
     public void addOrRemoveLike(int userID){
         if(usersWhoLiked.contains(userID)){
             usersWhoLiked.remove(userID);
+            removeLikeFromDatabase(userID);
+        }
+        else if(likeExistsInDB(userID))
+        {
+            removeLikeFromDatabase(userID);
         }
         else {
+            System.out.print("not contain");
+            System.out.print(userID);
+
             usersWhoLiked.add(userID);
+            addLikeToDatabase(userID);
         }
     }
 
@@ -123,4 +130,54 @@ public class Report {
         }
     } //צריך לאתחל את report_rate
 
+    public void removeLikeFromDatabase(int userID) {
+        String sql = "DELETE FROM likes WHERE user_id = ? AND report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setInt(2, ID);
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+    }
+
+    public void addLikeToDatabase(int userID) {
+        String sql = "INSERT INTO likes (user_id, report_id) VALUES (?, ?)";
+        System.out.print("the userid about to enter: " + userID);
+        System.out.print("the reportid about to enter: " + ID);
+
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setInt(2, ID);
+            System.out.print("HELLO");
+
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+    }
+
+    public boolean likeExistsInDB(int userID) {
+        String sql = "SELECT 1 FROM likes WHERE user_id = ? AND report_id = ?";
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setInt(2, ID);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                return resultSet.next(); // If a row is returned, the like exists
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+            return false; // Assuming the like does not exist in case of error
+        }
+    }
 }
