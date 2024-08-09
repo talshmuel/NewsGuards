@@ -53,9 +53,18 @@ public class Report {
     public void addOrRemoveLike(int userID){
         if(usersWhoLiked.contains(userID)){
             usersWhoLiked.remove(userID);
+            removeLikeFromDatabase(userID);
+        }
+        else if(likeExistsInDB(userID))
+        {
+            removeLikeFromDatabase(userID);
         }
         else {
+            System.out.print("not contain");
+            System.out.print(userID);
+
             usersWhoLiked.add(userID);
+            addLikeToDatabase(userID);
         }
     }
 

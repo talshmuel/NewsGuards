@@ -4,6 +4,7 @@ import data.transfer.object.report.NewReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
 import logic.engine.Engine;
+import logic.engine.report.Report;
 import logic.engine.report.ReportsManager;
 import logic.engine.user.User;
 import org.springframework.boot.SpringApplication;
