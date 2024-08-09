@@ -58,7 +58,6 @@ public class Engine {
     public void addCommentToReport(CommentDTO commentDTO){
         Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment());
         reportsManager.addNewComment(newComment);
-        usersManager.addNewComment(newComment);
     }
     public void saveUserLocation(LocationDTO locationDTO){
         if(usersManager.isUserExist(locationDTO.getUserID())){
