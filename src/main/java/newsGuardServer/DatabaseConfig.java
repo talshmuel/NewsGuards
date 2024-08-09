@@ -1,7 +1,7 @@
 package newsGuardServer;
 
 public enum DatabaseConfig {
-    POSTGRESQL("jdbc:postgresql://localhost:5432/postgres", "postgres", "4Xkp61jk!4Xkp61jk!");
+    POSTGRESQL("jdbc:postgresql://news-guard-proj.chayi2k0mcar.eu-north-1.rds.amazonaws.com/news-guard", "postgres", "12345678");
 
     private final String url;
     private final String username;

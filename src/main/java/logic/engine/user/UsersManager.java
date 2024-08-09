@@ -47,12 +47,7 @@ public class UsersManager {
         return usersByID.get(ID);
     } //להוסיף שאם לא מצאנו אז לשחזר מהדאטה בייס!!
 
-    public void addOrRemoveLike(int userID, int reportID){
-        User user = usersByID.get(userID);
-        if(user == null)
-            throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+userID);
-        user.addOrRemoveLike(reportID);
-    }
+
     public void addNewComment(Comment comment){
         User user = usersByID.get(comment.getWriterID());
         if(user == null)

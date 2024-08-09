@@ -54,7 +54,6 @@ public class Engine {
     }
     public void addOrRemoveLikeToReport(int reportID, int userID){
         reportsManager.addOrRemoveLike(reportID, userID);
-        usersManager.addOrRemoveLike(userID, reportID);
     }
     public void addCommentToReport(CommentDTO commentDTO){
         Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment());

@@ -9,6 +9,8 @@ import logic.engine.report.ReportsManager;
 import logic.engine.user.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.sql.SQLException;
@@ -17,7 +19,7 @@ import java.util.Date;
 
 
 @ComponentScan(basePackages = {"logic.engine"})
-@SpringBootApplication
+@SpringBootApplication()
 public class Server {
 
     public static void main(String[] args) throws SQLException {
