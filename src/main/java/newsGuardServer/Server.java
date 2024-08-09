@@ -13,6 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 @ComponentScan(basePackages = {"logic.engine"})
@@ -21,29 +22,33 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
-        //        checkLikes();
-  //      check();
+        checkLikes();
+        //check();
     }
 
-//    public static void check()
-//    {
-//        Engine engine = new Engine();
-//        NewUserDTO newUser = new NewUserDTO("nitai", "koren","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
-//        engine.createNewUser(newUser);
-//        NewReportDTO newReport = new NewReportDTO("hello world","http://", 1, true);
-//        engine.addNewReportAndStartVerificationProcess(newReport);
-//        NewReportDTO newReport1 = new NewReportDTO("nice world","http://", 1, true);
-//        engine.addNewReportAndStartVerificationProcess(newReport1);
-//
-//    }
+    public static void check()
+    {
+        Date date = new Date();
+        Engine engine = new Engine();
+        NewUserDTO newUser = new NewUserDTO("tal", "shmuel","israel","tal@gmail.com","123456","http//:www.com","0525440635",true);
+        engine.createNewUser(newUser);
+        NewReportDTO newReport = new NewReportDTO("hello world,this is nitzan","http://", 1, true,date,1,1);
+        engine.addNewReportAndStartVerificationProcess(newReport);
+        NewReportDTO newReport1 = new NewReportDTO("hello world,this is tal","http://", 1, true,date,1,1);
+        engine.addNewReportAndStartVerificationProcess(newReport1);
 
-//     public static void checkLikes()
-//     {
-//        NewUserDTO newUser = new NewUserDTO("nitzan", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
-//
-//         User user = new User(newUser);
-//         Report report = new Report("hello world","http://", user, true);
-//         report.addOrRemoveLike(user.getID());
-//     }
+    }
+
+     public static void checkLikes()
+     {
+         Engine engine = new Engine();
+         Date date = new Date();
+         NewUserDTO newUser = new NewUserDTO("nitzan", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
+         engine.createNewUser(newUser);
+         NewReportDTO newReport = new NewReportDTO("hello world,this is nitzan","http://", 1, true,date,1,1);
+         engine.addNewReportAndStartVerificationProcess(newReport);
+         engine.addOrRemoveLikeToReport(1,1);
+
+     }
 
 }
