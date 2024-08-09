@@ -18,7 +18,6 @@ public class User {
     private ArrayList<Report> reportsThatTheUserIsAGuardOf;
     private Rate reliabilityRate;
     private ArrayList<Integer> taggedReports;
-    private Map<Integer, Comment> usersCommentsByReportID;
 
     public User(NewUserDTO newUserData) {
         ID = ++IDGenerator;
@@ -28,7 +27,6 @@ public class User {
         reportsThatTheUserIsAGuardOf = new ArrayList<>();
         reliabilityRate = Rate.THREE;
         taggedReports = new ArrayList<>();
-        usersCommentsByReportID = new HashMap<>();
     }
     public String getEmail(){
         return registrationDetails.getEmail();
@@ -58,8 +56,5 @@ public class User {
         newReport.setReporter(this);
     }
 
-    public void addNewComment(Comment comment){
-        usersCommentsByReportID.put(comment.getReportID(), comment);
-    }
 
 }

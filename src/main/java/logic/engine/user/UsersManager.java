@@ -47,14 +47,6 @@ public class UsersManager {
         return usersByID.get(ID);
     } //להוסיף שאם לא מצאנו אז לשחזר מהדאטה בייס!!
 
-
-    public void addNewComment(Comment comment){
-        User user = usersByID.get(comment.getWriterID());
-        if(user == null)
-            throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+comment.getWriterID());
-
-        user.addNewComment(comment);
-    }
     public boolean isUserExist(int userID){
         return usersByID.containsKey(userID);
     }
