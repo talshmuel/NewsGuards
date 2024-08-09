@@ -17,7 +17,6 @@ public class User {
     private ArrayList<Notification> notifications;
     private ArrayList<Report> reportsThatTheUserIsAGuardOf;
     private Rate reliabilityRate;
-    private Set<Integer> likedReports;
     private ArrayList<Integer> taggedReports;
     private Map<Integer, Comment> usersCommentsByReportID;
 
@@ -28,7 +27,6 @@ public class User {
         notifications = new ArrayList<>();
         reportsThatTheUserIsAGuardOf = new ArrayList<>();
         reliabilityRate = Rate.THREE;
-        likedReports = new HashSet<>();
         taggedReports = new ArrayList<>();
         usersCommentsByReportID = new HashMap<>();
     }
@@ -58,14 +56,6 @@ public class User {
     public void addNewReport(Report newReport){
         reports.add(newReport);
         newReport.setReporter(this);
-    }
-    public void addOrRemoveLike(int reportID){
-        if(likedReports.contains(reportID)){
-            likedReports.remove(reportID);
-        }
-        else {
-            likedReports.add(reportID);
-        }
     }
 
     public void addNewComment(Comment comment){
