@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 
-@ComponentScan(basePackages = {"logic.engine"})
+@ComponentScan(basePackages = {"logic.engine", "newsGuardServer"})
 @SpringBootApplication()
 public class Server {
 
