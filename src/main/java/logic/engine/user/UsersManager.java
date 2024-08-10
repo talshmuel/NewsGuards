@@ -32,7 +32,7 @@ public class UsersManager {
     public Integer checkLoginDetailsAndGetUserID(LoginDTO loginDTO){
         User user = findUserByEmail(loginDTO.getEmail());
         if(user == null){
-            user = findUserByEmailInDB(loginDTO.getEmail());
+            user = findUserByEmailInDBAndRestoreOnLocal(loginDTO.getEmail());
             if(user == null) {
                 throw new NoSuchElementException("Error - the Email you are trying to log in with does not exist in the system");
             }
@@ -54,7 +54,7 @@ public class UsersManager {
         return null;
     }
 
-    private User findUserByEmailInDB(String email) {
+    private User findUserByEmailInDBAndRestoreOnLocal(String email) {
         String query = "SELECT last_name, first_name, email, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
                 "FROM users WHERE email = ?";
 
@@ -75,7 +75,7 @@ public class UsersManager {
                     String password = rs.getString("password");
                     String imageURL = rs.getString("imageurl");
                     String phoneNumber = rs.getString("phone_number");
-                    //צריך לעדכן גם את הערך הנכון של הרלביליטי סקייל!!!!!!!
+                    //צריך לעדכן גם את הערך הנכון של הרלביליטי סקייל ושל הid!!!!!!!
                     boolean locationAccessPermission = rs.getBoolean("location_access_permission");
 
                     // Create NewUserDTO and User objects
@@ -93,12 +93,56 @@ public class UsersManager {
 
 
     public User findUserByID(int ID){
-        return usersByID.get(ID);
+        if(isUserExist(ID))
+            return usersByID.get(ID);
+        else
+            return null;
     } //להוסיף שאם לא מצאנו אז לשחזר מהדאטה בייס!!
 
     public boolean isUserExist(int userID){
-        return usersByID.containsKey(userID);
+        if (usersByID.containsKey(userID) || findUserByIDInDBAndRestoreOnLocal(userID))
+        {
+            return true;
+        }
+        return false;
     }
+    public boolean findUserByIDInDBAndRestoreOnLocal(int userID){
+        String query = "SELECT last_name, first_name, email, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
+                "FROM users WHERE user_id = ?";
 
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            // Set the email parameter
+            stmt.setInt(1, userID);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Check if result set contains a row
+                if (rs.next()) {
+                    // Extract user details
+                    String firstName = rs.getString("first_name");
+                    String lastName = rs.getString("last_name");
+                    String country = rs.getString("country");
+                    String newEmail = rs.getString("email");
+                    String password = rs.getString("password");
+                    String imageURL = rs.getString("imageurl");
+                    String phoneNumber = rs.getString("phone_number");
+                    //צריך לעדכן גם את הערך הנכון של הרלביליטי סקייל ושל הid!!!!!!!
+                    boolean locationAccessPermission = rs.getBoolean("location_access_permission");
+
+                    // Create NewUserDTO and User objects
+                    NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
+                    User user = new User(newUser);
+                    usersByID.put(user.getID(), user); // טעינה מדאטה בייס
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
