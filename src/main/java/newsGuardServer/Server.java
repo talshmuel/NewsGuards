@@ -1,5 +1,6 @@
 package newsGuardServer;
 
+import data.transfer.object.LoginDTO;
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
 import data.transfer.object.user.NewUserDTO;
@@ -26,7 +27,8 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
-        checkComments();
+        checkLoginDetails();
+        //checkComments();
         //checkLikes();
         //check();
     }
@@ -55,16 +57,25 @@ public class Server {
 //         engine.addOrRemoveLikeToReport(1,1);
 //
 //     }
-    public static void checkComments()
+//    public static void checkComments()
+//    {
+//        Engine engine = new Engine();
+//        Date date = new Date();
+//        NewUserDTO newUser = new NewUserDTO("nitzan hamalca", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
+//        engine.createNewUser(newUser);
+//        NewReportDTO newReport = new NewReportDTO("hello everyone ,this is nitzan","http://", 1, true,date,1,1);
+//        engine.addNewReportAndStartVerificationProcess(newReport);
+//        CommentDTO newComment = new CommentDTO(1,"this is comment",1,true);
+//        engine.addCommentToReport(newComment);
+//    }
+
+    public static void checkLoginDetails()
     {
         Engine engine = new Engine();
-        Date date = new Date();
-        NewUserDTO newUser = new NewUserDTO("nitzan hamalca", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
-        engine.createNewUser(newUser);
-        NewReportDTO newReport = new NewReportDTO("hello everyone ,this is nitzan","http://", 1, true,date,1,1);
-        engine.addNewReportAndStartVerificationProcess(newReport);
-        CommentDTO newComment = new CommentDTO(1,"this is comment",1,true);
-        engine.addCommentToReport(newComment);
+        LoginDTO login = new LoginDTO("nitaikoren@gmail.com","123456");
+        int id = engine.checkLoginDetails(login);
+        System.out.println("the id is:" + id);
     }
+
 
 }
