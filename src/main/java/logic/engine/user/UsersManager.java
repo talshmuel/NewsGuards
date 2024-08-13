@@ -25,22 +25,20 @@ public class UsersManager {
         if (findUserByEmail(newUserData.getEmail()) != null) {
             throw new IllegalArgumentException("User with email " + newUserData.getEmail() + " already exists.");
         }
-        User newUser = new User(newUserData);
+        User newUser = new User(newUserData,false);
         usersByID.put(newUser.getID(), newUser);
         newUser.getRegistrationDetails().pushUserToDB(newUser.getID());
     }
     public Integer checkLoginDetailsAndGetUserID(LoginDTO loginDTO){
         User user = findUserByEmail(loginDTO.getEmail());
-        if(user == null){
-            user = findUserByEmailInDBAndRestoreOnLocal(loginDTO.getEmail());
-            if(user == null) {
+        if (user == null) {
+            user = findAndCreateUserByEmailInDB(loginDTO.getEmail());
+            usersByID.put(user.getID(), user); // טעינה מדאטה בייס
+            if (user == null) {
                 throw new NoSuchElementException("Error - the Email you are trying to log in with does not exist in the system");
             }
-            else {
-                usersByID.put(user.getID(), user); // טעינה מדאטה בייס
-            }
         }
-        if(user.checkUserPassword(loginDTO.getPasswordToCheck()))
+        if (user.checkUserPassword(loginDTO.getPasswordToCheck()))
             return user.getID();
         else
             throw new InvalidPasswordException("Incorrect password");
@@ -54,7 +52,7 @@ public class UsersManager {
         return null;
     }
 
-    private User findUserByEmailInDBAndRestoreOnLocal(String email) {
+    public static User findAndCreateUserByEmailInDB(String email) {
         String query = "SELECT last_name, first_name, email, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
                 "FROM users WHERE email = ?";
 
@@ -80,7 +78,7 @@ public class UsersManager {
 
                     // Create NewUserDTO and User objects
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
-                    return new User(newUser);
+                    return new User(newUser, true);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -92,21 +90,28 @@ public class UsersManager {
     }
 
 
-    public User findUserByID(int ID){
-        if(isUserExist(ID))
+    public User findUserByID(int ID) {
+        if (isUserExist(ID))
             return usersByID.get(ID);
         else
             return null;
     } //להוסיף שאם לא מצאנו אז לשחזר מהדאטה בייס!!
 
-    public boolean isUserExist(int userID){
-        if (usersByID.containsKey(userID) || findUserByIDInDBAndRestoreOnLocal(userID))
+    public boolean isUserExist(int userID) {
+        if (usersByID.containsKey(userID)) {
+            return true;
+        }
+
+        User user = findAndCreateUserByIDInDB(userID);
+        if (user != null)
         {
+            usersByID.put(user.getID(), user);
             return true;
         }
         return false;
     }
-    public boolean findUserByIDInDBAndRestoreOnLocal(int userID){
+
+    public static User findAndCreateUserByIDInDB(int userID) {
         String query = "SELECT last_name, first_name, email, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
                 "FROM users WHERE user_id = ?";
 
@@ -132,9 +137,8 @@ public class UsersManager {
 
                     // Create NewUserDTO and User objects
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
-                    User user = new User(newUser);
-                    usersByID.put(user.getID(), user); // טעינה מדאטה בייס
-                    return true;
+                    User user = new User(newUser, true);
+                    return user;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -142,7 +146,7 @@ public class UsersManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
-
 }
+

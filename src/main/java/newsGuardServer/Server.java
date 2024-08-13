@@ -27,8 +27,8 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
-        checkLoginDetails();
-        //checkComments();
+        //checkLoginDetails();
+        checkComments();
         //checkLikes();
         //check();
     }
@@ -37,7 +37,7 @@ public class Server {
 //    {
 //        Date date = new Date();
 //        Engine engine = new Engine();
-//        NewUserDTO newUser = new NewUserDTO("tal", "shmuel","israel","tal@gmail.com","123456","http//:www.com","0525440635",true);
+//        NewUserDTO newUser = new NewUserDTO("tal", "shmuel","israel","tooliii@gmail.com","123456","http//:www.com","0525440635",true);
 //        engine.createNewUser(newUser);
 //        NewReportDTO newReport = new NewReportDTO("hello world,this is nitzan","http://", 1, true,date,1,1);
 //        engine.addNewReportAndStartVerificationProcess(newReport);
@@ -57,25 +57,27 @@ public class Server {
 //         engine.addOrRemoveLikeToReport(1,1);
 //
 //     }
-//    public static void checkComments()
-//    {
-//        Engine engine = new Engine();
-//        Date date = new Date();
-//        NewUserDTO newUser = new NewUserDTO("nitzan hamalca", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
-//        engine.createNewUser(newUser);
-//        NewReportDTO newReport = new NewReportDTO("hello everyone ,this is nitzan","http://", 1, true,date,1,1);
-//        engine.addNewReportAndStartVerificationProcess(newReport);
-//        CommentDTO newComment = new CommentDTO(1,"this is comment",1,true);
-//        engine.addCommentToReport(newComment);
-//    }
-
-    public static void checkLoginDetails()
+    public static void checkComments()
     {
         Engine engine = new Engine();
-        LoginDTO login = new LoginDTO("nitaikoren@gmail.com","123456");
-        int id = engine.checkLoginDetails(login);
-        System.out.println("the id is:" + id);
+        Date date = new Date();
+        NewUserDTO newUser = new NewUserDTO("nitzan hamalca", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
+        engine.createNewUser(newUser);
+        NewReportDTO newReport = new NewReportDTO("hello everyone ,this is nitzan","http://", 1, true,date,1,1);
+        engine.addNewReportAndStartVerificationProcess(newReport);
+        CommentDTO newComment = new CommentDTO(1,"this is comment",1,true);
+        engine.addCommentToReport(newComment);
     }
+
+//    public static void checkLoginDetails()
+//    {
+//        Engine engine = new Engine();
+//        LoginDTO login = new LoginDTO("john.asdf@gmail.com","12345");
+//        int id = engine.checkLoginDetails(login);
+//        System.out.println("the id is:" + id);
+//    }
+
+
 
 
 }

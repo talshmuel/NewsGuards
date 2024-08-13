@@ -16,11 +16,11 @@ import java.util.*;
 import java.util.Date;
 
 public class Report {
-    private final int ID;
-    private static int IDGenerator = 0;
+    private int ID;
     private String text;
     private String imageURL;
     private final Set<Integer> usersWhoLiked;
+    private  int countUsersWhoLiked;
     private final ArrayList<Comment> comments;
     private List<Integer> guards;
     private float reliabilityRate;
@@ -30,29 +30,32 @@ public class Report {
     private Date timeReported;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
+    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, Date timeReported, float reliabilityRate) {
+        createNewID();
         this.text = text;
         this.imageURL = imageURL;
         this.usersWhoLiked = new HashSet<>();
+        this.countUsersWhoLiked = 0;
         this.comments = new ArrayList<>();
         this.reporter = reporter;
         this.isAnonymousReport = isAnonymousReport;
         this.location = location;
         this.timeReported = timeReported;
-        ID = ++IDGenerator;
-        reporter.addNewReport(this);
+        this.reliabilityRate = reliabilityRate;
+       // reporter.addNewReport(this);
 
     }
     public int getID() {
         return ID;
     }
 
-    public void setReporter(User reporter){
-        this.reporter = reporter;
-    }
+//    public void setReporter(User reporter){
+//        this.reporter = reporter;
+//    }
     public void addOrRemoveLike(int userID){
         if(usersWhoLiked.contains(userID)){
             usersWhoLiked.remove(userID);
+            countUsersWhoLiked--;
             removeLikeFromDatabase(userID);
         }
         else if(likeExistsInDB(userID))
@@ -60,10 +63,8 @@ public class Report {
             removeLikeFromDatabase(userID);
         }
         else {
-            System.out.print("not contain");
-            System.out.print(userID);
-
             usersWhoLiked.add(userID);
+            countUsersWhoLiked = usersWhoLiked.size();
             addLikeToDatabase(userID);
         }
     }
@@ -105,7 +106,9 @@ public class Report {
     }
     public void pushReportToDB(int reporter_id)
     {
-        String sql = "INSERT INTO reports (report_id, text, user_id, likes_number, report_rate, imageurl) VALUES (?, ?, ?, ?, ?, ?)";
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        String sql = "INSERT INTO reports (report_id, text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Establish a database connection
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -115,9 +118,14 @@ public class Report {
             preparedStatement.setInt(1,ID);
             preparedStatement.setString(2, text);
             preparedStatement.setInt(3, reporter_id);
-            preparedStatement.setInt(4, usersWhoLiked.size());
-            preparedStatement.setFloat(5, reliabilityRate);
-            preparedStatement.setString(6, imageURL);
+            preparedStatement.setFloat(4, reliabilityRate);
+            preparedStatement.setString(5, imageURL);
+            preparedStatement.setBoolean(6, isAnonymousReport);
+            preparedStatement.setDate(7, sqlDate);
+            preparedStatement.setDouble(8, location.x);
+            preparedStatement.setDouble(9, location.y);
+            preparedStatement.setInt(10, countUsersWhoLiked);
+
 
             // Execute the insert operation
             preparedStatement.executeUpdate();
@@ -173,4 +181,33 @@ public class Report {
             return false; // Assuming the like does not exist in case of error
         }
     }
+    private void createNewID()
+    {
+        String selectQuery = "SELECT id FROM last_report_id LIMIT 1";
+        String updateQuery = "UPDATE last_report_id SET id = ?";
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+             ResultSet rs = preparedStatement.executeQuery()) {
+
+            if (rs.next()) {
+                int lastreportId = rs.getInt("id");
+                ID = ++lastreportId;
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, ID);
+                    int rowsUpdated = updateStmt.executeUpdate();
+                    if (rowsUpdated > 0) {
+                        System.out.println("Report ID updated successfully to: " + ID);
+                    } else {
+                        System.out.println("Failed to update Report ID.");
+                    }
+                }
+            } else {
+                System.out.println("No Report ID found.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+    }
+
 }
