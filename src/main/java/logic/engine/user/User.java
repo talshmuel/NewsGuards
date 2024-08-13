@@ -6,11 +6,12 @@ import logic.engine.reliability.management.Rate;
 import logic.engine.report.Comment;
 import logic.engine.report.Report;
 import logic.engine.user.registration.UserRegistrationDetails;
+import newsGuardServer.DatabaseConfig;
 
+import java.sql.*;
 import java.util.*;
 
 public class User {
-    static int IDGenerator = 0;
     private int ID;
     private UserRegistrationDetails registrationDetails;
     private ArrayList<Report> reports;
@@ -18,9 +19,15 @@ public class User {
     private ArrayList<Report> reportsThatTheUserIsAGuardOf;
     private Rate reliabilityRate;
     private ArrayList<Integer> taggedReports;
+    private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public User(NewUserDTO newUserData) {
-        ID = ++IDGenerator;
+
+    public User(NewUserDTO newUserData, Boolean isUserRestoration)
+    {
+        if(isUserRestoration)
+            restoreUserID(newUserData);
+        else
+            createNewID();
         this.registrationDetails = getRegistrationDetails(newUserData);
         reports = new ArrayList<>();
         notifications = new ArrayList<>();
@@ -49,12 +56,60 @@ public class User {
 
     }
     public boolean checkUserPassword(String passwordToCheck){
-        return registrationDetails.checkUserPassword( passwordToCheck);
+        return registrationDetails.checkUserPassword(passwordToCheck);
     }
-    public void addNewReport(Report newReport){
-        reports.add(newReport);
-        newReport.setReporter(this);
+//    public void addNewReport(Report newReport){
+//        reports.add(newReport);
+//        newReport.setReporter(this);
+//    }
+    private void createNewID()
+    {
+        String selectQuery = "SELECT id FROM last_user_id LIMIT 1";
+        String updateQuery = "UPDATE last_user_id SET id = ?";
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+             ResultSet rs = preparedStatement.executeQuery()) {
+
+                if (rs.next()) {
+                    int lastUserId = rs.getInt("id");
+                    ID = ++lastUserId;
+                    try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                        updateStmt.setInt(1, ID);
+                        int rowsUpdated = updateStmt.executeUpdate();
+                        if (rowsUpdated > 0) {
+                            System.out.println("user ID updated successfully to: " + ID);
+                        } else {
+                            System.out.println("Failed to update user ID.");
+                        }
+                    }
+                } else {
+                    System.out.println("No user ID found.");
+                }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
     }
 
+    private void restoreUserID(NewUserDTO newUserData)
+    {
+        String sql = "SELECT user_id FROM users WHERE email = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, newUserData.getEmail());
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    ID = rs.getInt("user_id");
+                    System.out.println("User ID: " + ID);
+                } else {
+                    System.out.println("No user found with the given email.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+    }
 
 }
