@@ -28,23 +28,23 @@ public class Server {
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
         //checkLoginDetails();
-        checkComments();
+        //checkComments();
         //checkLikes();
-        //check();
+        check();
     }
 
-//    public static void check()
-//    {
-//        Date date = new Date();
-//        Engine engine = new Engine();
+    public static void check()
+    {
+        Date date = new Date();
+        Engine engine = new Engine();
 //        NewUserDTO newUser = new NewUserDTO("tal", "shmuel","israel","tooliii@gmail.com","123456","http//:www.com","0525440635",true);
 //        engine.createNewUser(newUser);
-//        NewReportDTO newReport = new NewReportDTO("hello world,this is nitzan","http://", 1, true,date,1,1);
-//        engine.addNewReportAndStartVerificationProcess(newReport);
-//        NewReportDTO newReport1 = new NewReportDTO("hello world,this is tal","http://", 1, true,date,1,1);
-//        engine.addNewReportAndStartVerificationProcess(newReport1);
-//
-//    }
+        NewReportDTO newReport = new NewReportDTO("hello world,this is tal","http://", 1, true,date,1,1);
+        engine.addNewReportAndStartVerificationProcess(newReport);
+        NewReportDTO newReport1 = new NewReportDTO("hello world,this is tal again","http://", 1, true,date,1,1);
+        engine.addNewReportAndStartVerificationProcess(newReport1);
+
+    }
 
 //     public static void checkLikes()
 //     {
@@ -69,13 +69,13 @@ public class Server {
         engine.addCommentToReport(newComment);
     }
 
-//    public static void checkLoginDetails()
-//    {
-//        Engine engine = new Engine();
-//        LoginDTO login = new LoginDTO("john.asdf@gmail.com","12345");
-//        int id = engine.checkLoginDetails(login);
-//        System.out.println("the id is:" + id);
-//    }
+    public static void checkLoginDetails()
+    {
+        Engine engine = new Engine();
+        LoginDTO login = new LoginDTO("john.asdf@gmail.com","12345");
+        int id = engine.checkLoginDetails(login);
+        System.out.println("the id is:" + id);
+    }
 
 
 

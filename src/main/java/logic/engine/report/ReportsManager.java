@@ -33,14 +33,15 @@ public class ReportsManager {
 
     public void addOrRemoveLike(int reportID, int userID){
         Report report = reports.get(reportID);
-        if(report == null)
-            throw new NoSuchElementException("Error - there is no report in the system whose ID number is: " + reportID);
+        if(report == null) {
+            if (findAndCreateReportInDB(reportID) == null)
+                throw new NoSuchElementException("Error - there is no report in the system whose ID number is: " + reportID);
+        }
         report.addOrRemoveLike(userID);
     }
     public void addNewComment(Comment comment){
         Report report = reports.get(comment.getReportID());
         if(report == null){
-            System.out.print("its null report");
             report = findAndCreateReportInDB(comment.getReportID());
             if (report == null)
                 throw new NoSuchElementException("Error - there is no report in the system whose ID number is:" + comment.getReportID());
