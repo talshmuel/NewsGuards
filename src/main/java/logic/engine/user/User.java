@@ -24,15 +24,17 @@ public class User {
 
     public User(NewUserDTO newUserData, Boolean isUserRestoration)
     {
-        if(isUserRestoration)
-            restoreUserID(newUserData);
-        else
+        if(isUserRestoration) {
+            restoreUser(newUserData);
+        }
+        else{
             createNewID();
+            reliabilityRate = Rate.THREE;
+        }
         this.registrationDetails = getRegistrationDetails(newUserData);
         reports = new ArrayList<>();
         notifications = new ArrayList<>();
         reportsThatTheUserIsAGuardOf = new ArrayList<>();
-        reliabilityRate = Rate.THREE;
         taggedReports = new ArrayList<>();
     }
     public String getEmail(){
@@ -91,9 +93,9 @@ public class User {
         }
     }
 
-    private void restoreUserID(NewUserDTO newUserData)
+    private void restoreUser(NewUserDTO newUserData)
     {
-        String sql = "SELECT user_id FROM users WHERE email = ?";
+        String sql = "SELECT user_id, reliability_scale FROM users WHERE email = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -102,6 +104,8 @@ public class User {
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 if (rs.next()) {
                     ID = rs.getInt("user_id");
+                    int reliabilityRateInt = rs.getInt("reliability_scale");
+                    reliabilityRate = Rate.convertIntToRate(reliabilityRateInt);
                     System.out.println("User ID: " + ID);
                 } else {
                     System.out.println("No user found with the given email.");
@@ -110,6 +114,29 @@ public class User {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
+    }
+
+    public void pushUserToDB()
+    {
+        String sql = "INSERT INTO users (user_id, reliabillity_scale) " +
+                "VALUES (?, ?)";
+
+        // Establish a database connection
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(),DB_CONFIG.getUsername(),DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Set the parameters
+            preparedStatement.setInt(1, ID);
+            preparedStatement.setInt(2, reliabilityRate.getValue());
+
+            // Execute the insert operation
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+
+        registrationDetails.pushRegistrationDetailsToDB(ID);
     }
 
 }
