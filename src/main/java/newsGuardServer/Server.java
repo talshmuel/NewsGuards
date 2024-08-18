@@ -30,7 +30,7 @@ public class Server {
         //checkLoginDetails();
         //checkComments();
         //checkLikes();
-        check();
+        //check();
     }
 
     public static void check()
