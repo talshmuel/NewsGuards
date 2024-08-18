@@ -2,6 +2,7 @@ package logic.engine.user;
 
 import data.transfer.object.LoginDTO;
 import data.transfer.object.user.NewUserDTO;
+import data.transfer.object.user.UserDTO;
 import logic.engine.exception.InvalidPasswordException;
 import newsGuardServer.DatabaseConfig;
 
@@ -163,6 +164,10 @@ public class UsersManager {
             return false;
         }
         return true;
+    }
+
+    public UserDTO getUserProfile(int userID){
+        return usersByID.get(userID).gerUserDTO();
     }
 
 }

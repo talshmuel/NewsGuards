@@ -65,6 +65,34 @@ public class UserRegistrationDetails {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
+
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public boolean getLocationAccessPermission() {
+        return locationAccessPermission;
+    }
 }
