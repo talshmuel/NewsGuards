@@ -18,7 +18,6 @@ public class User {
     private ArrayList<Notification> notifications;
     private ArrayList<Report> reportsThatTheUserIsAGuardOf;
     private Rate reliabilityRate;
-    private ArrayList<Integer> taggedReports;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
 
@@ -35,7 +34,6 @@ public class User {
         reports = new ArrayList<>();
         notifications = new ArrayList<>();
         reportsThatTheUserIsAGuardOf = new ArrayList<>();
-        taggedReports = new ArrayList<>();
     }
     public String getEmail(){
         return registrationDetails.getEmail();

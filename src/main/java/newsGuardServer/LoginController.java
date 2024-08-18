@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173") // Your frontend origin
+
 @RestController
 @RequestMapping("/login")
 public class LoginController {
@@ -18,7 +20,6 @@ public class LoginController {
         this.engine = engine;
     }
 
-    @CrossOrigin(origins = "http://192.168.1.157:5173") // Your frontend origin
     @PostMapping()
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginDTO userLoginDTO) {
         try {
