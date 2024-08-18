@@ -3,8 +3,6 @@ package logic.engine.user;
 import data.transfer.object.LoginDTO;
 import data.transfer.object.user.NewUserDTO;
 import logic.engine.exception.InvalidPasswordException;
-import logic.engine.reliability.management.Rate;
-import logic.engine.report.Comment;
 import newsGuardServer.DatabaseConfig;
 
 import java.sql.*;
@@ -29,7 +27,7 @@ public class UsersManager {
         {
             throw new IllegalArgumentException("Please fill all fields.");
         }
-        User newUser = new User(newUserData,false);
+        User newUser = new User(newUserData,3,false);
         usersByID.put(newUser.getID(), newUser);
         newUser.pushUserToDB();
     }
@@ -77,12 +75,12 @@ public class UsersManager {
                     String password = rs.getString("password");
                     String imageURL = rs.getString("imageurl");
                     String phoneNumber = rs.getString("phone_number");
-                    //צריך לעדכן גם את הערך הנכון של הרלביליטי סקייל ושל הid!!!!!!!
+                    int reliabilityScale = rs.getInt("reliability_scale");
                     boolean locationAccessPermission = rs.getBoolean("location_access_permission");
 
                     // Create NewUserDTO and User objects
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
-                    return new User(newUser, true);
+                    return new User(newUser, reliabilityScale, true);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -95,18 +93,19 @@ public class UsersManager {
 
 
     public User findUserByID(int ID) {
-        if (isUserExist(ID))
+        if (isUserExistAndRestoreIfFalse(ID))
             return usersByID.get(ID);
         else
             return null;
     } //להוסיף שאם לא מצאנו אז לשחזר מהדאטה בייס!!
 
-    public boolean isUserExist(int userID) {
+    public boolean isUserExistAndRestoreIfFalse(int userID) {
         if (usersByID.containsKey(userID)) {
             return true;
         }
 
-        User user = findAndCreateUserByIDInDB(userID);
+
+        User user = findAndRestoreUserByIDFromDB(userID);
         if (user != null)
         {
             usersByID.put(user.getID(), user);
@@ -115,7 +114,7 @@ public class UsersManager {
         return false;
     }
 
-    public static User findAndCreateUserByIDInDB(int userID) {
+    public static User findAndRestoreUserByIDFromDB(int userID) {
         String query = "SELECT last_name, first_name, email, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
                 "FROM users WHERE user_id = ?";
 
@@ -136,12 +135,12 @@ public class UsersManager {
                     String password = rs.getString("password");
                     String imageURL = rs.getString("imageurl");
                     String phoneNumber = rs.getString("phone_number");
-                    //צריך לעדכן גם את הערך הנכון של הרלביליטי סקייל ושל הid!!!!!!!
+                    float reliabilityScale = rs.getFloat("reliability_scale");
                     boolean locationAccessPermission = rs.getBoolean("location_access_permission");
 
                     // Create NewUserDTO and User objects
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
-                    User user = new User(newUser, true);
+                    User user = new User(newUser, reliabilityScale, true);
                     return user;
                 }
             } catch (SQLException e) {
