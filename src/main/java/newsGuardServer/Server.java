@@ -25,11 +25,11 @@ public class Server {
         //checkComments();
         //checkLikes();
         //check();
-//        ReportsManager manager = new ReportsManager();
-//        Report report = manager.findAndRestoreReportFromDB(1);
-//
-//        System.out.print(report.getComments().size());
-//        System.out.print(report.getCountUsersWhoLiked());
+        ReportsManager manager = new ReportsManager();
+        Report report = manager.findAndRestoreReportFromDB(1);
+
+        System.out.print(report.getComments().size());
+        System.out.print(report.getCountUsersWhoLiked());
     }
 
     public static void check()
