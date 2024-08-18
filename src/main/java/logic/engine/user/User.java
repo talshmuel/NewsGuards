@@ -1,7 +1,11 @@
 package logic.engine.user;
 
+import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
+import data.transfer.object.user.UserDTO;
 import logic.engine.notification.Notification;
+import logic.engine.reliability.management.Rate;
+import logic.engine.report.Comment;
 import logic.engine.report.Report;
 import logic.engine.user.registration.UserRegistrationDetails;
 import newsGuardServer.DatabaseConfig;
@@ -34,7 +38,7 @@ public class User {
         }
         reliabilityRate = reliability_Rate;
         this.registrationDetails = getRegistrationDetails(newUserData);
-        notifications = new ArrayList<>();
+        //notifications = new ArrayList<>();
     }
     public void restoreUserID(int user_id){ ID = user_id;}
 
@@ -164,6 +168,7 @@ public class User {
 
                     Point2D.Double location = new Point2D.Double(locationX, locationY);
                     Report report = new Report(text, imageURL, this, isAnonymousReport, location, timeReported, reportRate,true);
+
                     reports.add(report);
                 }
             }
@@ -209,5 +214,24 @@ public class User {
 //            e.printStackTrace(); // Log or handle exceptions as needed
 //        }
 //    }
+
+    public UserDTO gerUserDTO(){
+        ArrayList<ReportDTO> reportDTOS = new ArrayList<>();
+        ArrayList<ReportDTO> reportThatTheUserIsGuardOfDTOS = new ArrayList<>();
+
+        for(Report report : reports){
+            reportDTOS.add(report.getReportDTO());
+        }
+        for(Report report : reportsThatTheUserIsAGuardOf){
+            reportThatTheUserIsGuardOfDTOS.add(report.getReportDTO());
+        }
+
+
+        return new UserDTO(ID, registrationDetails.getFirstName(), registrationDetails.getLastName(), registrationDetails.getCountry(),
+                registrationDetails.getEmail(), registrationDetails.getImageURL(), registrationDetails.getPhoneNumber(), registrationDetails.getLocationAccessPermission(),
+                reportDTOS, reportThatTheUserIsGuardOfDTOS, reliabilityRate);
+
+
+    }
 
 }
