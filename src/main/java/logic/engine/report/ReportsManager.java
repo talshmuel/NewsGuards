@@ -1,6 +1,7 @@
 package logic.engine.report;
 
 import data.transfer.object.report.NewReportDTO;
+import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import logic.engine.user.User;
 import logic.engine.user.UsersManager;
@@ -8,10 +9,8 @@ import newsGuardServer.DatabaseConfig;
 
 import java.awt.geom.Point2D;
 import java.sql.*;
+import java.util.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
 public class ReportsManager {
     private Map<Integer, Report> reports;
@@ -21,6 +20,10 @@ public class ReportsManager {
         this.reports = new HashMap<>();
     }
 
+//    public List<ReportDTO> getLastTwentyReportsToHomePage()
+//    {
+//
+//    }
     public Report addNewReport(NewReportDTO newReportDTO, User reporter){
         Report newReport = new Report(newReportDTO.getText(), newReportDTO.getImageURL(),
                 reporter, newReportDTO.isAnonymousReport()

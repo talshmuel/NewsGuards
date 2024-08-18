@@ -25,6 +25,10 @@ public class UsersManager {
         if (findUserByEmail(newUserData.getEmail()) != null) {
             throw new IllegalArgumentException("User with email " + newUserData.getEmail() + " already exists.");
         }
+        if(!allFieldsExist(newUserData))
+        {
+            throw new IllegalArgumentException("Please fill all fields.");
+        }
         User newUser = new User(newUserData,false);
         usersByID.put(newUser.getID(), newUser);
         newUser.pushUserToDB();
@@ -147,6 +151,16 @@ public class UsersManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean allFieldsExist(NewUserDTO newUserData)
+    {
+        if(newUserData.getEmail() == "" || newUserData.getFirstName() == "" || newUserData.getLastName() == "" ||
+                newUserData.getCountry() == "" || newUserData.getPhoneNumber() == "" || newUserData.getPassword() == null)
+        {
+            return false;
+        }
+        return true;
     }
 
 }
