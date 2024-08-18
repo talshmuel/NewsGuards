@@ -75,7 +75,7 @@ public class ReportsManager {
     }
     public Report findAndRestoreReportFromDB(int reportID){
         String query = "SELECT  text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y " +
-                "FROM reports WHERE report_id = ?";//
+                "FROM reports WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement stmt = connection.prepareStatement(query)) {
