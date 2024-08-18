@@ -56,11 +56,11 @@ public class Engine {
         reportsManager.addOrRemoveLike(reportID, userID);
     }
     public void addCommentToReport(CommentDTO commentDTO){
-        Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment());
+        Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment(), false, 0);
         reportsManager.addNewComment(newComment);
     }
     public void saveUserLocation(LocationDTO locationDTO){
-        if(usersManager.isUserExist(locationDTO.getUserID())){
+        if(usersManager.isUserExistAndRestoreIfFalse(locationDTO.getUserID())){
             locationHistoryManager.saveUserLocation(locationDTO.getUserID(), locationDTO.getDateTime(), locationDTO.getLatitude(), locationDTO.getLongitude());
         }
         else {

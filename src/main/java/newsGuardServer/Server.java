@@ -4,20 +4,14 @@ import data.transfer.object.LoginDTO;
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
 import data.transfer.object.user.NewUserDTO;
-import data.transfer.object.user.UserDTO;
 import logic.engine.Engine;
-import logic.engine.report.Comment;
 import logic.engine.report.Report;
 import logic.engine.report.ReportsManager;
-import logic.engine.user.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -31,19 +25,33 @@ public class Server {
         //checkComments();
         //checkLikes();
         //check();
+//        ReportsManager manager = new ReportsManager();
+//        Report report = manager.findAndRestoreReportFromDB(1);
+//
+//        System.out.print(report.getComments().size());
+//        System.out.print(report.getCountUsersWhoLiked());
     }
 
     public static void check()
     {
         Date date = new Date();
         Engine engine = new Engine();
-//        NewUserDTO newUser = new NewUserDTO("tal", "shmuel","israel","tooliii@gmail.com","123456","http//:www.com","0525440635",true);
-//        engine.createNewUser(newUser);
+        NewUserDTO newUser = new NewUserDTO("tal", "shmuel","israel","tooliii@gmail.com","123456","http//:www.com","0525440635",true);
+        engine.createNewUser(newUser);
         NewReportDTO newReport = new NewReportDTO("hello world,this is tal","http://", 1, true,date,1,1);
         engine.addNewReportAndStartVerificationProcess(newReport);
         NewReportDTO newReport1 = new NewReportDTO("hello world,this is tal again","http://", 1, true,date,1,1);
         engine.addNewReportAndStartVerificationProcess(newReport1);
-
+        CommentDTO newComment1 = new CommentDTO(1,"this is comment1",1,true);
+        engine.addCommentToReport(newComment1);
+        CommentDTO newComment2 = new CommentDTO(1,"this is comment2",1,true);
+        engine.addCommentToReport(newComment2);
+        CommentDTO newComment3 = new CommentDTO(2,"this is comment1",1,true);
+        engine.addCommentToReport(newComment3);
+        CommentDTO newComment4 = new CommentDTO(2,"this is comment2",1,true);
+        engine.addCommentToReport(newComment4);
+        engine.addOrRemoveLikeToReport(1,1);
+        engine.addOrRemoveLikeToReport(2,1);
     }
 
 //     public static void checkLikes()
