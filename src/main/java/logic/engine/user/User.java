@@ -118,7 +118,7 @@ public class User {
 
     public void pushUserToDB()
     {
-        String sql = "INSERT INTO users (user_id, reliabillity_scale) " +
+        String sql = "INSERT INTO users (user_id, reliability_scale) " +
                 "VALUES (?, ?)";
 
         // Establish a database connection

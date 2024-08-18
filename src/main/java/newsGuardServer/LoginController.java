@@ -18,10 +18,11 @@ public class LoginController {
         this.engine = engine;
     }
 
-    @CrossOrigin(origins = "http://192.168.1.157:5173") // Your frontend origin
+    @CrossOrigin(origins = "http://localhost:5173") // Your frontend origin
     @PostMapping()
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginDTO userLoginDTO) {
         try {
+            System.out.print("hello");
             Integer userID = engine.checkLoginDetails(userLoginDTO);
 
             LoginResponseDTO response = new LoginResponseDTO("Login successful", userID);
