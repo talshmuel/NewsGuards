@@ -100,6 +100,7 @@ public class ReportsManager {
                     User reporter = UsersManager.findAndRestoreUserByIDFromDB(reporterID);
                     Point2D.Double location = new Point2D.Double(locationX, locationY);
                     Report report = new Report(text, imageURL, reporter,isAnonymousReport,location,timeReported, reportRate, true);
+                    report.restoreReportID(reportID);
                     report.restoreComments();
                     report.restoreLikes();
                     return report;
