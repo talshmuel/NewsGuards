@@ -34,7 +34,7 @@ public class UsersManager {
     public Integer checkLoginDetailsAndGetUserID(LoginDTO loginDTO){
         User user = findUserByEmail(loginDTO.getEmail());
         if (user == null) {
-            user = findAndCreateUserByEmailInDB(loginDTO.getEmail());
+            user = findAndRestoreUserByEmailFromDB(loginDTO.getEmail());
             usersByID.put(user.getID(), user); // טעינה מדאטה בייס
             if (user == null) {
                 throw new NoSuchElementException("Error - the Email you are trying to log in with does not exist in the system");
@@ -54,8 +54,8 @@ public class UsersManager {
         return null;
     }
 
-    public static User findAndCreateUserByEmailInDB(String email) {
-        String query = "SELECT last_name, first_name, email, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
+    public static User findAndRestoreUserByEmailFromDB(String email) {
+        String query = "SELECT user_id ,last_name, first_name, email, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
                 "FROM users WHERE email = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -68,6 +68,7 @@ public class UsersManager {
                 // Check if result set contains a row
                 if (rs.next()) {
                     // Extract user details
+                    int userID = rs.getInt("user_id");
                     String firstName = rs.getString("first_name");
                     String lastName = rs.getString("last_name");
                     String country = rs.getString("country");
@@ -80,7 +81,8 @@ public class UsersManager {
 
                     // Create NewUserDTO and User objects
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
-                    return new User(newUser, reliabilityScale, true);
+                    User user = new User(newUser, reliabilityScale, true);
+                    user.restoreUserID(userID);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -141,6 +143,7 @@ public class UsersManager {
                     // Create NewUserDTO and User objects
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
                     User user = new User(newUser, reliabilityScale, true);
+                    user.restoreUserID(userID);
                     return user;
                 }
             } catch (SQLException e) {

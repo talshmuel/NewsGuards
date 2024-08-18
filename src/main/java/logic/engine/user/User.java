@@ -36,6 +36,8 @@ public class User {
         this.registrationDetails = getRegistrationDetails(newUserData);
         notifications = new ArrayList<>();
     }
+    public void restoreUserID(int user_id){ ID = user_id;}
+
     public String getEmail(){
         return registrationDetails.getEmail();
     }
