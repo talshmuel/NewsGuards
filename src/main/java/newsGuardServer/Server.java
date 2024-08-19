@@ -23,10 +23,10 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
-        //checkLoginDetails();
+        checkLoginDetails();
         //checkComments();
         //checkLikes();
-        check();
+        //check();
 //        ReportsManager manager = new ReportsManager();
 //        Report report = manager.findAndRestoreReportFromDB(1);
 //        System.out.print(report.getComments().size());
@@ -37,13 +37,13 @@ public class Server {
     {
         Date date = new Date();
         Engine engine = new Engine();
-        ArrayList<ReportDTO> reports = engine.getLastTwentyReportsToHomePage();
-        for (ReportDTO report : reports) {
-            System.out.print(report.getText());
-            System.out.print("\n");
-        }
-        //NewUserDTO newUser = new NewUserDTO("tal", "shmuel","israel","tooliii@gmail.com","123456","http//:www.com","0525440635",true);
-        //engine.createNewUser(newUser);
+//        ArrayList<ReportDTO> reports = engine.getLastTwentyReportsToHomePage();
+//        for (ReportDTO report : reports) {
+//            System.out.print(report.getText());
+//            System.out.print("\n");
+//        }
+        NewUserDTO newUser = new NewUserDTO("tal", "shmuel","israel","tal@gmail.com","123456","http//:www.com","0525440635",true);
+        engine.createNewUser(newUser);
 //        NewReportDTO newReport = new NewReportDTO("wondeull world","http://", 1, true,date,1,1);
 //        engine.addNewReportAndStartVerificationProcess(newReport);
 //        NewReportDTO newReport1 = new NewReportDTO("whatspppp","http://", 1, true,date,1,1);
@@ -86,7 +86,7 @@ public class Server {
     public static void checkLoginDetails()
     {
         Engine engine = new Engine();
-        LoginDTO login = new LoginDTO("john.asdf@gmail.com","12345");
+        LoginDTO login = new LoginDTO("tal@gmail.com","123456");
         int id = engine.checkLoginDetails(login);
         System.out.println("the id is:" + id);
     }
