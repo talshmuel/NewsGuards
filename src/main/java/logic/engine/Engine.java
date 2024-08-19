@@ -6,6 +6,7 @@ import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
 import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
+import data.transfer.object.user.UserDTO;
 import logic.engine.location.history.management.LocationHistoryManager;
 import logic.engine.reliability.management.GuardResponse;
 import logic.engine.reliability.management.ReliabilityManager;
@@ -56,15 +57,23 @@ public class Engine {
         reportsManager.addOrRemoveLike(reportID, userID);
     }
     public void addCommentToReport(CommentDTO commentDTO){
-        Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment());
+        Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment(), false, 0);
         reportsManager.addNewComment(newComment);
     }
     public void saveUserLocation(LocationDTO locationDTO){
-        if(usersManager.isUserExist(locationDTO.getUserID())){
+        if(usersManager.isUserExistAndRestoreIfFalse(locationDTO.getUserID())){
             locationHistoryManager.saveUserLocation(locationDTO.getUserID(), locationDTO.getDateTime(), locationDTO.getLatitude(), locationDTO.getLongitude());
         }
         else {
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ locationDTO.getUserID());
         }
+    }
+
+    public UserDTO getUserProfile(int userID){
+        User user = usersManager.findUserByID(userID);
+        if(user == null){
+            throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ userID);
+        }
+        return user.gerUserDTO();
     }
 }

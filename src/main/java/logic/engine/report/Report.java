@@ -30,28 +30,34 @@ public class Report {
     private Date timeReported;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, Date timeReported, float reliabilityRate) {
-        createNewID();
+    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, Date timeReported, float reliabilityRate, boolean isReportRestoration) {
+        if(!isReportRestoration) {
+            createNewID();
+        }
         this.text = text;
         this.imageURL = imageURL;
-        this.usersWhoLiked = new HashSet<>();
-        this.countUsersWhoLiked = 0;
-        this.comments = new ArrayList<>();
-        this.reporter = reporter;
         this.isAnonymousReport = isAnonymousReport;
         this.location = location;
         this.timeReported = timeReported;
         this.reliabilityRate = reliabilityRate;
-       // reporter.addNewReport(this);
-
+        this.reporter = reporter;
+        this.usersWhoLiked = new HashSet<>();
+        this.countUsersWhoLiked = 0;
+        this.comments = new ArrayList<>();
     }
     public int getID() {
         return ID;
     }
+    public void restoreReportID(int report_id){ ID = report_id;}
 
 //    public void setReporter(User reporter){
 //        this.reporter = reporter;
 //    }
+    public ArrayList<Comment> getComments()
+    {
+        return comments;
+    }
+    public int getCountUsersWhoLiked() {return countUsersWhoLiked;}
     public void addOrRemoveLike(int userID){
         if(usersWhoLiked.contains(userID)){
             usersWhoLiked.remove(userID);
@@ -95,7 +101,6 @@ public class Report {
     }
     public ReportDTO getReportDTO(){
         ArrayList<CommentDTO> commentsDTO = new ArrayList<>();
-
         for (Comment comment : comments){
             commentsDTO.add(comment.getCommentDTO());
         }
@@ -207,6 +212,54 @@ public class Report {
 
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
+        }
+    }
+
+    public void restoreComments()
+    {
+        String query = "SELECT user_id, comment_id, text, isaguardcomment FROM comments WHERE report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, ID);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int userId = rs.getInt("user_id");
+                    int commentId = rs.getInt("comment_id");
+                    String text = rs.getString("text");
+                    boolean isGuardComment = rs.getBoolean("isaguardcomment");
+
+                    // Create a Comment object
+                    Comment comment = new Comment(ID, text, userId, isGuardComment, true, commentId);
+                    comments.add(comment);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions (e.g., log errors)
+        }
+    }
+    public void restoreLikes()
+    {
+        String query = "SELECT user_id FROM likes WHERE report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, ID);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int userId = rs.getInt("user_id");
+                    usersWhoLiked.add(userId);
+                }
+                countUsersWhoLiked = usersWhoLiked.size();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions (e.g., log errors)
         }
     }
 

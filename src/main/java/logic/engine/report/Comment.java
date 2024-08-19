@@ -4,13 +4,9 @@ import data.transfer.object.report.CommentDTO;
 import logic.engine.user.User;
 import newsGuardServer.DatabaseConfig;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Comment {
-    private static int IDGenerator = 0;
     private int ID;
     private int reportID;
     private String text;
@@ -18,12 +14,17 @@ public class Comment {
     boolean isAGuardComment;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public Comment(int reportID, String text, int writerID, boolean isAGuardComment) {
+    public Comment(int reportID, String text, int writerID, boolean isAGuardComment,boolean isRestoringComment, int commentId) {
+        if(!isRestoringComment){
+            createNewID();
+        }
+        else {
+            ID = commentId;
+        }
         this.reportID = reportID;
         this.text = text;
         this.writerID = writerID;
         this.isAGuardComment = isAGuardComment;
-        ID = ++IDGenerator;
     }
 
     public int getReportID() {
@@ -58,6 +59,35 @@ public class Comment {
             preparedStatement.setBoolean(5, isAGuardComment);
 
             preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+    }
+
+    private void createNewID()
+    {
+        String selectQuery = "SELECT id FROM last_comment_id LIMIT 1";
+        String updateQuery = "UPDATE last_comment_id SET id = ?";
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(selectQuery);
+             ResultSet rs = preparedStatement.executeQuery()) {
+
+            if (rs.next()) {
+                int lastCommentId = rs.getInt("id");
+                ID = ++lastCommentId;
+                try (PreparedStatement updateStmt = connection.prepareStatement(updateQuery)) {
+                    updateStmt.setInt(1, ID);
+                    int rowsUpdated = updateStmt.executeUpdate();
+                    if (rowsUpdated > 0) {
+                        System.out.println("Comment ID updated successfully to: " + ID);
+                    } else {
+                        System.out.println("Failed to update Comment ID.");
+                    }
+                }
+            } else {
+                System.out.println("No Comment ID found.");
+            }
 
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
