@@ -16,32 +16,33 @@ public class ReportsManager {
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
 
-    public List<ReportDTO> getLastTwentyReportsToHomePage()
+    public ArrayList<ReportDTO> getLastTwentyReportsToHomePage()
     {
         int lastReportID = 0;
-        List<ReportDTO> reportDTOs = new ArrayList<>();
+        ArrayList<ReportDTO> reportDTOs = new ArrayList<>();
         String sql = "SELECT id FROM last_report_id";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            ResultSet resultSet = preparedStatement.executeQuery(sql)) {
-
-                // Ensure there's data in the result set
-                if (resultSet.next()) {
-                    // Retrieve the value of the 'id' column
-                    lastReportID =  resultSet.getInt("id");
-                } else {
-                    throw new SQLException("No data found in last_report_id table.");
-                }
+             ResultSet resultSet = preparedStatement.executeQuery()) { // Execute the query without passing the SQL string
+            // Ensure there's data in the result set
+            if (resultSet.next()) {
+                // Retrieve the value of the 'id' column
+                lastReportID = resultSet.getInt("id");
+            } else {
+                throw new SQLException("No data found in last_report_id table.");
+            }
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
-
-        for(int i = lastReportID; i >= lastReportID - 20; i--)
+        for(int i = lastReportID; i >= lastReportID - 5; i--)
         {
             Report report = findAndRestoreReportFromDB(i);
-            ReportDTO reportDTO = report.getReportDTO();
-            reportDTOs.add(reportDTO);
+            if(report != null)
+            {
+                ReportDTO reportDTO = report.getReportDTO();
+                reportDTOs.add(reportDTO);
+            }
         }
             return reportDTOs;
     }
