@@ -56,7 +56,7 @@ public class UsersManager {
     }
 
     public static User findAndRestoreUserByEmailFromDB(String email) {
-        String query = "SELECT user_id ,last_name, first_name, email, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
+        String query = "SELECT user_id, last_name, first_name, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
                 "FROM users WHERE email = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -69,21 +69,21 @@ public class UsersManager {
                 // Check if result set contains a row
                 if (rs.next()) {
                     // Extract user details
-                    int userID = rs.getInt("user_id");
+                    int user_id = rs.getInt("user_id");
                     String firstName = rs.getString("first_name");
                     String lastName = rs.getString("last_name");
                     String country = rs.getString("country");
-                    String newEmail = rs.getString("email");
                     String password = rs.getString("password");
                     String imageURL = rs.getString("imageurl");
                     String phoneNumber = rs.getString("phone_number");
-                    int reliabilityScale = rs.getInt("reliability_scale");
+                    float reliabilityScale = rs.getFloat("reliability_scale");
                     boolean locationAccessPermission = rs.getBoolean("location_access_permission");
 
                     // Create NewUserDTO and User objects
-                    NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
+                    NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, email, password, imageURL, phoneNumber, locationAccessPermission);
                     User user = new User(newUser, reliabilityScale, true);
-                    user.restoreUserID(userID);
+                    user.restoreUserID(user_id);
+                    return user;
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
