@@ -30,4 +30,6 @@ public final class ReportDTO {
         this.location = location;
         this.timeReported = timeReported;
     }
+
+    public String getText() {return text;}
 }
