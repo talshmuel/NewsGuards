@@ -22,7 +22,7 @@ public class UsersManager {
 
     public void addNewUser(NewUserDTO newUserData) {
         if (findUserByEmail(newUserData.getEmail()) != null) {
-            throw new IllegalArgumentException("User with email " + newUserData.getEmail() + " already exists.");
+            throw new IllegalArgumentException("This email already exists.");
         }
         if(!allFieldsExist(newUserData))
         {
@@ -33,7 +33,10 @@ public class UsersManager {
         newUser.pushUserToDB();
     }
     public Integer checkLoginDetailsAndGetUserID(LoginDTO loginDTO){
+        System.out.print("im in");
         User user = findUserByEmail(loginDTO.getEmail());
+        System.out.print("found user");
+
         if (user == null) {
             user = findAndRestoreUserByEmailFromDB(loginDTO.getEmail());
             usersByID.put(user.getID(), user); // טעינה מדאטה בייס
@@ -158,9 +161,17 @@ public class UsersManager {
 
     public boolean allFieldsExist(NewUserDTO newUserData)
     {
+        System.out.print(newUserData.getEmail());
+        System.out.print(newUserData.getPassword());
+        System.out.print(newUserData.getCountry());
+        System.out.print(newUserData.getFirstName());
+        System.out.print(newUserData.getLastName());
+        System.out.print(newUserData.getPhoneNumber());
+
         if(newUserData.getEmail() == "" || newUserData.getFirstName() == "" || newUserData.getLastName() == "" ||
                 newUserData.getCountry() == "" || newUserData.getPhoneNumber() == "" || newUserData.getPassword() == null)
         {
+            System.out.print("empty");
             return false;
         }
         return true;

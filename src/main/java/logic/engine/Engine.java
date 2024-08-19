@@ -78,6 +78,7 @@ public class Engine {
     }
     public ArrayList<ReportDTO> getLastTwentyReportsToHomePage()
     {
+        System.out.print("2222222");
         return reportsManager.getLastTwentyReportsToHomePage();
     }
 }

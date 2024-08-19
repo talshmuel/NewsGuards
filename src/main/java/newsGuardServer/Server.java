@@ -23,7 +23,7 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
-        checkLoginDetails();
+        //checkLoginDetails();
         //checkComments();
         //checkLikes();
         //check();

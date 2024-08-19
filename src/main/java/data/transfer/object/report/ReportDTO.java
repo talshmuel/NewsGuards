@@ -33,5 +33,95 @@ public final class ReportDTO {
         this.timeReported = timeReported;
     }
 
-    public String getText() {return text;}
+    // Getter and setter for text
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    // Getter and setter for imageURL
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    // Getter and setter for IDOfUsersWhoLiked
+    public Set<Integer> getIDOfUsersWhoLiked() {
+        return IDOfUsersWhoLiked;
+    }
+
+    public void setIDOfUsersWhoLiked(Set<Integer> IDOfUsersWhoLiked) {
+        this.IDOfUsersWhoLiked = IDOfUsersWhoLiked;
+    }
+
+    // Getter and setter for comments
+    public ArrayList<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<CommentDTO> comments) {
+        this.comments = comments;
+    }
+
+    // Getter and setter for guardsID
+    public List<Integer> getGuardsID() {
+        return guardsID;
+    }
+
+    public void setGuardsID(List<Integer> guardsID) {
+        this.guardsID = guardsID;
+    }
+
+    // Getter and setter for reliabilityRate
+    public float getReliabilityRate() {
+        return reliabilityRate;
+    }
+
+    public void setReliabilityRate(float reliabilityRate) {
+        this.reliabilityRate = reliabilityRate;
+    }
+
+    // Getter and setter for reporterID
+    public int getReporterID() {
+        return reporterID;
+    }
+
+    public void setReporterID(int reporterID) {
+        this.reporterID = reporterID;
+    }
+
+    // Getter and setter for isAnonymousReport
+    public boolean isAnonymousReport() {
+        return isAnonymousReport;
+    }
+
+    public void setAnonymousReport(boolean anonymousReport) {
+        isAnonymousReport = anonymousReport;
+    }
+
+    // Getter and setter for location
+    public Point2D.Double getLocation() {
+        return location;
+    }
+
+    public void setLocation(Point2D.Double location) {
+        this.location = location;
+    }
+
+    // Getter and setter for timeReported
+    public Date getTimeReported() {
+        return timeReported;
+    }
+
+    public void setTimeReported(Date timeReported) {
+        this.timeReported = timeReported;
+    }
+
+
 }
