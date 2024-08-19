@@ -39,7 +39,8 @@ public class Server {
         Engine engine = new Engine();
         ArrayList<ReportDTO> reports = engine.getLastTwentyReportsToHomePage();
         for (ReportDTO report : reports) {
-            System.out.println(report.getText());
+            System.out.print(report.getText());
+            System.out.print("\n");
         }
         //NewUserDTO newUser = new NewUserDTO("tal", "shmuel","israel","tooliii@gmail.com","123456","http//:www.com","0525440635",true);
         //engine.createNewUser(newUser);

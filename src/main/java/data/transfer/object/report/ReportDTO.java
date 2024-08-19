@@ -5,20 +5,22 @@ import java.awt.geom.Point2D;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 public final class ReportDTO {
     private String text;
     private String imageURL;
-    private ArrayList<Integer> IDOfUsersWhoLiked;
+    private Set<Integer> IDOfUsersWhoLiked;
     private ArrayList<CommentDTO> comments;
-    private ArrayList<Integer> guardsID;
+    private List<Integer> guardsID;
     private float reliabilityRate;
     private int reporterID;
     private boolean isAnonymousReport;
     private Point2D.Double location;
     private Date timeReported;
 
-    public ReportDTO(String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, ArrayList<Integer> guardsID, float reliabilityRate, int reporterID, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
+    public ReportDTO(String text, String imageURL, Set<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, List<Integer> guardsID, float reliabilityRate, int reporterID, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.text = text;
         this.imageURL = imageURL;
         this.IDOfUsersWhoLiked = IDOfUsersWhoLiked;
