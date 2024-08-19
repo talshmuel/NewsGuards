@@ -22,19 +22,19 @@ public class HomePageController {
         this.engine = engine;
     }
 
-//    @GetMapping("/get-reports-by-preferences")
-//    public ResponseEntity<ArrayList<ReportDTO>> getReportsByUserPreferences(@RequestParam int userID) {
-//        try {
-//            ArrayList<ReportDTO> response= engine.getReportsByUserPreferences(userID);
-//            return ResponseEntity.ok(response);
-//
-//        } catch (InvalidPasswordException | IllegalArgumentException e) {
-//            ArrayList<ReportDTO> response = new ArrayList<>();
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-//
-//        } catch (Exception e) {
-//            ArrayList<ReportDTO> response = new ArrayList<>();
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-//        }
-//    }
+    @GetMapping("/get-last-twenty-reports")
+    public ResponseEntity<ArrayList<ReportDTO>> getLastTwentyReportsToHomePage() {
+        try {
+            ArrayList<ReportDTO> response= engine.getLastTwentyReportsToHomePage();
+            return ResponseEntity.ok(response);
+
+        } catch (InvalidPasswordException | IllegalArgumentException e) {
+            ArrayList<ReportDTO> response = new ArrayList<>();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+
+        } catch (Exception e) {
+            ArrayList<ReportDTO> response = new ArrayList<>();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 }

@@ -100,7 +100,7 @@ public class UsersManager {
             return usersByID.get(ID);
         else
             return null;
-    } //להוסיף שאם לא מצאנו אז לשחזר מהדאטה בייס!!
+    }
 
     public boolean isUserExistAndRestoreIfFalse(int userID) {
         if (usersByID.containsKey(userID)) {

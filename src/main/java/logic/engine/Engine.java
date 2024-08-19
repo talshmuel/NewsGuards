@@ -76,4 +76,8 @@ public class Engine {
         }
         return user.gerUserDTO();
     }
+    public ArrayList<ReportDTO> getLastTwentyReportsToHomePage()
+    {
+        return reportsManager.getLastTwentyReportsToHomePage();
+    }
 }
