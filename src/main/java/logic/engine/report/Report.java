@@ -108,7 +108,7 @@ public class Report {
         }
 
         return new ReportDTO(text, imageURL, usersWhoLiked, commentsDTO, guards,
-                reliabilityRate, reporter.createFullName(), isAnonymousReport,
+                reliabilityRate, reporter.getID(), reporter.createFullName(), isAnonymousReport,
                 location, timeReported);
     }
     public void pushReportToDB(int reporter_id)

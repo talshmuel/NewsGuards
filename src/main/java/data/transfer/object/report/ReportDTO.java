@@ -13,22 +13,22 @@ public final class ReportDTO {
     private String imageURL;
     private Set<Integer> IDOfUsersWhoLiked;
     private ArrayList<CommentDTO> comments;
-    private ArrayList<Integer> guardsID;
+    private List<Integer> guardsID;
     private float reliabilityRate;
-    //private int reporterID;
+    private int reporterID;
     private String reporterFullName;
     private boolean isAnonymousReport;
     private Point2D.Double location;
     private Date timeReported;
 
-    public ReportDTO(String text, String imageURL, Set<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, List<Integer> guardsID, float reliabilityRate,/* int reporterID*/String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
+    public ReportDTO(String text, String imageURL, Set<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, List<Integer> guardsID, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.text = text;
         this.imageURL = imageURL;
         this.IDOfUsersWhoLiked = IDOfUsersWhoLiked;
         this.comments = comments;
         this.guardsID = guardsID;
         this.reliabilityRate = reliabilityRate;
-        //this.reporterID = reporterID;
+        this.reporterID = reporterID;
         this.reporterFullName = reporterFullName;
         this.isAnonymousReport = isAnonymousReport;
         this.location = location;
@@ -43,7 +43,7 @@ public final class ReportDTO {
         return imageURL;
     }
 
-    public ArrayList<Integer> getIDOfUsersWhoLiked() {
+    public Set<Integer> getIDOfUsersWhoLiked() {
         return IDOfUsersWhoLiked;
     }
 
@@ -51,7 +51,7 @@ public final class ReportDTO {
         return comments;
     }
 
-    public ArrayList<Integer> getGuardsID() {
+    public List<Integer> getGuardsID() {
         return guardsID;
     }
 
@@ -73,5 +73,9 @@ public final class ReportDTO {
 
     public Date getTimeReported() {
         return timeReported;
+    }
+
+    public String getReporterFullName() {
+        return reporterFullName;
     }
 }
