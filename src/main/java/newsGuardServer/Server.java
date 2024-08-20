@@ -26,6 +26,7 @@ public class Server {
         //checkLoginDetails();
         //checkComments();
         //checkLikes();
+
         //check();
 //        ReportsManager manager = new ReportsManager();
 //        Report report = manager.findAndRestoreReportFromDB(1);

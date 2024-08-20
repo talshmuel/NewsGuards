@@ -61,7 +61,7 @@ public class Engine {
         reportsManager.addNewComment(newComment);
     }
     public void saveUserLocation(LocationDTO locationDTO){
-        if(usersManager.isUserExistAndRestoreIfFalse(locationDTO.getUserID())){
+        if(usersManager.isUserExistInLocalOrInDBAndRestore(locationDTO.getUserID())){
             locationHistoryManager.saveUserLocation(locationDTO.getUserID(), locationDTO.getDateTime(), locationDTO.getLatitude(), locationDTO.getLongitude());
         }
         else {
