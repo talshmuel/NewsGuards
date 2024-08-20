@@ -76,6 +76,7 @@ public class Report {
         }
     }
 
+
     public void addNewComment(Comment comment){
         comments.add(comment);
         comment.addCommentToDatabase();
@@ -107,7 +108,7 @@ public class Report {
         }
 
         return new ReportDTO(text, imageURL, usersWhoLiked, commentsDTO, guards,
-                reliabilityRate, reporter.getID(), isAnonymousReport,
+                reliabilityRate, reporter.createFullName(), isAnonymousReport,
                 location, timeReported);
     }
     public void pushReportToDB(int reporter_id)

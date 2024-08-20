@@ -99,17 +99,16 @@ public class UsersManager {
 
 
     public User findUserByID(int ID) {
-        if (isUserExistAndRestoreIfFalse(ID))
+        if (isUserExistInLocalOrInDBAndRestore(ID))
             return usersByID.get(ID);
         else
             return null;
     }
 
-    public boolean isUserExistAndRestoreIfFalse(int userID) {
+    public boolean isUserExistInLocalOrInDBAndRestore(int userID) {
         if (usersByID.containsKey(userID)) {
             return true;
         }
-
 
         User user = findAndRestoreUserByIDFromDB(userID);
         if (user != null)
