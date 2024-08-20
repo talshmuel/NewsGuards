@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-public final class ReportDTO {
+public final class ReportDTO {//
     private String text;
     private String imageURL;
     private Set<Integer> IDOfUsersWhoLiked;
