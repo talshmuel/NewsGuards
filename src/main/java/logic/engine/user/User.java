@@ -44,7 +44,7 @@ public class User {
 
     public String createFullName()
     {
-        return registrationDetails.getFirstName() + " " + registrationDetails.getLastName();
+        return registrationDetails.getFirstName() + " " + registrationDetails.getLastName() + " ";
     }
 
     public String getEmail(){

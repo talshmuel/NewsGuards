@@ -27,7 +27,6 @@ public class HomePageController {
     @GetMapping("/get-last-twenty-reports")
     public ResponseEntity<ArrayList<ReportDTO>> getLastTwentyReportsToHomePage() {
         try {
-            System.out.print("11111111");
             ArrayList<ReportDTO> response= engine.getLastTwentyReportsToHomePage();
             return ResponseEntity.ok(response);
 
