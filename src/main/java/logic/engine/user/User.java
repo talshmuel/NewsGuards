@@ -43,6 +43,11 @@ public class User {
     }
     public void restoreUserID(int user_id){ ID = user_id;}
 
+    public String createFullName()
+    {
+        return registrationDetails.getFirstName() + " " + registrationDetails.getLastName() + " ";
+    }
+
     public String getEmail(){
         return registrationDetails.getEmail();
     }

@@ -61,7 +61,7 @@ public class Engine {
         reportsManager.addNewComment(newComment);
     }
     public void saveUserLocation(LocationDTO locationDTO){
-        if(usersManager.isUserExistAndRestoreIfFalse(locationDTO.getUserID())){
+        if(usersManager.isUserExistInLocalOrInDBAndRestore(locationDTO.getUserID())){
             locationHistoryManager.saveUserLocation(locationDTO.getUserID(), locationDTO.getDateTime(), locationDTO.getLatitude(), locationDTO.getLongitude());
         }
         else {
@@ -75,5 +75,9 @@ public class Engine {
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ userID);
         }
         return user.gerUserDTO();
+    }
+    public ArrayList<ReportDTO> getLastTwentyReportsToHomePage()
+    {
+        return reportsManager.getLastTwentyReportsToHomePage();
     }
 }

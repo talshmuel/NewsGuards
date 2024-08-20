@@ -22,7 +22,7 @@ public class Report {
     private final Set<Integer> usersWhoLiked;
     private  int countUsersWhoLiked;
     private final ArrayList<Comment> comments;
-    private List<Integer> guards;
+    private List<Integer> guards; //  findAndRestoreReportFromDB להוסיף פונקציה של ריסטור גארדס ולהוסיף את השחזור לליסט ולזמן אותה בפונקציה
     private float reliabilityRate;
     private User reporter;
     private boolean isAnonymousReport;
@@ -76,6 +76,7 @@ public class Report {
         }
     }
 
+
     public void addNewComment(Comment comment){
         comments.add(comment);
         comment.addCommentToDatabase();
@@ -106,8 +107,8 @@ public class Report {
             commentsDTO.add(comment.getCommentDTO());
         }
 
-        return new ReportDTO(text, imageURL, new ArrayList<>(usersWhoLiked), commentsDTO, new ArrayList<>(guards),
-                reliabilityRate, reporter.getID(), isAnonymousReport,
+        return new ReportDTO(text, imageURL, usersWhoLiked, commentsDTO, guards,
+                reliabilityRate, reporter.createFullName(), isAnonymousReport,
                 location, timeReported);
     }
     public void pushReportToDB(int reporter_id)
@@ -263,5 +264,6 @@ public class Report {
             e.printStackTrace(); // Handle exceptions (e.g., log errors)
         }
     }
+
 
 }
