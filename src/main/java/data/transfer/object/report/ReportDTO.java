@@ -30,4 +30,44 @@ public final class ReportDTO {
         this.location = location;
         this.timeReported = timeReported;
     }
+
+    public String getText() {
+        return text;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public ArrayList<Integer> getIDOfUsersWhoLiked() {
+        return IDOfUsersWhoLiked;
+    }
+
+    public ArrayList<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public ArrayList<Integer> getGuardsID() {
+        return guardsID;
+    }
+
+    public float getReliabilityRate() {
+        return reliabilityRate;
+    }
+
+    public int getReporterID() {
+        return reporterID;
+    }
+
+    public boolean isAnonymousReport() {
+        return isAnonymousReport;
+    }
+
+    public Point2D.Double getLocation() {
+        return location;
+    }
+
+    public Date getTimeReported() {
+        return timeReported;
+    }
 }

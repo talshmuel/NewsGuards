@@ -15,7 +15,7 @@ public final class UserDTO {
     private String phoneNumber;
     private boolean locationAccessPermission;
     private ArrayList<ReportDTO> reports;
-    private ArrayList<NotificationDTO> notifications;
+    //private ArrayList<NotificationDTO> notifications;
     private ArrayList<ReportDTO> IDReportsThatTheUserIsAGuardOf;
     private float reliabilityRate;
 
@@ -32,5 +32,53 @@ public final class UserDTO {
         //this.notifications = notifications;
         this.IDReportsThatTheUserIsAGuardOf = IDReportsThatTheUserIsAGuardOf;
         this.reliabilityRate = reliabilityRate;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public boolean isLocationAccessPermission() {
+        return locationAccessPermission;
+    }
+
+    public ArrayList<ReportDTO> getReports() {
+        return reports;
+    }
+
+//    public ArrayList<NotificationDTO> getNotifications() {
+//        return notifications;
+//    }
+
+    public ArrayList<ReportDTO> getIDReportsThatTheUserIsAGuardOf() {
+        return IDReportsThatTheUserIsAGuardOf;
+    }
+
+    public float getReliabilityRate() {
+        return reliabilityRate;
     }
 }

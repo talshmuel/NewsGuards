@@ -44,6 +44,7 @@ public class Report {
         this.usersWhoLiked = new HashSet<>();
         this.countUsersWhoLiked = 0;
         this.comments = new ArrayList<>();
+        this.guards = new ArrayList<>();
     }
     public int getID() {
         return ID;

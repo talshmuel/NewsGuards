@@ -31,6 +31,7 @@ public class User {
             restoreUser(newUserData);
             restoreUserReports();
             //restoreUserGuardReports();
+            reportsThatTheUserIsAGuardOf = new ArrayList<>();//todo delete this, it id just checking
         }
         else{
             createNewID();
