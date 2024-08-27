@@ -23,7 +23,6 @@ public class LoginController {
     @PostMapping()
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginDTO userLoginDTO) {
         try {
-            System.out.print("helooo");
             Integer userID = engine.checkLoginDetails(userLoginDTO);
 
             LoginResponseDTO response = new LoginResponseDTO("Login successful", userID);

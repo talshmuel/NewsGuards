@@ -1,69 +1,68 @@
 package logic.engine.location.history.management;
 
+import newsGuardServer.DatabaseConfig;
+
 import java.awt.geom.Point2D;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class LocationHistoryManager {
     double radiusMetersToLookingForUsers = 50;//todo:maybe change
+    private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public void saveUserLocation(int userID, Date dateTime, double lat, double lon) {
-        //שמירת הלוקיישן בדאטהבייס
-        /*ככה הצאט הציע:
-        * public void saveUserLocation(Connection conn, long userId, double lat, double lon, Timestamp timestamp) throws Exception {
-            String sql = "INSERT INTO user_locations (user_id, location, timestamp) VALUES (?, ?, ?)";
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setLong(1, userId);
+    public void saveUserLocation(int userID, double lat, double lon) {
+        String sql = "INSERT INTO users_location (user_id, latitude, longitude) VALUES (?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            PGobject location = new PGobject();
-            location.setType("geometry");
-            location.setValue(String.format("POINT(%f %f)", lon, lat));
-            ps.setObject(2, location);
+            preparedStatement.setInt(1, userID);
+            preparedStatement.setDouble(2, lat);
+            preparedStatement.setDouble(3, lon);
 
-            ps.setTimestamp(3, timestamp);
-            ps.executeUpdate();
-            }
-            }
-        * */
-    }
+            // Execute the insert operation
+            preparedStatement.executeUpdate();
 
-    public List<Integer> findUsersInRadius(Date dateTime, double lat, double lon){
-        /*מציאת רשימת היוזרים ברדיוס כלשהו בזמן נתון
-        *ככה הצאט הציע:
-        * public List<Long> findUsersInRadius(Connection conn, double lat, double lon, Timestamp timestamp) throws Exception {
-    List<Long> userIds = new ArrayList<>();
-
-    String sql = "SELECT user_id FROM user_locations " +
-                 "WHERE ST_DWithin(location, ST_SetSRID(ST_MakePoint(?, ?), 4326)::geography, ?) " +
-                 "AND timestamp BETWEEN ? - interval '1 day' AND ?";
-
-    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setDouble(1, lon);
-        ps.setDouble(2, lat);
-        ps.setDouble(3, radiusMetersToLookingForUsers);
-        ps.setTimestamp(4, timestamp);
-        ps.setTimestamp(5, timestamp);
-
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                userIds.add(rs.getLong("user_id"));
-            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
         }
     }
 
-    return userIds;
-}
-        * */
+    public List<Integer> findUsersInRadius(int reporterID, double lat, double lon){
+        List<Integer> userIds = new ArrayList<>();
+        String sql = "SELECT user_id FROM users_location " +
+                "WHERE ( " +
+                "    6371000 * ACOS( " +
+                "        COS(RADIANS(?)) * COS(RADIANS(latitude)) * " +
+                "        COS(RADIANS(longitude) - RADIANS(?)) + " +
+                "        SIN(RADIANS(?)) * SIN(RADIANS(latitude)) " +
+                "    ) " +
+                ") <= ?";
 
-        //todo delete this (it is just a try)
-        ArrayList<Integer> res = new ArrayList<>();
-        res.add(1);
-        return res;
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(),DB_CONFIG.getUsername(),DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setDouble(1, lat);  // Latitude parameter
+            preparedStatement.setDouble(2, lon);  // Longitude parameter
+            preparedStatement.setDouble(3, lat);  // Latitude parameter (again for sine calculation)
+            preparedStatement.setDouble(4, radiusMetersToLookingForUsers);  // Latitude parameter (again for sine calculation)
+
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                while (rs.next()) {
+                    userIds.add(rs.getInt("user_id"));
+                }
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+
+        userIds.remove(Integer.valueOf(reporterID));
+        return userIds;
     }
-
-
 }
+//
+//        //todo delete this (it is just a try)
+//        ArrayList<Integer> res = new ArrayList<>();
+//        res.add(1);
+//        return res;
