@@ -76,11 +76,11 @@ public class Server {
     {
         Engine engine = new Engine();
         Date date = new Date();
-        NewUserDTO newUser = new NewUserDTO("nitzan hamalca", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
-        engine.createNewUser(newUser);
-        NewReportDTO newReport = new NewReportDTO("hello everyone ,this is nitzan","http://", 1, true,date,1,1);
-        engine.addNewReportAndStartVerificationProcess(newReport);
-        CommentDTO newComment = new CommentDTO(1,"this is comment",1,true);
+//        NewUserDTO newUser = new NewUserDTO("nitzan hamalca", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
+//        engine.createNewUser(newUser);
+//        NewReportDTO newReport = new NewReportDTO("hello everyone ,this is nitzan","http://", 1, true,date,1,1);
+//        engine.addNewReportAndStartVerificationProcess(newReport);
+        CommentDTO newComment = new CommentDTO(5,"this is comment",1,true);
         engine.addCommentToReport(newComment);
     }
 
