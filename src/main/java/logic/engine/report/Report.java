@@ -27,7 +27,7 @@ public class Report {
     private Date timeReported;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, Date timeReported, float reliabilityRate, boolean isReportRestoration) {
+    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, Date timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
         if(!isReportRestoration) {
             createNewID();
         }
@@ -39,7 +39,7 @@ public class Report {
         this.reliabilityRate = reliabilityRate;
         this.reporter = reporter;
         this.usersWhoLiked = new HashSet<>();
-        this.countUsersWhoLiked = 0;
+        this.countUsersWhoLiked = likesNumber;
         this.comments = new ArrayList<>();
         this.guardsVerifications = new HashMap<>();
     }
@@ -143,6 +143,7 @@ public class Report {
     } //צריך לאתחל את report_rate
 
     public void removeLikeFromDatabase(int userID) {
+        int likesNumber = 0;
         String sql = "DELETE FROM likes WHERE user_id = ? AND report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -154,9 +155,41 @@ public class Report {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
+
+        sql = "SELECT likes_number FROM reports WHERE report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) { // Execute the query without passing the SQL string
+             preparedStatement.setInt(1, ID);
+
+            // Ensure there's data in the result set
+            if (resultSet.next()) {
+                // Retrieve the value of the 'id' column
+                likesNumber = resultSet.getInt("likes_number");
+                likesNumber--;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+        sql = "UPDATE reports" +
+                "SET likes_number = ?" +
+                "WHERE report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, likesNumber);
+            preparedStatement.setInt(2, ID);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
     }
 
     public void addLikeToDatabase(int userID) {
+        int likesNumber = 0;
         String sql = "INSERT INTO likes (report_id, user_id) VALUES (?, ?)";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -164,6 +197,37 @@ public class Report {
 
             preparedStatement.setInt(1, ID);
             preparedStatement.setInt(2, userID);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+
+        sql = "SELECT likes_number FROM reports WHERE report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) { // Execute the query without passing the SQL string
+            preparedStatement.setInt(1, ID);
+
+            // Ensure there's data in the result set
+            if (resultSet.next()) {
+                // Retrieve the value of the 'id' column
+                likesNumber = resultSet.getInt("likes_number");
+                likesNumber++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+        sql = "UPDATE reports" +
+                "SET likes_number = ?" +
+                "WHERE report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, likesNumber);
+            preparedStatement.setInt(2, ID);
             preparedStatement.executeUpdate();
 
         } catch (SQLException e) {

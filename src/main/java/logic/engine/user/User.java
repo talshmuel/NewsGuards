@@ -151,7 +151,7 @@ public class User {
     }
 
     private void restoreUserReports() {
-        String query = "SELECT report_id, text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y " +
+        String query = "SELECT report_id, text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number " +
                 "FROM reports WHERE user_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -172,9 +172,10 @@ public class User {
                     Date timeReported = rs.getDate("time_reported");
                     double locationX = rs.getDouble("location_x");
                     double locationY = rs.getDouble("location_y");
+                    int likesNumber = rs.getInt("likes_number");
 
                     Point2D.Double location = new Point2D.Double(locationX, locationY);
-                    Report report = new Report(text, imageURL, this, isAnonymousReport, location, timeReported, reportRate,true);
+                    Report report = new Report(text, imageURL, this, isAnonymousReport, location, timeReported, reportRate,true,likesNumber);
 
                     reports.add(report);
                 }
