@@ -60,7 +60,8 @@ public class ReportsManager {
     public void addOrRemoveLike(int reportID, int userID){
         Report report = reports.get(reportID);
         if(report == null) {
-            if (findAndRestoreReportFromDB(reportID) == null)
+            report = findAndRestoreReportFromDB(reportID);
+            if (report == null)
                 throw new NoSuchElementException("Error - there is no report in the system whose ID number is: " + reportID);
         }
         report.addOrRemoveLike(userID);
@@ -90,7 +91,7 @@ public class ReportsManager {
                     // Extract user details
                     String text = rs.getString("text");
                     int reporterID = rs.getInt("user_id");
-                    int reportRate = rs.getInt("report_rate");
+                    float reportRate = rs.getFloat("report_rate");
                     String imageURL = rs.getString("imageurl");
                     boolean isAnonymousReport = rs.getBoolean("is_anonymous_report");
                     Date timeReported = (java.util.Date)(rs.getDate("time_reported"));
@@ -105,6 +106,7 @@ public class ReportsManager {
                     report.restoreReportID(reportID);
                     report.restoreComments();
                     report.restoreLikes();
+
                     return report;
                 }
             } catch (SQLException e) {
