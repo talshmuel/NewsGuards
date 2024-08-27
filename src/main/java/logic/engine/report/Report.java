@@ -107,7 +107,7 @@ public class Report {
             commentsDTO.add(comment.getCommentDTO());
         }
 
-        return new ReportDTO(text, imageURL, usersWhoLiked, commentsDTO, guards,
+        return new ReportDTO(ID ,text, imageURL, usersWhoLiked, commentsDTO, guards,
                 reliabilityRate, reporter.getID(), reporter.createFullName(), isAnonymousReport,
                 location, timeReported);
     }
