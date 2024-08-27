@@ -31,7 +31,7 @@ public class LocationHistoryManager {
         * */
     }
 
-    public List<Integer> findUsersInRadius(Date dateTime, double lat, double lon){
+    public ArrayList<Integer> findUsersInRadius(Date dateTime, double lat, double lon){
         /*מציאת רשימת היוזרים ברדיוס כלשהו בזמן נתון
         *ככה הצאט הציע:
         * public List<Long> findUsersInRadius(Connection conn, double lat, double lon, Timestamp timestamp) throws Exception {

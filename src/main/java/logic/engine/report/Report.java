@@ -2,15 +2,12 @@ package logic.engine.report;
 
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.ReportDTO;
-import logic.engine.location.history.management.GeocodingService;
-import logic.engine.location.history.management.NominatimExample;
-import logic.engine.reliability.management.Rate;
+import logic.engine.location.history.management.OpenCageGeocodingService;
+import logic.engine.reliability.management.GuardVerification;
 import logic.engine.user.User;
 import newsGuardServer.DatabaseConfig;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.awt.geom.Point2D;
-import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
@@ -22,7 +19,7 @@ public class Report {
     private final Set<Integer> usersWhoLiked;
     private  int countUsersWhoLiked;
     private final ArrayList<Comment> comments;
-    private List<Integer> guards; //  findAndRestoreReportFromDB להוסיף פונקציה של ריסטור גארדס ולהוסיף את השחזור לליסט ולזמן אותה בפונקציה
+    private Map<Integer, GuardVerification> guardsVerifications; //  todo Nitzan change in DB
     private float reliabilityRate;
     private User reporter;
     private boolean isAnonymousReport;
@@ -44,7 +41,7 @@ public class Report {
         this.usersWhoLiked = new HashSet<>();
         this.countUsersWhoLiked = 0;
         this.comments = new ArrayList<>();
-        this.guards = new ArrayList<>();
+        this.guardsVerifications = new HashMap<>();
     }
     public int getID() {
         return ID;
@@ -83,15 +80,18 @@ public class Report {
     }
 
     public void setGuards(List<Integer> guards) {
-        this.guards = guards;
+        for(Integer guardID : guards){
+            this.guardsVerifications.put(guardID, GuardVerification.Pending);
+        }
     }
 
     public String getCountry() throws Exception {
         //GeocodingService geocodingService = new GeocodingService();
         //String country = geocodingService.getCountry(location);
 
-        String country = NominatimExample.getCountry(location);
-
+        //String country = NominatimExample.getCountry(location);
+        OpenCageGeocodingService openCageGeocodingService = new OpenCageGeocodingService();
+        String country = openCageGeocodingService.getCountry(location);
         if (country == null) {
             throw new NoSuchElementException("Country not found for the provided location");
         }
@@ -107,7 +107,7 @@ public class Report {
             commentsDTO.add(comment.getCommentDTO());
         }
 
-        return new ReportDTO(text, imageURL, usersWhoLiked, commentsDTO, guards,
+        return new ReportDTO(text, imageURL, usersWhoLiked, commentsDTO, guardsVerifications,
                 reliabilityRate, reporter.getID(), reporter.createFullName(), isAnonymousReport,
                 location, timeReported);
     }
@@ -264,6 +264,8 @@ public class Report {
             e.printStackTrace(); // Handle exceptions (e.g., log errors)
         }
     }
-
+    public void updateGuardVerification(int guardID, GuardVerification verification){
+        guardsVerifications.put(guardID, verification);
+    }
 
 }

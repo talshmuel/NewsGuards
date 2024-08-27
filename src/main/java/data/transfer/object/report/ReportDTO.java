@@ -1,19 +1,16 @@
 package data.transfer.object.report;
 
-import javax.xml.stream.Location;
+import logic.engine.reliability.management.GuardVerification;
+
 import java.awt.geom.Point2D;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class ReportDTO {
     private String text;
     private String imageURL;
     private Set<Integer> IDOfUsersWhoLiked;
     private ArrayList<CommentDTO> comments;
-    private List<Integer> guardsID;
+    Map<Integer, GuardVerification> guardsResponses;
     private float reliabilityRate;
     private int reporterID;
     private String reporterFullName;
@@ -21,12 +18,12 @@ public final class ReportDTO {
     private Point2D.Double location;
     private Date timeReported;
 
-    public ReportDTO(String text, String imageURL, Set<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, List<Integer> guardsID, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
+    public ReportDTO(String text, String imageURL, Set<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, Map<Integer, GuardVerification> guardsResponses, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.text = text;
         this.imageURL = imageURL;
         this.IDOfUsersWhoLiked = IDOfUsersWhoLiked;
         this.comments = comments;
-        this.guardsID = guardsID;
+        this.guardsResponses = guardsResponses;
         this.reliabilityRate = reliabilityRate;
         this.reporterID = reporterID;
         this.reporterFullName = reporterFullName;
@@ -51,8 +48,8 @@ public final class ReportDTO {
         return comments;
     }
 
-    public List<Integer> getGuardsID() {
-        return guardsID;
+    public Map<Integer, GuardVerification> getGuardsID() {
+        return guardsResponses;
     }
 
     public float getReliabilityRate() {

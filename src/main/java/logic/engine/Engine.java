@@ -8,7 +8,7 @@ import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
 import logic.engine.location.history.management.LocationHistoryManager;
-import logic.engine.reliability.management.GuardResponse;
+import logic.engine.reliability.management.GuardVerification;
 import logic.engine.reliability.management.ReliabilityManager;
 import logic.engine.report.Comment;
 import logic.engine.report.Report;
@@ -17,9 +17,7 @@ import logic.engine.user.User;
 import logic.engine.user.UsersManager;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @Service
 public class Engine {
@@ -46,12 +44,10 @@ public class Engine {
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ newReportDTO.getReporterID());
         }
         Report newReport = reportsManager.addNewReport(newReportDTO, reporter);
-        List<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getDateTime(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
+        ArrayList<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getDateTime(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
         newReport.setGuards(guardsID);
+        usersManager.addReportsToVerify(newReport, guardsID);
         reliabilityManager.startReportVerificationProcess(newReport, guardsID);
-    }
-    public void setGuardVerificationResponse(int verificationProcessID, int guardUserID, GuardResponse response){
-        reliabilityManager.setGuardVerificationResponse(verificationProcessID, guardUserID, response);
     }
     public void addOrRemoveLikeToReport(int reportID, int userID){
         reportsManager.addOrRemoveLike(reportID, userID);
@@ -76,8 +72,37 @@ public class Engine {
         }
         return user.gerUserDTO();
     }
-    public ArrayList<ReportDTO> getLastTwentyReportsToHomePage()
-    {
+    public ArrayList<ReportDTO> getLastTwentyReportsToHomePage()    {
         return reportsManager.getLastTwentyReportsToHomePage();
+    }
+    public ArrayList<ReportDTO> getReportThatGuardNeedToVerify(int guardID){
+        if(!usersManager.isUserExistInLocalOrInDBAndRestore(guardID))
+            throw new IllegalArgumentException("Error - there is no user in the system whose ID number is: "+ guardID);
+        return usersManager.getReportThatGuardNeedToVerify(guardID);
+    }
+    public void updateGuardVerification(int reportID, int guardID, int guardVerification){
+        GuardVerification guardVerificationEnum = convertIntToGuardVerificationEnum(guardVerification);
+
+        if(!usersManager.isUserExistInLocalOrInDBAndRestore(guardID)){
+            throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ guardID);
+        }
+        if(reportsManager.findAndRestoreReportFromDB(reportID) == null){
+            throw new NoSuchElementException("Error - there is no report in the system whose ID number is: " + reportID);
+        }
+        reportsManager.updateGuardVerification(reportID, guardID, guardVerificationEnum);
+        reliabilityManager.removeGuardThatVerified(reportID, guardID);
+        usersManager.updateGuardVerification(guardID, reportID, guardVerificationEnum);
+    }
+    public GuardVerification convertIntToGuardVerificationEnum(int guardVerificationInt){
+        switch (guardVerificationInt){
+            case 1:
+                return GuardVerification.Approve;
+            case 2:
+                return GuardVerification.Deny;
+            case 3:
+                return GuardVerification.Avoid;
+            default:
+                throw new IllegalArgumentException("Guard verification should be number 1-3");
+        }
     }
 }

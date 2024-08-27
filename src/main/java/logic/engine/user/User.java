@@ -4,6 +4,7 @@ import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
 import logic.engine.notification.Notification;
+import logic.engine.reliability.management.GuardVerification;
 import logic.engine.reliability.management.Rate;
 import logic.engine.report.Comment;
 import logic.engine.report.Report;
@@ -20,7 +21,8 @@ public class User {
     private UserRegistrationDetails registrationDetails;
     private ArrayList<Report> reports = new ArrayList<>();
     private ArrayList<Notification> notifications;
-    private ArrayList<Report> reportsThatTheUserIsAGuardOf;
+    private Map<Integer, GuardVerification> reportsThatTheUserIsAGuardOf;//mapped by reportID
+    private Map<Integer, Report> reportsThatNeedToVerify;//mapped by reportID
     private float reliabilityRate;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
@@ -31,11 +33,13 @@ public class User {
             restoreUser(newUserData);
             restoreUserReports();
             //restoreUserGuardReports();
-            reportsThatTheUserIsAGuardOf = new ArrayList<>();//todo delete this, it id just checking
+            reportsThatTheUserIsAGuardOf = new HashMap<>();//todo delete this, it is just checking
+            reportsThatNeedToVerify = new HashMap<>();//todo delete this, it is just checking
         }
         else{
             createNewID();
-            reportsThatTheUserIsAGuardOf = new ArrayList<>();
+            reportsThatTheUserIsAGuardOf = new HashMap<>();
+            reportsThatNeedToVerify = new HashMap<>();
         }
         reliabilityRate = reliability_Rate;
         this.registrationDetails = getRegistrationDetails(newUserData);
@@ -75,8 +79,7 @@ public class User {
 //        reports.add(newReport);
 //        newReport.setReporter(this);
 //    }
-    private void createNewID()
-    {
+    private void createNewID(){
         String selectQuery = "SELECT id FROM last_user_id LIMIT 1";
         String updateQuery = "UPDATE last_user_id SET id = ?";
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -104,8 +107,7 @@ public class User {
         }
     }
 
-    private void restoreUser(NewUserDTO newUserData)
-    {
+    private void restoreUser(NewUserDTO newUserData){
         String sql = "SELECT user_id, reliability_scale FROM users WHERE email = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -126,8 +128,7 @@ public class User {
         }
     }
 
-    public void pushUserToDB()
-    {
+    public void pushUserToDB(){
         String sql = "INSERT INTO users (user_id, reliability_scale) " +
                 "VALUES (?, ?)";
 
@@ -223,21 +224,29 @@ public class User {
 
     public UserDTO gerUserDTO(){
         ArrayList<ReportDTO> reportDTOS = new ArrayList<>();
-        ArrayList<ReportDTO> reportThatTheUserIsGuardOfDTOS = new ArrayList<>();
 
         for(Report report : reports){
             reportDTOS.add(report.getReportDTO());
         }
-        for(Report report : reportsThatTheUserIsAGuardOf){
-            reportThatTheUserIsGuardOfDTOS.add(report.getReportDTO());
-        }
-
 
         return new UserDTO(ID, registrationDetails.getFirstName(), registrationDetails.getLastName(), registrationDetails.getCountry(),
                 registrationDetails.getEmail(), registrationDetails.getImageURL(), registrationDetails.getPhoneNumber(), registrationDetails.getLocationAccessPermission(),
-                reportDTOS, reportThatTheUserIsGuardOfDTOS, reliabilityRate);
-
+                reportDTOS, reliabilityRate);
 
     }
 
+    public ArrayList<ReportDTO> getReportThatGuardNeedToVerify(){
+        ArrayList<ReportDTO> reportsDTOThatNeedToVerify = new ArrayList<>();
+        reportsThatNeedToVerify.forEach((reportID, report)->{
+            reportsDTOThatNeedToVerify.add(report.getReportDTO());
+        });
+        return reportsDTOThatNeedToVerify;
+    }
+    public void updateGuardVerification(int reportID, GuardVerification verification){
+        reportsThatTheUserIsAGuardOf.put(reportID, verification);
+        reportsThatNeedToVerify.remove(reportID);
+    }
+    public void addReportToVerify(Report reportToVerify){
+        reportsThatNeedToVerify.put(reportToVerify.getID(), reportToVerify);
+    }
 }

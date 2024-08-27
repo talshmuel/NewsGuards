@@ -1,6 +1,6 @@
 package logic.engine.reliability.management;
 
-public enum GuardResponse {
+public enum GuardVerification {
     Approve,
     Deny,
     Avoid,

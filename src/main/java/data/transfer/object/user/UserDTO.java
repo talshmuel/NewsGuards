@@ -16,10 +16,10 @@ public final class UserDTO {
     private boolean locationAccessPermission;
     private ArrayList<ReportDTO> reports;
     //private ArrayList<NotificationDTO> notifications;
-    private ArrayList<ReportDTO> IDReportsThatTheUserIsAGuardOf;
+    //private ArrayList<ReportDTO> IDReportsThatTheUserIsAGuardOf;
     private float reliabilityRate;
 
-    public UserDTO(int ID, String firstName, String lastName, String country, String email, String imageURL, String phoneNumber, boolean locationAccessPermission, ArrayList<ReportDTO> reports, ArrayList<ReportDTO> IDReportsThatTheUserIsAGuardOf, float reliabilityRate) {
+    public UserDTO(int ID, String firstName, String lastName, String country, String email, String imageURL, String phoneNumber, boolean locationAccessPermission, ArrayList<ReportDTO> reports, float reliabilityRate) {
         this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -30,7 +30,7 @@ public final class UserDTO {
         this.locationAccessPermission = locationAccessPermission;
         this.reports = reports;
         //this.notifications = notifications;
-        this.IDReportsThatTheUserIsAGuardOf = IDReportsThatTheUserIsAGuardOf;
+        //this.IDReportsThatTheUserIsAGuardOf = IDReportsThatTheUserIsAGuardOf;
         this.reliabilityRate = reliabilityRate;
     }
 
@@ -74,9 +74,9 @@ public final class UserDTO {
 //        return notifications;
 //    }
 
-    public ArrayList<ReportDTO> getIDReportsThatTheUserIsAGuardOf() {
-        return IDReportsThatTheUserIsAGuardOf;
-    }
+//    public ArrayList<ReportDTO> getIDReportsThatTheUserIsAGuardOf() {
+//        return IDReportsThatTheUserIsAGuardOf;
+//    }
 
     public float getReliabilityRate() {
         return reliabilityRate;

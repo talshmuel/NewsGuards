@@ -1,16 +1,16 @@
 package logic.engine.user;
 
 import data.transfer.object.LoginDTO;
+import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
 import logic.engine.exception.InvalidPasswordException;
+import logic.engine.reliability.management.GuardVerification;
+import logic.engine.report.Report;
 import newsGuardServer.DatabaseConfig;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 
 public class UsersManager {
     private Map<Integer,User> usersByID;
@@ -19,7 +19,6 @@ public class UsersManager {
     public UsersManager(){
         usersByID = new HashMap<>();
     }
-
     public void addNewUser(NewUserDTO newUserData) {
         if (findUserByEmail(newUserData.getEmail()) != null) {
             throw new IllegalArgumentException("This email already exists.");
@@ -57,7 +56,6 @@ public class UsersManager {
         }
         return null;
     }
-
     public static User findAndRestoreUserByEmailFromDB(String email) {
         String query = "SELECT user_id, last_name, first_name, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
                 "FROM users WHERE email = ?";
@@ -96,15 +94,12 @@ public class UsersManager {
         }
         return null;
     }
-
-
     public User findUserByID(int ID) {
         if (isUserExistInLocalOrInDBAndRestore(ID))
             return usersByID.get(ID);
         else
             return null;
     }
-
     public boolean isUserExistInLocalOrInDBAndRestore(int userID) {
         if (usersByID.containsKey(userID)) {
             return true;
@@ -118,7 +113,6 @@ public class UsersManager {
         }
         return false;
     }
-
     public static User findAndRestoreUserByIDFromDB(int userID) {
         String query = "SELECT last_name, first_name, email, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
                 "FROM users WHERE user_id = ?";
@@ -157,9 +151,7 @@ public class UsersManager {
         }
         return null;
     }
-
-    public boolean allFieldsExist(NewUserDTO newUserData)
-    {
+    public boolean allFieldsExist(NewUserDTO newUserData){
         System.out.print(newUserData.getEmail());
         System.out.print(newUserData.getPassword());
         System.out.print(newUserData.getCountry());
@@ -175,10 +167,22 @@ public class UsersManager {
         }
         return true;
     }
-
     public UserDTO getUserProfile(int userID){
         return usersByID.get(userID).gerUserDTO();
     }
-
+    public ArrayList<ReportDTO> getReportThatGuardNeedToVerify(int guardID) {
+        return usersByID.get(guardID).getReportThatGuardNeedToVerify();
+    }
+    public void updateGuardVerification(int guardID, int reportID, GuardVerification guardVerification){
+        usersByID.get(guardID).updateGuardVerification(reportID, guardVerification);
+    }
+    public void addReportsToVerify(Report reportToVerify, ArrayList<Integer> guardsID){
+        for(Integer guardID : guardsID){
+            if(isUserExistInLocalOrInDBAndRestore(guardID))
+                usersByID.get(guardID).addReportToVerify(reportToVerify);
+            else
+                throw new NoSuchElementException("Error - there is no user in the system whose ID number is: " + guardID);
+        }
+    }
 }
 

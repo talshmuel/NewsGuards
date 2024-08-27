@@ -15,6 +15,7 @@
     <description>NewsGuardProject</description>
     <properties>
         <java.version>17</java.version>
+        <jackson.version>2.14.0</jackson.version> <!-- Define Jackson version in properties -->
     </properties>
     <dependencies>
         <dependency>
@@ -44,10 +45,21 @@
             <artifactId>okhttp</artifactId>
             <version>4.9.3</version>
         </dependency>
+        <!-- Align Jackson dependencies to the same version -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.14.0</version>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
     <repositories>
