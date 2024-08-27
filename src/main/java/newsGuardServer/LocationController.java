@@ -23,4 +23,3 @@ public class LocationController {
         return ResponseEntity.ok("Location received");
     }
 }
-

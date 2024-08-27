@@ -45,6 +45,7 @@ public class Engine {
         }
         Report newReport = reportsManager.addNewReport(newReportDTO, reporter);
         ArrayList<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getDateTime(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
+        List<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getReporterID(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
         newReport.setGuards(guardsID);
         usersManager.addReportsToVerify(newReport, guardsID);
         reliabilityManager.startReportVerificationProcess(newReport, guardsID);
@@ -58,7 +59,7 @@ public class Engine {
     }
     public void saveUserLocation(LocationDTO locationDTO){
         if(usersManager.isUserExistInLocalOrInDBAndRestore(locationDTO.getUserID())){
-            locationHistoryManager.saveUserLocation(locationDTO.getUserID(), locationDTO.getDateTime(), locationDTO.getLatitude(), locationDTO.getLongitude());
+            locationHistoryManager.saveUserLocation(locationDTO.getUserID(), locationDTO.getLatitude(), locationDTO.getLongitude());
         }
         else {
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ locationDTO.getUserID());

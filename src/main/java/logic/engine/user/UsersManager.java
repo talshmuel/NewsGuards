@@ -32,9 +32,7 @@ public class UsersManager {
         newUser.pushUserToDB();
     }
     public Integer checkLoginDetailsAndGetUserID(LoginDTO loginDTO){
-        System.out.print("im in");
         User user = findUserByEmail(loginDTO.getEmail());
-        System.out.print("found user");
 
         if (user == null) {
             user = findAndRestoreUserByEmailFromDB(loginDTO.getEmail());
