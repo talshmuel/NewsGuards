@@ -5,13 +5,13 @@ import logic.engine.reliability.management.GuardVerification;
 import java.awt.geom.Point2D;
 import java.util.*;
 
-public final class ReportDTO {//
+public final class ReportDTO {
     private int reportID;
     private String text;
     private String imageURL;
     private Set<Integer> IDOfUsersWhoLiked;
     private ArrayList<CommentDTO> comments;
-    Map<Integer, GuardVerification> guardsResponses;
+    //Map<Integer, GuardVerification> guardsResponses;
     private float reliabilityRate;
     private int reporterID;
     private String reporterFullName;
@@ -19,14 +19,14 @@ public final class ReportDTO {//
     private Point2D.Double location;
     private Date timeReported;
 
-    public ReportDTO(String text, String imageURL, Set<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, Map<Integer, GuardVerification> guardsResponses, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
+
     public ReportDTO(int reportID, String text, String imageURL, Set<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.reportID = reportID;
         this.text = text;
         this.imageURL = imageURL;
         this.IDOfUsersWhoLiked = IDOfUsersWhoLiked;
         this.comments = comments;
-        this.guardsResponses = guardsResponses;
+        //this.guardsResponses = guardsResponses;
         this.reliabilityRate = reliabilityRate;
         this.reporterID = reporterID;
         this.reporterFullName = reporterFullName;
@@ -51,9 +51,7 @@ public final class ReportDTO {//
         return comments;
     }
 
-    public Map<Integer, GuardVerification> getGuardsID() {
-        return guardsResponses;
-    }
+
 
     public float getReliabilityRate() {
         return reliabilityRate;

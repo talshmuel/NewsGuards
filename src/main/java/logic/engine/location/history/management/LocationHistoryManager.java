@@ -29,8 +29,8 @@ public class LocationHistoryManager {
         }
     }
 
-    public List<Integer> findUsersInRadius(int reporterID, double lat, double lon){
-        List<Integer> userIds = new ArrayList<>();
+    public ArrayList<Integer> findUsersInRadius(int reporterID, double lat, double lon){
+        ArrayList<Integer> userIds = new ArrayList<>();
         String sql = "SELECT user_id FROM users_location " +
                 "WHERE ( " +
                 "    6371000 * ACOS( " +

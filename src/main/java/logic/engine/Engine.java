@@ -44,8 +44,7 @@ public class Engine {
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ newReportDTO.getReporterID());
         }
         Report newReport = reportsManager.addNewReport(newReportDTO, reporter);
-        ArrayList<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getDateTime(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
-        List<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getReporterID(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
+        ArrayList<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getReporterID(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
         newReport.setGuards(guardsID);
         usersManager.addReportsToVerify(newReport, guardsID);
         reliabilityManager.startReportVerificationProcess(newReport, guardsID);
