@@ -150,6 +150,7 @@ public class Report {
 
             preparedStatement.setInt(1, userID);
             preparedStatement.setInt(2, ID);
+            preparedStatement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
