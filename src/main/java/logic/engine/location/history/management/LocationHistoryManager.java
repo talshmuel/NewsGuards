@@ -13,13 +13,13 @@ public class LocationHistoryManager {
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
     public void saveUserLocation(int userID, double lat, double lon) {
-        String sql = "INSERT INTO users_location (user_id, latitude, longitude) VALUES (?, ?, ?)";
+        String sql = "UPDATE users_location SET latitude = ?, longitude = ? WHERE user_id = ?";
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setInt(1, userID);
-            preparedStatement.setDouble(2, lat);
-            preparedStatement.setDouble(3, lon);
+            preparedStatement.setDouble(1, lat);
+            preparedStatement.setDouble(2, lon);
+            preparedStatement.setInt(3, userID);
 
             // Execute the insert operation
             preparedStatement.executeUpdate();

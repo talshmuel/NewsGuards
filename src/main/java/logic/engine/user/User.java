@@ -147,6 +147,29 @@ public class User {
         }
 
         registrationDetails.pushRegistrationDetailsToDB(ID);
+        initLocationOfNewUser();
+    }
+
+    public void initLocationOfNewUser()
+    {
+        String sql = "INSERT INTO users_location (user_id, latitude, longitude) " +
+                "VALUES (?, ?, ?)";
+
+        // Establish a database connection
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(),DB_CONFIG.getUsername(),DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Set the parameters
+            preparedStatement.setInt(1, ID);
+            preparedStatement.setDouble(2, 0);
+            preparedStatement.setDouble(3, 0);
+
+            // Execute the insert operation
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
     }
 
     private void restoreUserReports() {
