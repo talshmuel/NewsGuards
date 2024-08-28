@@ -157,25 +157,31 @@ public class Report {
             e.printStackTrace(); // Handle SQL exception
         }
 
-        sql = "SELECT likes_number FROM reports WHERE report_id = ?";
+        String sqlSelect = "SELECT likes_number FROM reports WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()) { // Execute the query without passing the SQL string
-             preparedStatement.setInt(1, ID);
+             PreparedStatement preparedStatementSelect = connection.prepareStatement(sqlSelect)) {
 
-            // Ensure there's data in the result set
-            if (resultSet.next()) {
-                // Retrieve the value of the 'id' column
-                likesNumber = resultSet.getInt("likes_number");
-                likesNumber--;
+            // Set the parameter for the SELECT query
+            preparedStatementSelect.setInt(1, ID);
+
+            // Execute the SELECT query
+            try (ResultSet resultSet = preparedStatementSelect.executeQuery()) {
+                // Ensure there's data in the result set
+                if (resultSet.next()) {
+                    // Retrieve the value of the 'likes_number' column
+                    likesNumber = resultSet.getInt("likes_number");
+                    likesNumber--; // Decrement the value
+                } else {
+                    System.out.println("No record found for report ID: " + ID);
+                }
             }
+
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
-        sql = "UPDATE reports" +
-                "SET likes_number = ?" +
-                "WHERE report_id = ?";
+
+        sql = "UPDATE reports SET likes_number = ? WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -204,25 +210,31 @@ public class Report {
             e.printStackTrace(); // Handle SQL exception
         }
 
-        sql = "SELECT likes_number FROM reports WHERE report_id = ?";
+        String sqlSelect = "SELECT likes_number FROM reports WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()) { // Execute the query without passing the SQL string
-            preparedStatement.setInt(1, ID);
+             PreparedStatement preparedStatementSelect = connection.prepareStatement(sqlSelect)) {
 
-            // Ensure there's data in the result set
-            if (resultSet.next()) {
-                // Retrieve the value of the 'id' column
-                likesNumber = resultSet.getInt("likes_number");
-                likesNumber++;
+            // Set the parameter for the SELECT query
+            preparedStatementSelect.setInt(1, ID);
+
+            // Execute the SELECT query
+            try (ResultSet resultSet = preparedStatementSelect.executeQuery()) {
+                // Ensure there's data in the result set
+                if (resultSet.next()) {
+                    // Retrieve the value of the 'likes_number' column
+                    likesNumber = resultSet.getInt("likes_number");
+                    likesNumber++; // increment the value
+                } else {
+                    System.out.println("No record found for report ID: " + ID);
+                }
             }
+
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
-        sql = "UPDATE reports" +
-                "SET likes_number = ?" +
-                "WHERE report_id = ?";
+
+        sql = "UPDATE reports SET likes_number = ? WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
