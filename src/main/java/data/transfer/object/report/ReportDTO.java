@@ -18,13 +18,15 @@ public final class ReportDTO {
     private boolean isAnonymousReport;
     private Point2D.Double location;
     private Date timeReported;
+    private int countUsersWhoLiked;
 
 
-    public ReportDTO(int reportID, String text, String imageURL, Set<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
+    public ReportDTO(int reportID, String text, String imageURL, Set<Integer> IDOfUsersWhoLiked,int likesNumber, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.reportID = reportID;
         this.text = text;
         this.imageURL = imageURL;
         this.IDOfUsersWhoLiked = IDOfUsersWhoLiked;
+        this.countUsersWhoLiked = likesNumber;
         this.comments = comments;
         //this.guardsResponses = guardsResponses;
         this.reliabilityRate = reliabilityRate;
