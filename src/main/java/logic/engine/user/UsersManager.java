@@ -182,5 +182,12 @@ public class UsersManager {
                 throw new NoSuchElementException("Error - there is no user in the system whose ID number is: " + guardID);
         }
     }
+    public void stopWindowToVerify(int reportID, Set<Integer> guardsID){
+        User guard;
+        for(Integer guardID : guardsID){
+            guard = findUserByID(guardID);
+            guard.removeReportToVerify(reportID);
+        }
+    }
 }
 

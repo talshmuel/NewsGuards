@@ -250,4 +250,8 @@ public class User {
     public void addReportToVerify(Report reportToVerify){
         reportsThatNeedToVerify.put(reportToVerify.getID(), reportToVerify);
     }
+
+    public void removeReportToVerify(int reportID){
+        reportsThatNeedToVerify.remove(reportID);
+    }
 }

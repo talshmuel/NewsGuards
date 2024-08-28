@@ -30,7 +30,7 @@ public class Engine {
         usersManager = new UsersManager();
         reportsManager = new ReportsManager();
         locationHistoryManager = new LocationHistoryManager();
-        reliabilityManager = new ReliabilityManager();
+        reliabilityManager = new ReliabilityManager(this);
     }
     public void createNewUser(NewUserDTO newUserData){
         usersManager.addNewUser(newUserData);
@@ -47,7 +47,7 @@ public class Engine {
         ArrayList<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getReporterID(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
         newReport.setGuards(guardsID);
         usersManager.addReportsToVerify(newReport, guardsID);
-        reliabilityManager.startReportVerificationProcess(newReport, guardsID);
+        reliabilityManager.startReportVerificationProcess(newReport.getID(), guardsID);
     }
     public void addOrRemoveLikeToReport(int reportID, int userID){
         reportsManager.addOrRemoveLike(reportID, userID);
@@ -104,5 +104,8 @@ public class Engine {
             default:
                 throw new IllegalArgumentException("Guard verification should be number 1-3");
         }
+    }
+    public void stopWindowToVerify(int reportID, Set<Integer> guardsID){
+        usersManager.stopWindowToVerify(reportID, guardsID);
     }
 }
