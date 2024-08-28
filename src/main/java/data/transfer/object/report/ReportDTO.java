@@ -9,7 +9,7 @@ public final class ReportDTO {
     private int reportID;
     private String text;
     private String imageURL;
-    private Set<Integer> IDOfUsersWhoLiked;
+    private ArrayList<Integer> IDOfUsersWhoLiked;
     private ArrayList<CommentDTO> comments;
     //Map<Integer, GuardVerification> guardsResponses;
     private float reliabilityRate;
@@ -18,13 +18,15 @@ public final class ReportDTO {
     private boolean isAnonymousReport;
     private Point2D.Double location;
     private Date timeReported;
+    private int countUsersWhoLiked;
 
 
-    public ReportDTO(int reportID, String text, String imageURL, Set<Integer> IDOfUsersWhoLiked, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
+    public ReportDTO(int reportID, String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked,int likesNumber, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.reportID = reportID;
         this.text = text;
         this.imageURL = imageURL;
         this.IDOfUsersWhoLiked = IDOfUsersWhoLiked;
+        this.countUsersWhoLiked = likesNumber;
         this.comments = comments;
         //this.guardsResponses = guardsResponses;
         this.reliabilityRate = reliabilityRate;
@@ -43,7 +45,7 @@ public final class ReportDTO {
         return imageURL;
     }
 
-    public Set<Integer> getIDOfUsersWhoLiked() {
+    public ArrayList<Integer> getIDOfUsersWhoLiked() {
         return IDOfUsersWhoLiked;
     }
 
@@ -80,4 +82,9 @@ public final class ReportDTO {
     public int getReportID() {
         return reportID;
     }
+
+    public int getCountUsersWhoLiked() {
+        return countUsersWhoLiked;
+    }
+
 }

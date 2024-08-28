@@ -16,7 +16,7 @@ public class Report {
     private int ID;
     private String text;
     private String imageURL;
-    private final Set<Integer> usersWhoLiked;
+    private final ArrayList<Integer> usersWhoLiked;
     private  int countUsersWhoLiked;
     private final ArrayList<Comment> comments;
     private Map<Integer, GuardVerification> guardsVerifications; //  todo Nitzan change in DB
@@ -38,7 +38,7 @@ public class Report {
         this.timeReported = timeReported;
         this.reliabilityRate = reliabilityRate;
         this.reporter = reporter;
-        this.usersWhoLiked = new HashSet<>();
+        this.usersWhoLiked = new ArrayList<>();
         this.countUsersWhoLiked = likesNumber;
         this.comments = new ArrayList<>();
         this.guardsVerifications = new HashMap<>();
@@ -107,7 +107,7 @@ public class Report {
             commentsDTO.add(comment.getCommentDTO());
         }
 
-        return new ReportDTO(ID ,text, imageURL, usersWhoLiked, commentsDTO,
+        return new ReportDTO(ID ,text, imageURL, usersWhoLiked,countUsersWhoLiked, commentsDTO,
                 reliabilityRate, reporter.getID(), reporter.createFullName(), isAnonymousReport,
                 location, timeReported);
     }
