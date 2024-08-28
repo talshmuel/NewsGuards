@@ -82,4 +82,9 @@ public final class ReportDTO {
     public int getReportID() {
         return reportID;
     }
+
+    public int getCountUsersWhoLiked() {
+        return countUsersWhoLiked;
+    }
+
 }
