@@ -4,9 +4,8 @@ import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
 import logic.engine.notification.Notification;
-import logic.engine.reliability.management.GuardVerification;
-import logic.engine.reliability.management.Rate;
-import logic.engine.report.Comment;
+import logic.engine.reliability.management.Verification;
+//import logic.engine.reliability.management.Rate;
 import logic.engine.report.Report;
 import logic.engine.user.registration.UserRegistrationDetails;
 import newsGuardServer.DatabaseConfig;
@@ -21,7 +20,7 @@ public class User {
     private UserRegistrationDetails registrationDetails;
     private ArrayList<Report> reports = new ArrayList<>();
     private ArrayList<Notification> notifications;
-    private Map<Integer, GuardVerification> reportsThatTheUserIsAGuardOf;//mapped by reportID
+    private Map<Integer, Verification> reportsThatTheUserIsAGuardOf;//mapped by reportID
     private Map<Integer, Report> reportsThatNeedToVerify;//mapped by reportID
     private float reliabilityRate;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
@@ -243,7 +242,7 @@ public class User {
         });
         return reportsDTOThatNeedToVerify;
     }
-    public void updateGuardVerification(int reportID, GuardVerification verification){
+    public void updateGuardVerification(int reportID, Verification verification){
         reportsThatTheUserIsAGuardOf.put(reportID, verification);
         reportsThatNeedToVerify.remove(reportID);
     }

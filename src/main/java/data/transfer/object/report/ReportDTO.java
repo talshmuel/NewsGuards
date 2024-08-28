@@ -1,7 +1,5 @@
 package data.transfer.object.report;
 
-import logic.engine.reliability.management.GuardVerification;
-
 import java.awt.geom.Point2D;
 import java.util.*;
 

@@ -5,8 +5,6 @@ import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
 import logic.engine.exception.InvalidPasswordException;
-import logic.engine.reliability.management.GuardVerification;
-import logic.engine.report.Report;
 import newsGuardServer.DatabaseConfig;
 
 import java.sql.*;
@@ -168,26 +166,24 @@ public class UsersManager {
     public UserDTO getUserProfile(int userID){
         return usersByID.get(userID).gerUserDTO();
     }
-    public ArrayList<ReportDTO> getReportThatGuardNeedToVerify(int guardID) {
+    public ArrayList<ReportDTO> getReportsThatGuardNeedToVerify(int guardID) {
         return usersByID.get(guardID).getReportThatGuardNeedToVerify();
     }
-    public void updateGuardVerification(int guardID, int reportID, GuardVerification guardVerification){
-        usersByID.get(guardID).updateGuardVerification(reportID, guardVerification);
-    }
-    public void addReportsToVerify(Report reportToVerify, ArrayList<Integer> guardsID){
+
+    public ArrayList<User> getUsersById(ArrayList<Integer> guardsID){
+        ArrayList<User> guards = new ArrayList<>();
+        User guard;
+
         for(Integer guardID : guardsID){
-            if(isUserExistInLocalOrInDBAndRestore(guardID))
-                usersByID.get(guardID).addReportToVerify(reportToVerify);
+            guard = findUserByID(guardID);
+            if(guard != null) {
+                guards.add(guard);
+            }
             else
                 throw new NoSuchElementException("Error - there is no user in the system whose ID number is: " + guardID);
         }
+        return guards;
     }
-    public void stopWindowToVerify(int reportID, Set<Integer> guardsID){
-        User guard;
-        for(Integer guardID : guardsID){
-            guard = findUserByID(guardID);
-            guard.removeReportToVerify(reportID);
-        }
-    }
+
 }
 

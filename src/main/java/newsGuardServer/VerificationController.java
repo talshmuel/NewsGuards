@@ -1,9 +1,7 @@
 package newsGuardServer;
 
-import data.transfer.object.location.LocationDTO;
 import data.transfer.object.report.ReportDTO;
 import logic.engine.Engine;
-import logic.engine.reliability.management.GuardVerification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,7 @@ package logic.engine.report;
 
 import data.transfer.object.report.NewReportDTO;
 import data.transfer.object.report.ReportDTO;
-import logic.engine.reliability.management.GuardVerification;
+import logic.engine.reliability.management.Verification;
 import logic.engine.user.User;
 import logic.engine.user.UsersManager;
 import newsGuardServer.DatabaseConfig;
@@ -119,7 +119,7 @@ public class ReportsManager {
         }
         return null;
     }
-    public void updateGuardVerification(int reportID, int guardID, GuardVerification verification){
+    public void updateGuardVerification(int reportID, int guardID, Verification verification){
         reports.get(reportID).updateGuardVerification(guardID, verification);
     }
 

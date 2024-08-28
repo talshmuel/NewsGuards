@@ -3,7 +3,7 @@ package logic.engine.report;
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.ReportDTO;
 import logic.engine.location.history.management.OpenCageGeocodingService;
-import logic.engine.reliability.management.GuardVerification;
+import logic.engine.reliability.management.Verification;
 import logic.engine.user.User;
 import newsGuardServer.DatabaseConfig;
 
@@ -19,7 +19,7 @@ public class Report {
     private final ArrayList<Integer> usersWhoLiked;
     private  int countUsersWhoLiked;
     private final ArrayList<Comment> comments;
-    private Map<Integer, GuardVerification> guardsVerifications; //  todo Nitzan change in DB
+    private Map<Integer, Verification> guardsVerifications; //  todo Nitzan change in DB
     private float reliabilityRate;
     private User reporter;
     private boolean isAnonymousReport;
@@ -81,7 +81,7 @@ public class Report {
 
     public void setGuards(List<Integer> guards) {
         for(Integer guardID : guards){
-            this.guardsVerifications.put(guardID, GuardVerification.Pending);
+            this.guardsVerifications.put(guardID, Verification.Pending);
         }
     }
 
@@ -341,7 +341,7 @@ public class Report {
             e.printStackTrace(); // Handle exceptions (e.g., log errors)
         }
     }
-    public void updateGuardVerification(int guardID, GuardVerification verification){
+    public void updateGuardVerification(int guardID, Verification verification){
         guardsVerifications.put(guardID, verification);
     }
 

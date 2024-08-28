@@ -1,7 +1,7 @@
 package logic.engine.reliability.management;
 
-import logic.engine.Engine;
 import logic.engine.report.Report;
+import logic.engine.user.User;
 
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -9,38 +9,46 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ReportVerificationProcess {
-    Engine engine;
     int timeWindowToVerify = 2; //todo change, it is just a try
     TimeUnit units = TimeUnit.MINUTES;//todo change, it is just a try
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private boolean isRunning = true;
-    private Integer reportID;
-    private Set<Integer> guardsThatNeedToVerify;
-
-    private Rate reliabilityRate;
-    public ReportVerificationProcess(int reportIDToVerify, List<Integer> guards, Engine engine){
-        this.reportID = reportIDToVerify;
-        this.engine = engine;
-        guardsThatNeedToVerify = new HashSet<>();
-        for(Integer guardID : guards){
-            guardsThatNeedToVerify.add(guardID);
+    private Report report;
+    private Map<Integer, GuardVerification> guardsVerification;
+    private double reliabilityRate;
+    public ReportVerificationProcess(Report report, List<User> guards){
+        this.report = report;
+        guardsVerification = new HashMap<>();
+        for(User guard : guards){
+            guardsVerification.put(guard.getID(), new GuardVerification(guard, Verification.Pending));
+            guard.addReportToVerify(report);
         }
-        scheduler.schedule(this::stop24HourWindowToVerify, timeWindowToVerify, units);
+        scheduler.schedule(this::stopWindowToVerify, timeWindowToVerify, units);
     }
-    public void removeGuardThatVerified(int guardID){
-        guardsThatNeedToVerify.remove(guardID);
+    public void updateGuardVerification(int guardID, Verification verification){
+        report.updateGuardVerification(guardID, verification);
+        GuardVerification guardVerification = guardsVerification.get(guardID);
+        guardVerification.setVerification(verification);
+        guardVerification.getGuard().updateGuardVerification(report.getID(), verification);
     }
-
-    public Set<Integer> getGuardsThatNeedToVerify() {
-        return guardsThatNeedToVerify;
-    }
-    private void stop24HourWindowToVerify() {
+    private void stopWindowToVerify() {
         isRunning = false;
         scheduler.shutdown();
-        engine.stopWindowToVerify(reportID, guardsThatNeedToVerify);
-    }
-    public boolean isRunning() {
-        return isRunning;
+
+        for(GuardVerification guardVerification : guardsVerification.values()){
+            guardVerification.getGuard().removeReportToVerify(report.getID());
+        }
+        calculateReportReliabilityRate();
     }
 
+    public void calculateReportReliabilityRate(){
+        int countApprove = 0, countDeny = 0;
+        for(GuardVerification guardVerification : guardsVerification.values()){
+            if(guardVerification.getVerification() == Verification.Approve)
+                countApprove++;
+            else if (guardVerification.getVerification() == Verification.Deny)
+                countDeny++;
+        }
+        reliabilityRate = (countApprove * 5)/(countApprove+countDeny);
+    }
 }
