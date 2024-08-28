@@ -51,7 +51,7 @@ public class ReportsManager {
         Report newReport = new Report(newReportDTO.getText(), newReportDTO.getImageURL(),
                 reporter, newReportDTO.isAnonymousReport()
                 , new Point2D.Double(newReportDTO.getLatitude(),
-                newReportDTO.getLongitude()), newReportDTO.getDateTime(),0,false); //לבדוק את ציון הריפורט!!!!
+                newReportDTO.getLongitude()), newReportDTO.getDateTime(),0,false,0); //לבדוק את ציון הריפורט!!!!
         reports.put(newReport.getID(), newReport);
         newReport.pushReportToDB((reporter.getID()));
         return newReport;
@@ -77,7 +77,7 @@ public class ReportsManager {
         report.addNewComment(comment);
     }
     public Report findAndRestoreReportFromDB(int reportID){
-        String query = "SELECT  text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y " +
+        String query = "SELECT  text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number " +
                 "FROM reports WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -97,12 +97,14 @@ public class ReportsManager {
                     Date timeReported = (java.util.Date)(rs.getDate("time_reported"));
                     double locationX = rs.getDouble("location_x");
                     double locationY = rs.getDouble("location_y");
+                    int likesNumber = rs.getInt("likes_number");
+
 
                     // Create NewUserDTO and User objects
 
                     User reporter = UsersManager.findAndRestoreUserByIDFromDB(reporterID);
                     Point2D.Double location = new Point2D.Double(locationX, locationY);
-                    Report report = new Report(text, imageURL, reporter,isAnonymousReport,location,timeReported, reportRate, true);
+                    Report report = new Report(text, imageURL, reporter,isAnonymousReport,location,timeReported, reportRate, true,likesNumber);
                     report.restoreReportID(reportID);
                     report.restoreComments();
                     report.restoreLikes();
