@@ -267,7 +267,7 @@ public class User {
     }
     public void updateGuardVerification(int reportID, Verification verification){
         reportsThatTheUserIsAGuardOf.put(reportID, verification);
-        reportsThatNeedToVerify.remove(reportID);
+        removeReportToVerify(reportID);
     }
     public void addReportToVerify(Report reportToVerify){
         reportsThatNeedToVerify.put(reportToVerify.getID(), reportToVerify);

@@ -9,13 +9,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ReportVerificationProcess {
-    int timeWindowToVerify = 2; //todo change, it is just a try
+    int timeWindowToVerify = 1; //todo change, it is just a try
     TimeUnit units = TimeUnit.MINUTES;//todo change, it is just a try
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private boolean isRunning = true;
     private Report report;
     private Map<Integer, GuardVerification> guardsVerification;
-    private double reliabilityRate;
+    private float reliabilityRate;
     public ReportVerificationProcess(Report report, List<User> guards){
         this.report = report;
         guardsVerification = new HashMap<>();
@@ -42,7 +42,7 @@ public class ReportVerificationProcess {
     }
 
     public void calculateReportReliabilityRate(){
-        int countApprove = 0, countDeny = 0;
+        float countApprove = 0, countDeny = 0;
         for(GuardVerification guardVerification : guardsVerification.values()){
             if(guardVerification.getVerification() == Verification.Approve)
                 countApprove++;
@@ -50,5 +50,6 @@ public class ReportVerificationProcess {
                 countDeny++;
         }
         reliabilityRate = (countApprove * 5)/(countApprove+countDeny);
+        report.setReliabilityRate(reliabilityRate);
     }
 }

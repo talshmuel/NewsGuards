@@ -46,6 +46,11 @@ public class Report {
     public int getID() {
         return ID;
     }
+
+    public void setReliabilityRate(float reliabilityRate) {
+        this.reliabilityRate = reliabilityRate;
+    }
+
     public void restoreReportID(int report_id){ ID = report_id;}
 
 //    public void setReporter(User reporter){
