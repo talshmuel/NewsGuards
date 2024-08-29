@@ -40,7 +40,7 @@ public class Server {
         //checkComments();
         //checkLikes();
 
-        check();
+ //       check();
 //        ReportsManager manager = new ReportsManager();
 //        Report report = manager.findAndRestoreReportFromDB(1);
 //        System.out.print(report.getComments().size());
