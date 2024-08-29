@@ -167,7 +167,7 @@ public class UsersManager {
         return usersByID.get(userID).gerUserDTO();
     }
     public ArrayList<ReportDTO> getReportsThatGuardNeedToVerify(int guardID) {
-        return usersByID.get(guardID).getReportThatGuardNeedToVerify();
+        return usersByID.get(guardID).getReportsThatGuardNeedToVerify();
     }
 
     public ArrayList<User> getUsersById(ArrayList<Integer> guardsID){

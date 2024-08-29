@@ -42,7 +42,7 @@ public class ReportVerificationProcess {
     }
 
     public void calculateReportReliabilityRate(){
-        int countApprove = 0, countDeny = 0;
+        double countApprove = 0, countDeny = 0;
         for(GuardVerification guardVerification : guardsVerification.values()){
             if(guardVerification.getVerification() == Verification.Approve)
                 countApprove++;
@@ -50,5 +50,6 @@ public class ReportVerificationProcess {
                 countDeny++;
         }
         reliabilityRate = (countApprove * 5)/(countApprove+countDeny);
+        //צריך לעדכן גם בריפורט את הרייט וגם בדאטה בייס
     }
 }

@@ -108,6 +108,7 @@ public class ReportsManager {
                     report.restoreReportID(reportID);
                     report.restoreComments();
                     report.restoreLikes();
+                    report.restoreGuardsVerifications();
 
                     return report;
                 }

@@ -258,7 +258,7 @@ public class User {
 
     }
 
-    public ArrayList<ReportDTO> getReportThatGuardNeedToVerify(){
+    public ArrayList<ReportDTO> getReportsThatGuardNeedToVerify(){
         ArrayList<ReportDTO> reportsDTOThatNeedToVerify = new ArrayList<>();
         reportsThatNeedToVerify.forEach((reportID, report)->{
             reportsDTOThatNeedToVerify.add(report.getReportDTO());
