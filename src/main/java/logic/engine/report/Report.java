@@ -47,6 +47,10 @@ public class Report {
         return ID;
     }
 
+    public User getReporter() {
+        return reporter;
+    }
+
     public void setReliabilityRate(float reliabilityRate) {
         this.reliabilityRate = reliabilityRate;
     }

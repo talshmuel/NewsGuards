@@ -276,4 +276,12 @@ public class User {
     public void removeReportToVerify(int reportID){
         reportsThatNeedToVerify.remove(reportID);
     }
+
+    public float getReliabilityRate() {
+        return reliabilityRate;
+    }
+
+    public void setReliabilityRate(float reliabilityRate) {
+        this.reliabilityRate = reliabilityRate;
+    }
 }
