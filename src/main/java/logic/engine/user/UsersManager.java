@@ -137,6 +137,7 @@ public class UsersManager {
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
                     User user = new User(newUser, reliabilityScale, true);
                     user.restoreUserID(userID);
+                    //user.restoreReportsThatNeedToVerify();
                     return user;
                 }
             } catch (SQLException e) {
@@ -167,7 +168,7 @@ public class UsersManager {
         return usersByID.get(userID).gerUserDTO();
     }
     public ArrayList<ReportDTO> getReportsThatGuardNeedToVerify(int guardID) {
-        return usersByID.get(guardID).getReportThatGuardNeedToVerify();
+        return usersByID.get(guardID).getReportsThatGuardNeedToVerify();
     }
 
     public ArrayList<User> getUsersById(ArrayList<Integer> guardsID){
