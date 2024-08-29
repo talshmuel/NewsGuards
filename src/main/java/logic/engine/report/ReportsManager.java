@@ -109,7 +109,7 @@ public class ReportsManager {
                     report.restoreComments();
                     report.restoreLikes();
                     report.restoreGuardsVerifications();
-
+                    reports.put(reportID,report);
                     return report;
                 }
             } catch (SQLException e) {

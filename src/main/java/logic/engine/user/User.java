@@ -7,6 +7,7 @@ import logic.engine.notification.Notification;
 import logic.engine.reliability.management.Verification;
 //import logic.engine.reliability.management.Rate;
 import logic.engine.report.Report;
+import logic.engine.report.ReportsManager;
 import logic.engine.user.registration.UserRegistrationDetails;
 import newsGuardServer.DatabaseConfig;
 
@@ -283,5 +284,42 @@ public class User {
 
     public void setReliabilityRate(float reliabilityRate) {
         this.reliabilityRate = reliabilityRate;
+    }
+    public void setReliabilityRateInDB(float reliabilityRate) {
+        String sql = "UPDATE users SET reliability_scale = ? WHERE user_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setFloat(1, reliabilityRate);
+            preparedStatement.setInt(2, ID);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+    }
+
+    public void restoreReportsThatNeedToVerify()
+    {
+        String query = "SELECT report_id FROM guards_verification WHERE user_id = ? AND user_response = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, ID);
+            stmt.setInt(2, (Verification.Pending).toInt());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int reportID = rs.getInt("report_id");
+                    ReportsManager reportsManager = new ReportsManager();
+                    Report report = reportsManager.findAndRestoreReportFromDB(reportID);
+                    reportsThatNeedToVerify.put(reportID,report);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions (e.g., log errors)
+        }
     }
 }

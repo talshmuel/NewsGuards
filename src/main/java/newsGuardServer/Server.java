@@ -10,6 +10,7 @@ import logic.engine.Engine;
 import logic.engine.reliability.management.Verification;
 import logic.engine.report.Report;
 import logic.engine.report.ReportsManager;
+import logic.engine.user.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
@@ -39,12 +40,13 @@ public class Server {
         //checkComments();
         //checkLikes();
 
-  //      check();
+        check();
 //        ReportsManager manager = new ReportsManager();
 //        Report report = manager.findAndRestoreReportFromDB(1);
 //        System.out.print(report.getComments().size());
 //        System.out.print(report.getCountUsersWhoLiked());
     }
+
 
 //    public static void updateGuardVerificationInDB(int guardID, Verification verification) {
 //        int verificationInt = verification.toInt();
@@ -72,12 +74,14 @@ public class Server {
 //            System.out.print(report.getText());
 //            System.out.print("\n");
 //        }
-//      NewUserDTO newUser = new NewUserDTO("dor", "dani","israel","dor@gmail.com","123456","http//:www.com","0525440635",true);
- //       engine.createNewUser(newUser);
+        NewUserDTO newUser = new NewUserDTO("dor", "dani","israel","dan@gmail.com","123456","http//:www.com","0525440635",true);
+        //engine.createNewUser(newUser);
+        User user = new User(newUser,3,false);
+        user.restoreReportsThatNeedToVerify();
 //        NewReportDTO newReport = new NewReportDTO("wondeull world","http://", 1, true,date,1,1);
 //        engine.addNewReportAndStartVerificationProcess(newReport);
-        NewReportDTO newReport1 = new NewReportDTO("try store the guards","http://", 1, true,date,32.0468679,34.7630199);
-        engine.addNewReportAndStartVerificationProcess(newReport1);
+ //       NewReportDTO newReport1 = new NewReportDTO("try store the guards","http://", 1, true,date,32.0468679,34.7630199);
+ //       engine.addNewReportAndStartVerificationProcess(newReport1);
 //        CommentDTO newComment1 = new CommentDTO(1,"this is comment1",1,true);
 //        engine.addCommentToReport(newComment1);
 //        CommentDTO newComment2 = new CommentDTO(1,"this is comment2",1,true);

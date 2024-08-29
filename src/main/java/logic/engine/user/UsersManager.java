@@ -137,6 +137,7 @@ public class UsersManager {
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
                     User user = new User(newUser, reliabilityScale, true);
                     user.restoreUserID(userID);
+                    //user.restoreReportsThatNeedToVerify();
                     return user;
                 }
             } catch (SQLException e) {

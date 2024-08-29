@@ -54,6 +54,20 @@ public class Report {
     public void setReliabilityRate(float reliabilityRate) {
         this.reliabilityRate = reliabilityRate;
     }
+    public void setReliabilityRateInDB(float reliabilityRate) {
+        String sql = "UPDATE reports SET report_rate = ? WHERE report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setFloat(1, reliabilityRate);
+            preparedStatement.setInt(2, ID);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+    }
 
     public void restoreReportID(int report_id){ ID = report_id;}
 
@@ -350,9 +364,31 @@ public class Report {
             e.printStackTrace(); // Handle exceptions (e.g., log errors)
         }
     }
-    public void restoreGuardsVerifications()
-    {
-        String query = "SELECT (user_id, user_response) FROM guards_verification WHERE report_id = ?";
+//    public void restoreGuardsVerifications()
+//    {
+//        String query = "SELECT (user_id, user_response) FROM guards_verification WHERE report_id = ?";
+//
+//        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+//             PreparedStatement stmt = connection.prepareStatement(query)) {
+//
+//            stmt.setInt(1, ID);
+//
+//            try (ResultSet rs = stmt.executeQuery()) {
+//                while (rs.next()) {
+//                    int userId = rs.getInt("user_id");
+//                    int userResponseInteger = rs.getInt("user_response");
+//                    Verification userResponse = Verification.fromInt(userResponseInteger);
+//                   guardsVerifications.put(userId, userResponse);
+//                }
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace(); // Handle exceptions (e.g., log errors)
+//        }
+//    }
+
+    public void restoreGuardsVerifications() {
+        String query = "SELECT user_id, user_response FROM guards_verification WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -364,7 +400,7 @@ public class Report {
                     int userId = rs.getInt("user_id");
                     int userResponseInteger = rs.getInt("user_response");
                     Verification userResponse = Verification.fromInt(userResponseInteger);
-                   guardsVerifications.put(userId, userResponse);
+                    guardsVerifications.put(userId, userResponse);
                 }
             }
 
