@@ -267,7 +267,7 @@ public class User {
     }
     public void updateGuardVerification(int reportID, Verification verification){
         reportsThatTheUserIsAGuardOf.put(reportID, verification);
-        reportsThatNeedToVerify.remove(reportID);
+        removeReportToVerify(reportID);
     }
     public void addReportToVerify(Report reportToVerify){
         reportsThatNeedToVerify.put(reportToVerify.getID(), reportToVerify);
@@ -275,5 +275,13 @@ public class User {
 
     public void removeReportToVerify(int reportID){
         reportsThatNeedToVerify.remove(reportID);
+    }
+
+    public float getReliabilityRate() {
+        return reliabilityRate;
+    }
+
+    public void setReliabilityRate(float reliabilityRate) {
+        this.reliabilityRate = reliabilityRate;
     }
 }

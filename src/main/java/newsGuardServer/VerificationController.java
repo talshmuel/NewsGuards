@@ -42,7 +42,7 @@ public class VerificationController {
             @RequestParam("guardID") int guardID,
             @RequestParam("verification") int verification) {//1 - APPROVE, 2 - DENY, 3 - AVOID
         try {
-            engine.updateGuardVerification(guardID, reportID, verification);
+            engine.updateGuardVerification(reportID, guardID, verification);
         }catch (NoSuchElementException | IllegalArgumentException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }catch (Exception e) {
