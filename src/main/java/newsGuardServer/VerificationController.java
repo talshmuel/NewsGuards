@@ -21,10 +21,10 @@ public class VerificationController {
         this.engine = engine;
     }
 
-    @GetMapping("/get-report-that-guard-need-to-verify")
-    public ResponseEntity<ArrayList<ReportDTO>> getReportThatGuardNeedToVerify(@RequestParam int guardID) {
+    @GetMapping("/get-reports-that-guard-need-to-verify")
+    public ResponseEntity<ArrayList<ReportDTO>> getReportsThatGuardNeedToVerify(@RequestParam int guardID) {
         try {
-            ArrayList<ReportDTO> response = engine.getReportThatGuardNeedToVerify(guardID);
+            ArrayList<ReportDTO> response = engine.getReportsThatGuardNeedToVerify(guardID);
             return ResponseEntity.ok(response);
 
         } catch (IllegalArgumentException e) {

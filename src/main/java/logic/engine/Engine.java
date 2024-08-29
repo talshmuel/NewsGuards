@@ -46,6 +46,7 @@ public class Engine {
         Report newReport = reportsManager.addNewReport(newReportDTO, reporter);
         ArrayList<Integer> guardsID = locationHistoryManager.findUsersInRadius(newReportDTO.getReporterID(), newReportDTO.getLatitude(), newReportDTO.getLongitude());
         newReport.setGuards(guardsID);
+        newReport.storeGuardsInDB(guardsID);
         ArrayList<User> guards = usersManager.getUsersById(guardsID);
         reliabilityManager.startReportVerificationProcess(newReport, guards);
     }
@@ -75,7 +76,7 @@ public class Engine {
     public ArrayList<ReportDTO> getLastTwentyReportsToHomePage()    {
         return reportsManager.getLastTwentyReportsToHomePage();
     }
-    public ArrayList<ReportDTO> getReportThatGuardNeedToVerify(int guardID){
+    public ArrayList<ReportDTO> getReportsThatGuardNeedToVerify(int guardID){
         if(!usersManager.isUserExistInLocalOrInDBAndRestore(guardID))
             throw new IllegalArgumentException("Error - there is no user in the system whose ID number is: "+ guardID);
         return usersManager.getReportsThatGuardNeedToVerify(guardID);
