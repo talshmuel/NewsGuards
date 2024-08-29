@@ -19,7 +19,7 @@ public class ReportVerificationProcess {
     float reporterRatingDecrease = 1f;
     float reporterRatingIncrease = 0.1f;
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private boolean isRunning = true;
+    //private boolean isRunning = true;
     private Report report;
     private Map<Integer, GuardVerification> guardsVerification;
     private float reportReliabilityRate;
@@ -39,7 +39,6 @@ public class ReportVerificationProcess {
         guardVerification.getGuard().updateGuardVerification(report.getID(), verification);
     }
     private void stopWindowToVerify() {
-        isRunning = false;
         scheduler.shutdown();
 
         for(GuardVerification guardVerification : guardsVerification.values()){

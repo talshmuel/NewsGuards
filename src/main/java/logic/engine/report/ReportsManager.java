@@ -119,8 +119,6 @@ public class ReportsManager {
         }
         return null;
     }
-    public void updateGuardVerification(int reportID, int guardID, Verification verification){
-        reports.get(reportID).updateGuardVerification(guardID, verification);
-    }
+
 
 }
