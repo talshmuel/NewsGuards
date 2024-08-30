@@ -113,7 +113,7 @@ public class Server {
 //        engine.createNewUser(newUser);
 //        NewReportDTO newReport = new NewReportDTO("hello everyone ,this is nitzan","http://", 1, true,date,1,1);
 //        engine.addNewReportAndStartVerificationProcess(newReport);
-        CommentDTO newComment = new CommentDTO(5,"this is comment",1,true);
+        CommentDTO newComment = new CommentDTO(5,"this is comment",1,true, "Tal added this, niztan check if need to change");
         engine.addCommentToReport(newComment);
     }
 

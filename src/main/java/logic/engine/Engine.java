@@ -54,7 +54,11 @@ public class Engine {
         reportsManager.addOrRemoveLike(reportID, userID);
     }
     public void addCommentToReport(CommentDTO commentDTO){
-        Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment(), false, 0);
+        User commenter = usersManager.findUserByID(commentDTO.getReportID());
+        if(commenter == null){
+            throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ commenter.getID());
+        }
+        Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment(), false, 0, commenter.createFullName());
         reportsManager.addNewComment(newComment);
     }
     public void saveUserLocation(LocationDTO locationDTO){

@@ -10,11 +10,12 @@ public class Comment {
     private int ID;
     private int reportID;
     private String text;
+    private String commenterFullName;
     private int writerID;
     boolean isAGuardComment;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public Comment(int reportID, String text, int writerID, boolean isAGuardComment,boolean isRestoringComment, int commentId) {
+    public Comment(int reportID, String text, int writerID, boolean isAGuardComment,boolean isRestoringComment, int commentId, String commenterFullName) {
         if(!isRestoringComment){
             createNewID();
         }
@@ -25,6 +26,7 @@ public class Comment {
         this.text = text;
         this.writerID = writerID;
         this.isAGuardComment = isAGuardComment;
+        this.commenterFullName = commenterFullName;
     }
 
     public int getReportID() {
@@ -43,7 +45,7 @@ public class Comment {
         return isAGuardComment;
     }
     public CommentDTO getCommentDTO(){
-        return new CommentDTO(reportID, text, writerID, isAGuardComment);
+        return new CommentDTO(reportID, text, writerID, isAGuardComment, commenterFullName);
     }
 
     public void addCommentToDatabase() {

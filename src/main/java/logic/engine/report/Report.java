@@ -334,7 +334,7 @@ public class Report {
                     boolean isGuardComment = rs.getBoolean("isaguardcomment");
 
                     // Create a Comment object
-                    Comment comment = new Comment(ID, text, userId, isGuardComment, true, commentId);
+                    Comment comment = new Comment(ID, text, userId, isGuardComment, true, commentId, "Tal added this, Nithan change if you need");
                     comments.add(comment);
                 }
             }

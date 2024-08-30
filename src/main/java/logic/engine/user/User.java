@@ -52,6 +52,7 @@ public class User {
         return registrationDetails.getFirstName() + " " + registrationDetails.getLastName() + " ";
     }
 
+
     public String getEmail(){
         return registrationDetails.getEmail();
     }
