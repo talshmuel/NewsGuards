@@ -73,7 +73,7 @@ public class Engine {
         }
         return user.gerUserDTO();
     }
-    public ArrayList<ReportDTO> getLastTwentyReportsToHomePage()    {
+    public ArrayList<ReportDTO> getLastTwentyReportsToHomePage(){
         return reportsManager.getLastTwentyReportsToHomePage();
     }
     public ArrayList<ReportDTO> getReportsThatGuardNeedToVerify(int guardID){
@@ -82,7 +82,7 @@ public class Engine {
         return usersManager.getReportsThatGuardNeedToVerify(guardID);
     }
     public void updateGuardVerification(int reportID, int guardID, int guardVerification){
-        Verification verificationEnum = convertIntToGuardVerificationEnum(guardVerification);
+        Verification verificationEnum = Verification.fromInt(guardVerification);
 
         if(!usersManager.isUserExistInLocalOrInDBAndRestore(guardID)){
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ guardID);
@@ -92,17 +92,17 @@ public class Engine {
         }
         reliabilityManager.updateGuardVerification(reportID, guardID, verificationEnum);
     }
-    public Verification convertIntToGuardVerificationEnum(int guardVerificationInt){
-        switch (guardVerificationInt){
-            case 1:
-                return Verification.Approve;
-            case 2:
-                return Verification.Deny;
-            case 3:
-                return Verification.Avoid;
-            default:
-                throw new IllegalArgumentException("Guard verification should be number 1-3");
-        }
-    }
+//    public Verification convertIntToGuardVerificationEnum(int guardVerificationInt){
+//        switch (guardVerificationInt){
+//            case 1:
+//                return Verification.Approve;
+//            case 2:
+//                return Verification.Deny;
+//            case 3:
+//                return Verification.Avoid;
+//            default:
+//                throw new IllegalArgumentException("Guard verification should be number 1-3");
+//        }
+//    }
 
 }
