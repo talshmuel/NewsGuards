@@ -38,7 +38,11 @@ public class ReportsManager {
         }
         for(int i = lastReportID; i >= lastReportID - 5; i--)
         {
-            Report report = findAndRestoreReportFromDB(i);
+            Report report;
+            if(reports.containsKey(i))
+                report = reports.get(i);
+            else
+                 report = findAndRestoreReportFromDB(i);
             if(report != null)
             {
                 ReportDTO reportDTO = report.getReportDTO();
@@ -120,6 +124,7 @@ public class ReportsManager {
         }
         return null;
     }
+
     public void updateGuardVerification(int reportID, int guardID, Verification verification){
         reports.get(reportID).updateGuardVerification(guardID, verification);
     }
