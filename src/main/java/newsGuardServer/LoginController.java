@@ -23,19 +23,20 @@ public class LoginController {
     @PostMapping()
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginDTO userLoginDTO) {
         try {
-            Integer userID = engine.checkLoginDetails(userLoginDTO);
+            //LoginResponseDTO loginResponseDTO = engine.checkLoginDetails(userLoginDTO);
 
-            LoginResponseDTO response = new LoginResponseDTO("Login successful", userID);
+            //LoginResponseDTO response = new LoginResponseDTO("Login successful", userID, );
+            LoginResponseDTO response = engine.checkLoginDetails(userLoginDTO);
             return ResponseEntity.ok(response);
 
         } catch (InvalidPasswordException | IllegalArgumentException e) {
-            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null);
+            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null, null);
             System.out.print(e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 
         } catch (Exception e) {
             System.out.print(e.getMessage());
-            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null);
+            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null, null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }

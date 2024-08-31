@@ -1,6 +1,7 @@
 package logic.engine;
 
 import data.transfer.object.LoginDTO;
+import data.transfer.object.LoginResponseDTO;
 import data.transfer.object.location.LocationDTO;
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
@@ -35,7 +36,7 @@ public class Engine {
     public void createNewUser(NewUserDTO newUserData){
         usersManager.addNewUser(newUserData);
     }
-    public Integer checkLoginDetails(LoginDTO loginDTO){
+    public LoginResponseDTO checkLoginDetails(LoginDTO loginDTO){
         return usersManager.checkLoginDetailsAndGetUserID(loginDTO);
     }
     public void addNewReportAndStartVerificationProcess(NewReportDTO newReportDTO){

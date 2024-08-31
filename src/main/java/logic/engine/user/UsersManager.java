@@ -1,6 +1,7 @@
 package logic.engine.user;
 
 import data.transfer.object.LoginDTO;
+import data.transfer.object.LoginResponseDTO;
 import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
@@ -29,7 +30,7 @@ public class UsersManager {
         usersByID.put(newUser.getID(), newUser);
         newUser.pushUserToDB();
     }
-    public Integer checkLoginDetailsAndGetUserID(LoginDTO loginDTO){
+    public LoginResponseDTO checkLoginDetailsAndGetUserID(LoginDTO loginDTO){
         User user = findUserByEmail(loginDTO.getEmail());
 
         if (user == null) {
@@ -40,7 +41,7 @@ public class UsersManager {
             }
         }
         if (user.checkUserPassword(loginDTO.getPasswordToCheck()))
-            return user.getID();
+            return new LoginResponseDTO("Login successful", user.getID(), user.createFullName());
         else
             throw new InvalidPasswordException("Incorrect password");
     }

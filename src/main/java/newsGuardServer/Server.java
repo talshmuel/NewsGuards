@@ -1,6 +1,7 @@
 package newsGuardServer;
 
 import data.transfer.object.LoginDTO;
+import data.transfer.object.LoginResponseDTO;
 import data.transfer.object.location.LocationDTO;
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
@@ -121,8 +122,8 @@ public class Server {
     {
         Engine engine = new Engine();
         LoginDTO login = new LoginDTO("tal@gmail.com","123456");
-        int id = engine.checkLoginDetails(login);
-        System.out.println("the id is:" + id);
+        LoginResponseDTO loginResponseDTO = engine.checkLoginDetails(login);
+        System.out.println("the id is:" + loginResponseDTO.getUserId());
     }
 
 
