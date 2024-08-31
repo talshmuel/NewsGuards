@@ -35,13 +35,17 @@ public class Report {
     public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, LocalDateTime timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
         if(!isReportRestoration) {
             createNewID();
+            this.reliabilityRate = -1;
+
+        }
+        else {
+            this.reliabilityRate = reliabilityRate;
         }
         this.text = text;
         this.imageURL = imageURL;
         this.isAnonymousReport = isAnonymousReport;
         this.location = location;
         this.timeReported = timeReported;
-        this.reliabilityRate = reliabilityRate;
         this.reporter = reporter;
         this.usersWhoLiked = new ArrayList<>();
         this.countUsersWhoLiked = likesNumber;
