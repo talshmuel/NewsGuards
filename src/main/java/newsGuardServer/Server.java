@@ -60,7 +60,7 @@ public class Server {
         //checkComments();
         //checkLikes();
 
-  //      check();
+//       check();
 //        ReportsManager manager = new ReportsManager();
 //        Report report = manager.findAndRestoreReportFromDB(1);
 //        System.out.print(report.getComments().size());
@@ -88,7 +88,6 @@ public class Server {
     public static void check()
     {
         Date dateFull = new Date();
-
         Engine engine = new Engine();
 //        ArrayList<ReportDTO> reports = engine.getLastTwentyReportsToHomePage();
 //        for (ReportDTO report : reports) {
@@ -99,8 +98,8 @@ public class Server {
         //engine.createNewUser(newUser);
 //        User user = new User(newUser,3,false);
 //        user.restoreReportsThatNeedToVerify();
- //       NewReportDTO newReport = new NewReportDTO("shalommmmm","http://", 1, true,dateFull,1,1);
-  //      engine.addNewReportAndStartVerificationProcess(newReport);
+        NewReportDTO newReport = new NewReportDTO("new one","http://", 1, true,dateFull,1,1);
+        engine.addNewReportAndStartVerificationProcess(newReport);
  //       NewReportDTO newReport1 = new NewReportDTO("try store the guards","http://", 1, true,date,32.0468679,34.7630199);
  //       engine.addNewReportAndStartVerificationProcess(newReport1);
 //        CommentDTO newComment1 = new CommentDTO(1,"this is comment1",1,true);
