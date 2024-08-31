@@ -83,7 +83,7 @@ public class ReportsManager {
         report.addNewComment(comment);
     }
     public Report findAndRestoreReportFromDB(int reportID){
-        String query = "SELECT  text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, date_reported, location_x, location_y, likes_number " +
+        String query = "SELECT  text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number " +
                 "FROM reports WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -101,10 +101,8 @@ public class ReportsManager {
                     String imageURL = rs.getString("imageurl");
                     boolean isAnonymousReport = rs.getBoolean("is_anonymous_report");
                     Timestamp timeReportedTimestamp = rs.getTimestamp("time_reported");
-                    Date dateReportedSqlDate = rs.getDate("date_reported");
 
                     // Convert SQL Date and Timestamp to LocalDate and LocalDateTime
-                    LocalDate dateReported = ((java.sql.Date) dateReportedSqlDate).toLocalDate(); // Convert java.sql.Date to LocalDate
                     LocalDateTime timeReported = timeReportedTimestamp.toLocalDateTime(); // Convert Timestamp to LocalDateTime
                     double locationX = rs.getDouble("location_x");
                     double locationY = rs.getDouble("location_y");
