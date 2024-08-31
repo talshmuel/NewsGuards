@@ -9,6 +9,8 @@ import newsGuardServer.DatabaseConfig;
 
 import java.awt.geom.Point2D;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Date;
 
@@ -51,11 +53,11 @@ public class ReportsManager {
         }
             return reportDTOs;
     }
-    public Report addNewReport(NewReportDTO newReportDTO, User reporter){
+    public Report addNewReport(NewReportDTO newReportDTO, User reporter) {
         Report newReport = new Report(newReportDTO.getText(), newReportDTO.getImageURL(),
                 reporter, newReportDTO.isAnonymousReport()
                 , new Point2D.Double(newReportDTO.getLatitude(),
-                newReportDTO.getLongitude()), newReportDTO.getDateTime(),0,false,0); //לבדוק את ציון הריפורט!!!!
+                newReportDTO.getLongitude()), newReportDTO.getTimeReported(), 0, false, 0); //לבדוק את ציון הריפורט!!!!
         reports.put(newReport.getID(), newReport);
         newReport.pushReportToDB((reporter.getID()));
         return newReport;
@@ -81,7 +83,7 @@ public class ReportsManager {
         report.addNewComment(comment);
     }
     public Report findAndRestoreReportFromDB(int reportID){
-        String query = "SELECT  text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number " +
+        String query = "SELECT  text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, date_reported, location_x, location_y, likes_number " +
                 "FROM reports WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
@@ -98,11 +100,15 @@ public class ReportsManager {
                     float reportRate = rs.getFloat("report_rate");
                     String imageURL = rs.getString("imageurl");
                     boolean isAnonymousReport = rs.getBoolean("is_anonymous_report");
-                    Date timeReported = (java.util.Date)(rs.getDate("time_reported"));
+                    Timestamp timeReportedTimestamp = rs.getTimestamp("time_reported");
+                    Date dateReportedSqlDate = rs.getDate("date_reported");
+
+                    // Convert SQL Date and Timestamp to LocalDate and LocalDateTime
+                    LocalDate dateReported = ((java.sql.Date) dateReportedSqlDate).toLocalDate(); // Convert java.sql.Date to LocalDate
+                    LocalDateTime timeReported = timeReportedTimestamp.toLocalDateTime(); // Convert Timestamp to LocalDateTime
                     double locationX = rs.getDouble("location_x");
                     double locationY = rs.getDouble("location_y");
                     int likesNumber = rs.getInt("likes_number");
-
 
                     // Create NewUserDTO and User objects
 
