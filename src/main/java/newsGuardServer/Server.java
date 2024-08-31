@@ -20,6 +20,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -31,6 +33,23 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
+//        Engine engine = new Engine();
+//
+//        // Create a LocalDateTime for timeReported and LocalDate for dateReported
+//        LocalDateTime timeReported = LocalDateTime.now();
+//        // Create a NewReportDTO instance
+//        NewReportDTO newReport = new NewReportDTO(
+//                "nitzan gon tal are the queensssssss",               // text
+//                "http://",                  // imageURL
+//                1,                          // reporterID
+//                true,                       // isAnonymousReport
+//                timeReported,               // timeReported
+//                1.0,                        // locationX
+//                1.0                         // locationY
+//        );
+
+        // Add the new report and start the verification process
+//        engine.addNewReportAndStartVerificationProcess(newReport);
 //        Verification ver = Verification.Approve;
 //        int user = 2;
 //        updateGuardVerificationInDB(user,ver);
@@ -41,7 +60,7 @@ public class Server {
         //checkComments();
         //checkLikes();
 
- //       check();
+  //      check();
 //        ReportsManager manager = new ReportsManager();
 //        Report report = manager.findAndRestoreReportFromDB(1);
 //        System.out.print(report.getComments().size());
@@ -68,19 +87,20 @@ public class Server {
 
     public static void check()
     {
-        Date date = new Date();
+        Date dateFull = new Date();
+
         Engine engine = new Engine();
 //        ArrayList<ReportDTO> reports = engine.getLastTwentyReportsToHomePage();
 //        for (ReportDTO report : reports) {
 //            System.out.print(report.getText());
 //            System.out.print("\n");
 //        }
-        NewUserDTO newUser = new NewUserDTO("dor", "dani","israel","dan@gmail.com","123456","http//:www.com","0525440635",true);
+//        NewUserDTO newUser = new NewUserDTO("dor", "dani","israel","dan@gmail.com","123456","http//:www.com","0525440635",true);
         //engine.createNewUser(newUser);
-        User user = new User(newUser,3,false);
-        user.restoreReportsThatNeedToVerify();
-//        NewReportDTO newReport = new NewReportDTO("wondeull world","http://", 1, true,date,1,1);
-//        engine.addNewReportAndStartVerificationProcess(newReport);
+//        User user = new User(newUser,3,false);
+//        user.restoreReportsThatNeedToVerify();
+ //       NewReportDTO newReport = new NewReportDTO("shalommmmm","http://", 1, true,dateFull,1,1);
+  //      engine.addNewReportAndStartVerificationProcess(newReport);
  //       NewReportDTO newReport1 = new NewReportDTO("try store the guards","http://", 1, true,date,32.0468679,34.7630199);
  //       engine.addNewReportAndStartVerificationProcess(newReport1);
 //        CommentDTO newComment1 = new CommentDTO(1,"this is comment1",1,true);

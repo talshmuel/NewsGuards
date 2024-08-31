@@ -1,6 +1,8 @@
 package data.transfer.object.report;
 
 import java.awt.geom.Point2D;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public final class ReportDTO {
@@ -15,11 +17,11 @@ public final class ReportDTO {
     private String reporterFullName;
     private boolean isAnonymousReport;
     private Point2D.Double location;
-    private Date timeReported;
+    private LocalDateTime timeReported; // Ensure this is LocalDateTime
     private int countUsersWhoLiked;
 
 
-    public ReportDTO(int reportID, String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked,int likesNumber, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
+    public ReportDTO(int reportID, String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked,int likesNumber, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, LocalDateTime timeReported) {
         this.reportID = reportID;
         this.text = text;
         this.imageURL = imageURL;
@@ -69,7 +71,7 @@ public final class ReportDTO {
         return location;
     }
 
-    public Date getTimeReported() {
+    public LocalDateTime getTimeReported() {
         return timeReported;
     }
 

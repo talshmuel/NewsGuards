@@ -6,11 +6,15 @@ import logic.engine.location.history.management.OpenCageGeocodingService;
 import logic.engine.reliability.management.Verification;
 import logic.engine.user.User;
 import newsGuardServer.DatabaseConfig;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import java.awt.geom.Point2D;
 import java.sql.*;
 import java.util.*;
-import java.util.Date;
+//import java.util.Date;
 
 public class Report {
     private int ID;
@@ -24,10 +28,11 @@ public class Report {
     private User reporter;
     private boolean isAnonymousReport;
     private Point2D.Double location;
-    private Date timeReported;
+    //private Date timeReported;
+    private LocalDateTime timeReported; // Ensure this is LocalDateTime
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, Date timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
+    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, LocalDateTime timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
         if(!isReportRestoration) {
             createNewID();
         }
@@ -136,8 +141,10 @@ public class Report {
     }
     public void pushReportToDB(int reporter_id)
     {
-        java.util.Date utilDate = new java.util.Date();
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+//        java.sql.Date sqlDate = new java.sql.Date(timeReported.getDate());
+//        java.sql.Date sqlTime = new java.sql.Date(timeReported.getTime());
+        Timestamp timestamp = Timestamp.valueOf(timeReported);
+
         String sql = "INSERT INTO reports (report_id, text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Establish a database connection
@@ -151,7 +158,7 @@ public class Report {
             preparedStatement.setFloat(4, reliabilityRate);
             preparedStatement.setString(5, imageURL);
             preparedStatement.setBoolean(6, isAnonymousReport);
-            preparedStatement.setDate(7, sqlDate);
+            preparedStatement.setTimestamp(7, timestamp); // Use Timestamp for time_reported
             preparedStatement.setDouble(8, location.x);
             preparedStatement.setDouble(9, location.y);
             preparedStatement.setInt(10, countUsersWhoLiked);
