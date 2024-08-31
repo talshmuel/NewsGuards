@@ -7,19 +7,21 @@ public enum Verification {
     Pending;
 
     public static Verification fromInt(int i) {
-        switch (i) {
-            case 0:
-                return Approve;
+        switch (i){
             case 1:
-                return Deny;
+                return Verification.Approve;
             case 2:
-                return Avoid;
+                return Verification.Deny;
             case 3:
-                return Pending;
+                return Verification.Avoid;
             default:
-                throw new IllegalArgumentException("Unexpected value: " + i);
+                throw new IllegalArgumentException("Guard verification should be number 1-3");
         }
     }
+
+
+
+
 
     public int toInt() {
         switch (this) {
