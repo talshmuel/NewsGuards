@@ -17,11 +17,11 @@ public final class ReportDTO {
     private String reporterFullName;
     private boolean isAnonymousReport;
     private Point2D.Double location;
-    private String timeReported; // Ensure this is LocalDateTime
+    private Date timeReported; // Ensure this is LocalDateTime
     private int countUsersWhoLiked;
 
 
-    public ReportDTO(int reportID, String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked,int likesNumber, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, String timeReported) {
+    public ReportDTO(int reportID, String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked,int likesNumber, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
         this.reportID = reportID;
         this.text = text;
         this.imageURL = imageURL;
@@ -71,7 +71,7 @@ public final class ReportDTO {
         return location;
     }
 
-    public String getTimeReported() {
+    public Date getTimeReported() {
         return timeReported;
     }
 

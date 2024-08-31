@@ -14,18 +14,18 @@ public final class NewReportDTO {//
     private final String imageURL;
     private final int reporterID;
     private final boolean isAnonymousReport;
-    private String timeReported; // Ensure this is LocalDateTime
+    private Date dateTime; // Ensure this is LocalDateTime
     private double latitude;
     private double longitude;
 
-    public NewReportDTO(String text, String imageURL, int reporterID, boolean isAnonymousReport, String timeReported, double latitude, double longitude) {
+    public NewReportDTO(String text, String imageURL, int reporterID, boolean isAnonymousReport, Date dateTime, double latitude, double longitude) {
         this.text = text;
         this.imageURL = imageURL;
         this.reporterID = reporterID;
         this.isAnonymousReport = isAnonymousReport;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.timeReported = timeReported;
+        this.dateTime = dateTime;
     }
 
     public String getText() {
@@ -52,8 +52,7 @@ public final class NewReportDTO {//
         return latitude;
     }
 
-    public String getTimeReported() {
-        return timeReported;
+    public Date getDateTime() {
+        return dateTime;
     }
-
 }

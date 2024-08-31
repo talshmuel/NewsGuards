@@ -9,9 +9,6 @@ import newsGuardServer.DatabaseConfig;
 
 import java.awt.geom.Point2D;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Date;
 
@@ -55,11 +52,10 @@ public class ReportsManager {
             return reportDTOs;
     }
     public Report addNewReport(NewReportDTO newReportDTO, User reporter) {
-        LocalDateTime timeReported = LocalDateTime.parse(newReportDTO.getTimeReported(), DateTimeFormatter.ISO_DATE_TIME);
         Report newReport = new Report(newReportDTO.getText(), newReportDTO.getImageURL(),
                 reporter, newReportDTO.isAnonymousReport()
                 , new Point2D.Double(newReportDTO.getLatitude(),
-                newReportDTO.getLongitude()), timeReported, 0, false, 0); //לבדוק את ציון הריפורט!!!!
+                newReportDTO.getLongitude()), newReportDTO.getDateTime(), 0, false, 0); //לבדוק את ציון הריפורט!!!!
         reports.put(newReport.getID(), newReport);
         newReport.pushReportToDB((reporter.getID()));
         return newReport;
@@ -102,10 +98,8 @@ public class ReportsManager {
                     float reportRate = rs.getFloat("report_rate");
                     String imageURL = rs.getString("imageurl");
                     boolean isAnonymousReport = rs.getBoolean("is_anonymous_report");
-                    Timestamp timeReportedTimestamp = rs.getTimestamp("time_reported");
-
+                    Date timeReported = (java.util.Date)(rs.getDate("time_reported"));
                     // Convert SQL Date and Timestamp to LocalDate and LocalDateTime
-                    LocalDateTime timeReported = timeReportedTimestamp.toLocalDateTime(); // Convert Timestamp to LocalDateTime
                     double locationX = rs.getDouble("location_x");
                     double locationY = rs.getDouble("location_y");
                     int likesNumber = rs.getInt("likes_number");

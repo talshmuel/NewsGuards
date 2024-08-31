@@ -15,7 +15,7 @@ import java.awt.geom.Point2D;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-//import java.util.Date;
+
 
 public class Report {
     private int ID;
@@ -30,10 +30,10 @@ public class Report {
     private boolean isAnonymousReport;
     private Point2D.Double location;
     //private Date timeReported;
-    private LocalDateTime timeReported; // Ensure this is LocalDateTime
+    private java.util.Date timeReported; // Ensure this is LocalDateTime
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, LocalDateTime timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
+    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, java.util.Date timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
         if(!isReportRestoration) {
             createNewID();
         }
@@ -135,16 +135,14 @@ public class Report {
         for (Comment comment : comments){
             commentsDTO.add(comment.getCommentDTO());
         }
-        String dateTimeISO = timeReported.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         return new ReportDTO(ID ,text, imageURL, usersWhoLiked,countUsersWhoLiked, commentsDTO,
                 reliabilityRate, reporter.getID(), reporter.createFullName(), isAnonymousReport,
-                location, dateTimeISO);
+                location, timeReported);
     }
     public void pushReportToDB(int reporter_id)
     {
-//        java.sql.Date sqlDate = new java.sql.Date(timeReported.getDate());
-//        java.sql.Date sqlTime = new java.sql.Date(timeReported.getTime());
-        Timestamp timestamp = Timestamp.valueOf(timeReported);
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
         String sql = "INSERT INTO reports (report_id, text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -159,7 +157,7 @@ public class Report {
             preparedStatement.setFloat(4, reliabilityRate);
             preparedStatement.setString(5, imageURL);
             preparedStatement.setBoolean(6, isAnonymousReport);
-            preparedStatement.setTimestamp(7, timestamp); // Use Timestamp for time_reported
+            preparedStatement.setDate(7, sqlDate);
             preparedStatement.setDouble(8, location.x);
             preparedStatement.setDouble(9, location.y);
             preparedStatement.setInt(10, countUsersWhoLiked);

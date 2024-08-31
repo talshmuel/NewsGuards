@@ -195,9 +195,7 @@ public class User {
                     int reportRate = rs.getInt("report_rate");
                     String imageURL = rs.getString("imageurl");
                     boolean isAnonymousReport = rs.getBoolean("is_anonymous_report");
-                    Timestamp timeReportedTimestamp = rs.getTimestamp("time_reported");
-                    LocalDateTime timeReported = timeReportedTimestamp.toLocalDateTime(); // Convert Timestamp to LocalDateTime
-
+                    Date timeReported = rs.getDate("time_reported");
                     double locationX = rs.getDouble("location_x");
                     double locationY = rs.getDouble("location_y");
                     int likesNumber = rs.getInt("likes_number");
