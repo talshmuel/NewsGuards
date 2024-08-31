@@ -26,12 +26,10 @@ public enum Verification {
     public int toInt() {
         switch (this) {
             case Approve:
-                return 0;
-            case Deny:
                 return 1;
-            case Avoid:
+            case Deny:
                 return 2;
-            case Pending:
+            case Avoid:
                 return 3;
             default:
                 throw new IllegalArgumentException("Unexpected value");
