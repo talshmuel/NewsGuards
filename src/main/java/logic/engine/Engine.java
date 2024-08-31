@@ -54,11 +54,11 @@ public class Engine {
         reportsManager.addOrRemoveLike(reportID, userID);
     }
     public void addCommentToReport(CommentDTO commentDTO){
-        User commenter = usersManager.findUserByID(commentDTO.getReportID());
+        User commenter = usersManager.findUserByID(commentDTO.getCommenterUserID());
         if(commenter == null){
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ commenter.getID());
         }
-        Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getWriterUserID(), commentDTO.isAGuardComment(), false, 0, commenter.createFullName());
+        Comment newComment = new Comment(commentDTO.getReportID(), commentDTO.getText(), commentDTO.getCommenterUserID(), commentDTO.isAGuardComment(), false, 0, commenter.createFullName());
         reportsManager.addNewComment(newComment);
     }
     public void saveUserLocation(LocationDTO locationDTO){

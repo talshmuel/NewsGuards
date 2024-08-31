@@ -4,13 +4,13 @@ public final class CommentDTO {
     private final int reportID;
     private final String text;
     private final String commenterFullName;
-    private final int writerUserID;
+    private final int commenterUserID;
     private final boolean isAGuardComment;
 
-    public CommentDTO(int reportID, String text, int writerUserID, boolean isAGuardComment, String commenterFullName) {
+    public CommentDTO(int reportID, String text, int commenterUserID, boolean isAGuardComment, String commenterFullName) {
         this.reportID = reportID;
         this.text = text;
-        this.writerUserID = writerUserID;
+        this.commenterUserID = commenterUserID;
         this.isAGuardComment = isAGuardComment;
         this.commenterFullName = commenterFullName;
     }
@@ -19,8 +19,8 @@ public final class CommentDTO {
         return text;
     }
 
-    public int getWriterUserID() {
-        return writerUserID;
+    public int getCommenterUserID() {
+        return commenterUserID;
     }
 
     public boolean isAGuardComment() {
