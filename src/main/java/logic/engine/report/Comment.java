@@ -49,16 +49,17 @@ public class Comment {
     }
 
     public void addCommentToDatabase() {
-        String sql = "INSERT INTO comments (user_id, comment_id, report_id, text, isaguardcomment) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO comments (user_id, user_name, comment_id, report_id, text, isaguardcomment) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setInt(1, writerID);
-            preparedStatement.setInt(2, ID);
-            preparedStatement.setInt(3, reportID);
-            preparedStatement.setString(4, text);
-            preparedStatement.setBoolean(5, isAGuardComment);
+            preparedStatement.setString(2, commenterFullName);
+            preparedStatement.setInt(3, ID);
+            preparedStatement.setInt(4, reportID);
+            preparedStatement.setString(5, text);
+            preparedStatement.setBoolean(6 , isAGuardComment);
 
             preparedStatement.executeUpdate();
 

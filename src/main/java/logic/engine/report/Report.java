@@ -319,7 +319,7 @@ public class Report {
 
     public void restoreComments()
     {
-        String query = "SELECT user_id, comment_id, text, isaguardcomment FROM comments WHERE report_id = ?";
+        String query = "SELECT user_id, user_name, comment_id, text, isaguardcomment FROM comments WHERE report_id = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -331,10 +331,11 @@ public class Report {
                     int userId = rs.getInt("user_id");
                     int commentId = rs.getInt("comment_id");
                     String text = rs.getString("text");
+                    String userName = rs.getString("user_name");
                     boolean isGuardComment = rs.getBoolean("isaguardcomment");
 
                     // Create a Comment object
-                    Comment comment = new Comment(ID, text, userId, isGuardComment, true, commentId, "Tal added this, Nithan change if you need");
+                    Comment comment = new Comment(ID, text, userId, isGuardComment, true, commentId, userName);
                     comments.add(comment);
                 }
             }
