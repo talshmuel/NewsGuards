@@ -11,6 +11,7 @@ import java.awt.geom.Point2D;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Date;
 
@@ -54,10 +55,11 @@ public class ReportsManager {
             return reportDTOs;
     }
     public Report addNewReport(NewReportDTO newReportDTO, User reporter) {
+        LocalDateTime timeReported = LocalDateTime.parse(newReportDTO.getTimeReported(), DateTimeFormatter.ISO_DATE_TIME);
         Report newReport = new Report(newReportDTO.getText(), newReportDTO.getImageURL(),
                 reporter, newReportDTO.isAnonymousReport()
                 , new Point2D.Double(newReportDTO.getLatitude(),
-                newReportDTO.getLongitude()), newReportDTO.getTimeReported(), 0, false, 0); //לבדוק את ציון הריפורט!!!!
+                newReportDTO.getLongitude()), timeReported, 0, false, 0); //לבדוק את ציון הריפורט!!!!
         reports.put(newReport.getID(), newReport);
         newReport.pushReportToDB((reporter.getID()));
         return newReport;

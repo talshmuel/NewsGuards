@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 import java.awt.geom.Point2D;
 import java.sql.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 //import java.util.Date;
 
@@ -134,10 +135,10 @@ public class Report {
         for (Comment comment : comments){
             commentsDTO.add(comment.getCommentDTO());
         }
-
+        String dateTimeISO = timeReported.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         return new ReportDTO(ID ,text, imageURL, usersWhoLiked,countUsersWhoLiked, commentsDTO,
                 reliabilityRate, reporter.getID(), reporter.createFullName(), isAnonymousReport,
-                location, timeReported);
+                location, dateTimeISO);
     }
     public void pushReportToDB(int reporter_id)
     {
