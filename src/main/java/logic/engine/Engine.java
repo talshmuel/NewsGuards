@@ -9,6 +9,7 @@ import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
 import logic.engine.location.history.management.LocationHistoryManager;
+import logic.engine.reliability.management.ReportVerificationProcess;
 import logic.engine.reliability.management.Verification;
 import logic.engine.reliability.management.ReliabilityManager;
 import logic.engine.report.Comment;
@@ -16,8 +17,12 @@ import logic.engine.report.Report;
 import logic.engine.report.ReportsManager;
 import logic.engine.user.User;
 import logic.engine.user.UsersManager;
+import newsGuardServer.DatabaseConfig;
 import org.springframework.stereotype.Service;
 
+import java.awt.geom.Point2D;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -26,12 +31,14 @@ public class Engine {
     private final ReportsManager reportsManager;
     private LocationHistoryManager locationHistoryManager;
     private final ReliabilityManager reliabilityManager;
+    private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
     public Engine(){
         usersManager = new UsersManager();
         reportsManager = new ReportsManager();
         locationHistoryManager = new LocationHistoryManager();
         reliabilityManager = new ReliabilityManager();
+        restoreReportsInVerificationProcessFromDB();
     }
     public void createNewUser(NewUserDTO newUserData){
         usersManager.addNewUser(newUserData);
@@ -97,6 +104,45 @@ public class Engine {
         }
         reliabilityManager.updateGuardVerification(reportID, guardID, verificationEnum);
     }
+
+    public void restoreReportsInVerificationProcessFromDB()
+    {
+        ArrayList<Integer> reportsInVerificationProcess = new ArrayList<>();
+        String query = "SELECT report_id FROM reports_verification_process";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Loop through each row in the result set
+                while (rs.next()) {
+                    int reportID = rs.getInt("report_id");
+                    reportsInVerificationProcess.add(reportID);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log or handle exceptions as needed
+        }
+        restoreVerificationProcessInReliabilityManager(reportsInVerificationProcess);
+    }
+    private void restoreVerificationProcessInReliabilityManager(ArrayList<Integer> reportsID){
+        Map<Integer ,ReportVerificationProcess> reportVerificationProcesses = new HashMap();
+        for (Integer reportID : reportsID){
+
+            Map<User, Verification> guardsVerification = new HashMap<>();
+            Report report = reportsManager.findAndRestoreReportFromDB(reportID);
+            report.getGuardsVerifications().forEach((guardID, verification)->{
+                User guard = usersManager.findUserByID(guardID);
+                guardsVerification.put(guard, verification);
+
+            });
+            reportVerificationProcesses.put(reportID ,new ReportVerificationProcess(report, guardsVerification));
+
+        }
+        reliabilityManager.restoreVerificationProcess(reportVerificationProcesses);
+
+    }
+
 //    public Verification convertIntToGuardVerificationEnum(int guardVerificationInt){
 //        switch (guardVerificationInt){
 //            case 1:

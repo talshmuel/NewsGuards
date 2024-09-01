@@ -58,6 +58,7 @@ public class ReportsManager {
                 newReportDTO.getLongitude()), newReportDTO.getDateTime(), 0, false, 0); //לבדוק את ציון הריפורט!!!!
         reports.put(newReport.getID(), newReport);
         newReport.pushReportToDB((reporter.getID()));
+        newReport.addReportToVerificationProcessInDB();
         return newReport;
     }
 
@@ -98,7 +99,9 @@ public class ReportsManager {
                     float reportRate = rs.getFloat("report_rate");
                     String imageURL = rs.getString("imageurl");
                     boolean isAnonymousReport = rs.getBoolean("is_anonymous_report");
-                    Date timeReported = (java.util.Date)(rs.getDate("time_reported"));
+                    //Date timeReported = (java.util.Date)(rs.getDate("time_reported"));
+                    Timestamp timeStamp = rs.getTimestamp("time_reported");
+                    Date timeReported = timeStamp;
                     // Convert SQL Date and Timestamp to LocalDate and LocalDateTime
                     double locationX = rs.getDouble("location_x");
                     double locationY = rs.getDouble("location_y");

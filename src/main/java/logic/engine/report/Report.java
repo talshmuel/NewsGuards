@@ -24,7 +24,7 @@ public class Report {
     private final ArrayList<Integer> usersWhoLiked;
     private  int countUsersWhoLiked;
     private final ArrayList<Comment> comments;
-    private Map<Integer, Verification> guardsVerifications; //  todo Nitzan change in DB
+    private Map<Integer, Verification> guardsVerifications;
     private float reliabilityRate;
     private User reporter;
     private boolean isAnonymousReport;
@@ -41,6 +41,8 @@ public class Report {
         }
         else {
             this.reliabilityRate = reliabilityRate;
+
+
         }
         this.text = text;
         this.imageURL = imageURL;
@@ -51,7 +53,6 @@ public class Report {
         this.usersWhoLiked = new ArrayList<>();
         this.countUsersWhoLiked = likesNumber;
         this.comments = new ArrayList<>();
-        this.guardsVerifications = new HashMap<>();
     }
     public int getID() {
         return ID;
@@ -460,4 +461,21 @@ public class Report {
         }
     }
 
+    public void addReportToVerificationProcessInDB()
+    {
+        String sql = "INSERT INTO reports_verification_process (report_id) VALUES (?)";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, ID);
+                preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+    }
+
+    public Map<Integer, Verification> getGuardsVerifications() {
+        return guardsVerifications;
+    }
 }

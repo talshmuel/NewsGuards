@@ -2,7 +2,12 @@ package logic.engine.reliability.management;
 
 import logic.engine.report.Report;
 import logic.engine.user.User;
+import newsGuardServer.DatabaseConfig;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -23,13 +28,19 @@ public class ReportVerificationProcess {
     private Report report;
     private Map<Integer, GuardVerification> guardsVerification;
     private float reportReliabilityRate;
-    public ReportVerificationProcess(Report report, List<User> guards){
+    private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
+
+    public ReportVerificationProcess(Report report, Map<User, Verification> guards){
         this.report = report;
         guardsVerification = new HashMap<>();
-        for(User guard : guards){
-            guardsVerification.put(guard.getID(), new GuardVerification(guard, Verification.Pending));
+        guards.forEach((guard, verification)->{
+            guardsVerification.put(guard.getID(), new GuardVerification(guard, verification));
             guard.addReportToVerify(report);
-        }
+        });
+//        for(User guard : guards){
+//            guardsVerification.put(guard.getID(), new GuardVerification(guard, Verification.Pending));
+//            guard.addReportToVerify(report);
+//        }
         scheduler.schedule(this::stopWindowToVerify, timeWindowToVerify, units);
     }
     public void updateGuardVerification(int guardID, Verification verification){
@@ -45,6 +56,7 @@ public class ReportVerificationProcess {
             guardVerification.getGuard().removeReportToVerify(report.getID());
         }
         calculateReliabilityRate();
+        deleteReportFromVerificationProcessInDB();
     }
 
     public void calculateReliabilityRate(){
@@ -114,6 +126,21 @@ public class ReportVerificationProcess {
                 reporter.setReliabilityRate(currentReporterReliabilityRate + reporterRatingIncrease);
                 reporter.setReliabilityRateInDB(minNumberOfReliabilityStars);
             }
+        }
+    }
+
+    public void deleteReportFromVerificationProcessInDB()
+    {
+        String sql = "DELETE FROM reports_verification_process WHERE report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, report.getID());
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
         }
     }
 }

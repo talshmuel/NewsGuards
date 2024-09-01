@@ -4,6 +4,7 @@ import logic.engine.Engine;
 import logic.engine.report.Report;
 import logic.engine.user.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,14 +15,22 @@ public class ReliabilityManager {
     public ReliabilityManager(){
         runningVerificationProcesses = new HashMap<>();
 
+
     }
 
     public void startReportVerificationProcess(Report report, List<User> guards){
-        runningVerificationProcesses.put(report.getID(), new ReportVerificationProcess(report, guards));
+        Map<User, Verification> guardsVerification = new HashMap<>();
+        for (User guard : guards)
+            guardsVerification.put(guard, Verification.Pending);
+        runningVerificationProcesses.put(report.getID(), new ReportVerificationProcess(report, guardsVerification));
     }
 
     public void updateGuardVerification(int reportID, int guardID, Verification verification){
         runningVerificationProcesses.get(reportID).updateGuardVerification(guardID, verification);
+    }
+
+    public void restoreVerificationProcess(Map<Integer ,ReportVerificationProcess> reportVerificationProcesses){
+        runningVerificationProcesses = reportVerificationProcesses;
     }
 
 }

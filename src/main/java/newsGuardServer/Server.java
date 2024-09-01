@@ -34,6 +34,9 @@ public class Server {
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
 //        Engine engine = new Engine();
+//        ArrayList<ReportDTO> reports =  engine.getLastTwentyReportsToHomePage();
+//        System.out.println("the timeee" + reports.get(0).getTimeReported());
+        //Engine engine = new Engine();
 //
 //        // Create a LocalDateTime for timeReported and LocalDate for dateReported
 //        LocalDateTime timeReported = LocalDateTime.now();
@@ -128,7 +131,7 @@ public class Server {
     public static void checkComments()
     {
         Engine engine = new Engine();
-        Date date = new Date();
+
 //        NewUserDTO newUser = new NewUserDTO("nitzan hamalca", "sdeor","israel","nitaikoren@gmail.com","123456","http//:www.com","0525440635",true);
 //        engine.createNewUser(newUser);
 //        NewReportDTO newReport = new NewReportDTO("hello everyone ,this is nitzan","http://", 1, true,date,1,1);
@@ -144,8 +147,6 @@ public class Server {
         LoginResponseDTO loginResponseDTO = engine.checkLoginDetails(login);
         System.out.println("the id is:" + loginResponseDTO.getUserId());
     }
-
-
 
 
 }
