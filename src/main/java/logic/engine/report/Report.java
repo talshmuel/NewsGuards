@@ -24,7 +24,7 @@ public class Report {
     private final ArrayList<Integer> usersWhoLiked;
     private  int countUsersWhoLiked;
     private final ArrayList<Comment> comments;
-    private Map<Integer, Verification> guardsVerifications; //  todo Nitzan change in DB
+    private Map<Integer, Verification> guardsVerifications;
     private float reliabilityRate;
     private User reporter;
     private boolean isAnonymousReport;
@@ -41,6 +41,8 @@ public class Report {
         }
         else {
             this.reliabilityRate = reliabilityRate;
+
+
         }
         this.text = text;
         this.imageURL = imageURL;
@@ -51,7 +53,6 @@ public class Report {
         this.usersWhoLiked = new ArrayList<>();
         this.countUsersWhoLiked = likesNumber;
         this.comments = new ArrayList<>();
-        this.guardsVerifications = new HashMap<>();
     }
     public int getID() {
         return ID;
@@ -474,4 +475,7 @@ public class Report {
         }
     }
 
+    public Map<Integer, Verification> getGuardsVerifications() {
+        return guardsVerifications;
+    }
 }

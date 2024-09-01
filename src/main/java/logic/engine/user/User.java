@@ -36,7 +36,7 @@ public class User {
             restoreUserReports();
             //restoreUserGuardReports();
             reportsThatTheUserIsAGuardOf = new HashMap<>();//todo delete this, it is just checking
-            reportsThatNeedToVerify = new HashMap<>();//todo delete this, it is just checking
+            restoreReportsThatNeedToVerify();
         }
         else{
             createNewID();
@@ -303,8 +303,9 @@ public class User {
         }
     }
 
-    public void restoreReportsThatNeedToVerify()
+    private void restoreReportsThatNeedToVerify()
     {
+        reportsThatNeedToVerify = new HashMap<>();
         String query = "SELECT report_id FROM guards_verification WHERE user_id = ? AND user_response = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());

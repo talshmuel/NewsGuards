@@ -30,13 +30,17 @@ public class ReportVerificationProcess {
     private float reportReliabilityRate;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public ReportVerificationProcess(Report report, List<User> guards){
+    public ReportVerificationProcess(Report report, Map<User, Verification> guards){
         this.report = report;
         guardsVerification = new HashMap<>();
-        for(User guard : guards){
-            guardsVerification.put(guard.getID(), new GuardVerification(guard, Verification.Pending));
+        guards.forEach((guard, verification)->{
+            guardsVerification.put(guard.getID(), new GuardVerification(guard, verification));
             guard.addReportToVerify(report);
-        }
+        });
+//        for(User guard : guards){
+//            guardsVerification.put(guard.getID(), new GuardVerification(guard, Verification.Pending));
+//            guard.addReportToVerify(report);
+//        }
         scheduler.schedule(this::stopWindowToVerify, timeWindowToVerify, units);
     }
     public void updateGuardVerification(int guardID, Verification verification){

@@ -9,6 +9,7 @@ import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
 import logic.engine.location.history.management.LocationHistoryManager;
+import logic.engine.reliability.management.ReportVerificationProcess;
 import logic.engine.reliability.management.Verification;
 import logic.engine.reliability.management.ReliabilityManager;
 import logic.engine.report.Comment;
@@ -122,6 +123,24 @@ public class Engine {
         } catch (SQLException e) {
             e.printStackTrace(); // Log or handle exceptions as needed
         }
+        restoreVerificationProcessInReliabilityManager(reportsInVerificationProcess);
+    }
+    private void restoreVerificationProcessInReliabilityManager(ArrayList<Integer> reportsID){
+        Map<Integer ,ReportVerificationProcess> reportVerificationProcesses = new HashMap();
+        for (Integer reportID : reportsID){
+
+            Map<User, Verification> guardsVerification = new HashMap<>();
+            Report report = reportsManager.findAndRestoreReportFromDB(reportID);
+            report.getGuardsVerifications().forEach((guardID, verification)->{
+                User guard = usersManager.findUserByID(guardID);
+                guardsVerification.put(guard, verification);
+
+            });
+            reportVerificationProcesses.put(reportID ,new ReportVerificationProcess(report, guardsVerification));
+
+        }
+        reliabilityManager.restoreVerificationProcess(reportVerificationProcesses);
+
     }
 
 //    public Verification convertIntToGuardVerificationEnum(int guardVerificationInt){
