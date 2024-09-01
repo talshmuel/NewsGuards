@@ -146,9 +146,9 @@ public class Report {
     }
     public void pushReportToDB(int reporter_id)
     {
-        java.util.Date utilDate = new java.util.Date();
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-
+//        java.util.Date utilDate = new java.util.Date();
+//        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        Timestamp timestamp = new Timestamp(timeReported.getTime());
         String sql = "INSERT INTO reports (report_id, text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Establish a database connection
@@ -162,7 +162,7 @@ public class Report {
             preparedStatement.setFloat(4, reliabilityRate);
             preparedStatement.setString(5, imageURL);
             preparedStatement.setBoolean(6, isAnonymousReport);
-            preparedStatement.setDate(7, sqlDate);
+            preparedStatement.setTimestamp(7, timestamp);
             preparedStatement.setDouble(8, location.x);
             preparedStatement.setDouble(9, location.y);
             preparedStatement.setInt(10, countUsersWhoLiked);
