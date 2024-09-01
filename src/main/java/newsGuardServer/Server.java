@@ -33,9 +33,9 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
-        Engine engine = new Engine();
-        ArrayList<ReportDTO> reports =  engine.getLastTwentyReportsToHomePage();
-        System.out.println("the timeee" + reports.get(0).getTimeReported());
+//        Engine engine = new Engine();
+//        ArrayList<ReportDTO> reports =  engine.getLastTwentyReportsToHomePage();
+//        System.out.println("the timeee" + reports.get(0).getTimeReported());
         //Engine engine = new Engine();
 //
 //        // Create a LocalDateTime for timeReported and LocalDate for dateReported
