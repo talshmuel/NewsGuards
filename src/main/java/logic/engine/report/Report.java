@@ -457,4 +457,18 @@ public class Report {
         }
     }
 
+    public void addReportToVerificationProcessInDB()
+    {
+        String sql = "INSERT INTO reports_verification_process (report_id) VALUES (?)";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, ID);
+                preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+    }
+
 }

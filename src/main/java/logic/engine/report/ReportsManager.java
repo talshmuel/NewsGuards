@@ -60,6 +60,7 @@ public class ReportsManager {
                 newReportDTO.getLongitude()), newReportDTO.getTimeReported(), 0, false, 0); //לבדוק את ציון הריפורט!!!!
         reports.put(newReport.getID(), newReport);
         newReport.pushReportToDB((reporter.getID()));
+        newReport.addReportToVerificationProcessInDB();
         return newReport;
     }
 

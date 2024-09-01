@@ -33,7 +33,7 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
-//        Engine engine = new Engine();
+        //Engine engine = new Engine();
 //
 //        // Create a LocalDateTime for timeReported and LocalDate for dateReported
 //        LocalDateTime timeReported = LocalDateTime.now();
@@ -145,8 +145,6 @@ public class Server {
         LoginResponseDTO loginResponseDTO = engine.checkLoginDetails(login);
         System.out.println("the id is:" + loginResponseDTO.getUserId());
     }
-
-
 
 
 }
