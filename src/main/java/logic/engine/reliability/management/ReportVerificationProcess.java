@@ -14,7 +14,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ReportVerificationProcess {
-    int timeWindowToVerify = 1; //todo change, it is just a try
+    int timeWindowToVerify = 5; //todo change, it is just a try
     TimeUnit units = TimeUnit.MINUTES;//todo change, it is just a try
     float maxNumberOfReliabilityStars = 5;
     float minNumberOfReliabilityStars = 0;

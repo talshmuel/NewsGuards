@@ -82,6 +82,8 @@ public class ReportsManager {
         report.addNewComment(comment);
     }
     public Report findAndRestoreReportFromDB(int reportID){
+        if(reports.containsKey(reportID))
+            return reports.get(reportID);
         String query = "SELECT  text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number " +
                 "FROM reports WHERE report_id = ?";
 

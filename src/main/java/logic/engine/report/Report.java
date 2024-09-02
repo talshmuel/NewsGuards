@@ -53,6 +53,7 @@ public class Report {
         this.usersWhoLiked = new ArrayList<>();
         this.countUsersWhoLiked = likesNumber;
         this.comments = new ArrayList<>();
+        this.guardsVerifications = new HashMap<>();
     }
     public int getID() {
         return ID;
