@@ -14,6 +14,8 @@ public enum Verification {
                 return Verification.Deny;
             case 3:
                 return Verification.Avoid;
+            case 4:
+                return Verification.Pending;
             default:
                 throw new IllegalArgumentException("Guard verification should be number 1-3");
         }
@@ -31,6 +33,8 @@ public enum Verification {
                 return 2;
             case Avoid:
                 return 3;
+            case Pending:
+                return 4;
             default:
                 throw new IllegalArgumentException("Unexpected value");
         }

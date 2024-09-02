@@ -53,6 +53,7 @@ public class Report {
         this.usersWhoLiked = new ArrayList<>();
         this.countUsersWhoLiked = likesNumber;
         this.comments = new ArrayList<>();
+        this.guardsVerifications = new HashMap<>();
     }
     public int getID() {
         return ID;
@@ -430,7 +431,7 @@ public class Report {
             for (Integer integer : guardsID) {
                 preparedStatement.setInt(1, ID);
                 preparedStatement.setInt(2, integer);
-                preparedStatement.setInt(3, 3);
+                preparedStatement.setInt(3, Verification.Pending.toInt());
                 preparedStatement.executeUpdate();
             }
 

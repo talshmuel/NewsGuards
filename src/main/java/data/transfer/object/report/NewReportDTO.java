@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
-public final class NewReportDTO {//
+public final class NewReportDTO {
     private final String text;
     private final String imageURL;
     private final int reporterID;
