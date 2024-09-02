@@ -8,13 +8,13 @@ public enum Verification {
 
     public static Verification fromInt(int i) {
         switch (i){
-            case 1:
+            case 0:
                 return Verification.Approve;
-            case 2:
+            case 1:
                 return Verification.Deny;
-            case 3:
+            case 2:
                 return Verification.Avoid;
-            case 4:
+            case 3:
                 return Verification.Pending;
             default:
                 throw new IllegalArgumentException("Guard verification should be number 1-3");
@@ -28,13 +28,13 @@ public enum Verification {
     public int toInt() {
         switch (this) {
             case Approve:
-                return 1;
+                return 0;
             case Deny:
-                return 2;
+                return 1;
             case Avoid:
-                return 3;
+                return 2;
             case Pending:
-                return 4;
+                return 3;
             default:
                 throw new IllegalArgumentException("Unexpected value");
         }
