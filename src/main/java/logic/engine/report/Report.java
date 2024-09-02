@@ -431,7 +431,7 @@ public class Report {
             for (Integer integer : guardsID) {
                 preparedStatement.setInt(1, ID);
                 preparedStatement.setInt(2, integer);
-                preparedStatement.setInt(3, 3);
+                preparedStatement.setInt(3, Verification.Pending.toInt());
                 preparedStatement.executeUpdate();
             }
 
