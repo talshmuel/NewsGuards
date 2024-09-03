@@ -17,7 +17,6 @@ public class ReportVerificationProcess {
     float minNumberOfReliabilityStars = 0;
     float guardsRatingDecrease = 0.2f;
     float guardRatingIncrease = 0.1f;
-
     float reporterRatingDecrease = 1f;
     float reporterRatingIncrease = 0.1f;
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);

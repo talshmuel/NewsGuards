@@ -35,11 +35,8 @@ public class User {
         if(isUserRestoration) {
             restoreUser(newUserData);
             restoreUserReports();
-            //restoreUserGuardReports();
-            //reportsThatTheUserIsAGuardOf = new HashMap<>();//todo delete this, it is just checking
-            if(ID == Engine.staticLoginUserId)
-                restoreReportsThatNeedToVerify();
         }
+
         else{
             createNewID();
             reportsThatTheUserIsAGuardOf = new HashMap<>();
@@ -56,7 +53,9 @@ public class User {
         return registrationDetails.getFirstName() + " " + registrationDetails.getLastName() + " ";
     }
 
-
+    public void setReportsThatNeedToVerify(int reportID,Report report){
+        reportsThatNeedToVerify.put(reportID, report);
+    }
     public String getEmail(){
         return registrationDetails.getEmail();
     }
@@ -302,30 +301,6 @@ public class User {
 
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
-        }
-    }
-
-    private void restoreReportsThatNeedToVerify()
-    {
-        ReportsManager reportsManager = new ReportsManager();
-        reportsThatNeedToVerify = new HashMap<>();
-        String query = "SELECT report_id FROM guards_verification WHERE user_id = ? AND user_response = ?";
-
-        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
-            PreparedStatement stmt = connection.prepareStatement(query)) {
-
-            stmt.setInt(1, ID);
-            stmt.setInt(2, (Verification.Pending).toInt());
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    int reportID = rs.getInt("report_id");
-                    Report report = reportsManager.findAndRestoreReportFromDB(reportID);
-                    reportsThatNeedToVerify.put(reportID,report);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions (e.g., log errors)
         }
     }
 }

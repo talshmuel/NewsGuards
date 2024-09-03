@@ -44,7 +44,7 @@ public class Engine {
     }
     public LoginResponseDTO checkLoginDetails(LoginDTO loginDTO){
         LoginResponseDTO loginResponseDTO= usersManager.checkLoginDetailsAndGetUserID(loginDTO);
-        staticLoginUserId = loginResponseDTO.getUserId();
+        restoreReportsThatNeedToVerify(loginDTO.getEmail());
         return loginResponseDTO;
     }
     public void addNewReportAndStartVerificationProcess(NewReportDTO newReportDTO){
@@ -142,6 +142,29 @@ public class Engine {
         }
         reliabilityManager.restoreVerificationProcess(reportVerificationProcesses);
 
+    }
+
+    public void restoreReportsThatNeedToVerify(String loggedInUserEmail)
+    {
+        User loggedInUser = usersManager.findUserByEmail(loggedInUserEmail);
+        String query = "SELECT report_id FROM guards_verification WHERE user_id = ? AND user_response = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            stmt.setInt(1, loggedInUser.getID());
+            stmt.setInt(2, (Verification.Pending).toInt());
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    int reportID = rs.getInt("report_id");
+                    Report report = reportsManager.findAndRestoreReportFromDB(reportID);
+                    loggedInUser.setReportsThatNeedToVerify(reportID, report);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions (e.g., log errors)
+        }
     }
 
 //    public Verification convertIntToGuardVerificationEnum(int guardVerificationInt){

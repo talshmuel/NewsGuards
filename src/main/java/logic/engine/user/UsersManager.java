@@ -45,13 +45,13 @@ public class UsersManager {
         else
             throw new InvalidPasswordException("Incorrect password");
     }
-    private User findUserByEmail(String email){
+    public User findUserByEmail(String email){
         for (Map.Entry<Integer, User> IDUserPair : usersByID.entrySet()) {
             if (Objects.equals(IDUserPair.getValue().getEmail(), email)) {
                 return IDUserPair.getValue();
             }
         }
-        return null;
+        return findAndRestoreUserByEmailFromDB(email);
     }
     public static User findAndRestoreUserByEmailFromDB(String email) {
         String query = "SELECT user_id, last_name, first_name, country, phone_number, password, reliability_scale, imageurl, location_access_permission " +
