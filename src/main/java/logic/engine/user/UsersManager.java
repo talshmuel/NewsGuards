@@ -26,7 +26,7 @@ public class UsersManager {
         {
             throw new IllegalArgumentException("Please fill all fields.");
         }
-        User newUser = new User(newUserData,3,false);
+        User newUser = new User(newUserData,3,false, false);
         usersByID.put(newUser.getID(), newUser);
         newUser.pushUserToDB();
     }
@@ -79,7 +79,7 @@ public class UsersManager {
 
                     // Create NewUserDTO and User objects
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, email, password, imageURL, phoneNumber, locationAccessPermission);
-                    User user = new User(newUser, reliabilityScale, true);
+                    User user = new User(newUser, reliabilityScale, true, true);
                     user.restoreUserID(user_id);
                     return user;
                 }
@@ -136,7 +136,7 @@ public class UsersManager {
 
                     // Create NewUserDTO and User objects
                     NewUserDTO newUser = new NewUserDTO(firstName, lastName, country, newEmail, password, imageURL, phoneNumber, locationAccessPermission);
-                    User user = new User(newUser, reliabilityScale, true);
+                    User user = new User(newUser, reliabilityScale, true, false);
                     user.restoreUserID(userID);
                     //user.restoreReportsThatNeedToVerify();
                     return user;
