@@ -23,8 +23,8 @@ public class User {
     private UserRegistrationDetails registrationDetails;
     private ArrayList<Report> reports = new ArrayList<>();
     private ArrayList<Notification> notifications;
-    private Map<Integer, Verification> reportsThatTheUserIsAGuardOf;//mapped by reportID
-    private Map<Integer, Report> reportsThatNeedToVerify;//mapped by reportID
+    private Map<Integer, Verification> reportsThatTheUserIsAGuardOf = new HashMap<>();;//mapped by reportID
+    private Map<Integer, Report> reportsThatNeedToVerify = new HashMap<>();;//mapped by reportID
     private float reliabilityRate;
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 

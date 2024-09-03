@@ -4,18 +4,15 @@ import logic.engine.report.Report;
 import logic.engine.user.User;
 import newsGuardServer.DatabaseConfig;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ReportVerificationProcess {
-    int timeWindowToVerify = 30; //todo change, it is just a try
-    TimeUnit units = TimeUnit.MINUTES;//todo change, it is just a try
+    int timeWindowToVerify = 7; //todo change, it is just a try
+    TimeUnit units = TimeUnit.HOURS;//todo change, it is just a try
     float maxNumberOfReliabilityStars = 5;
     float minNumberOfReliabilityStars = 0;
     float guardsRatingDecrease = 0.2f;
@@ -139,6 +136,17 @@ public class ReportVerificationProcess {
             preparedStatement.setInt(1, report.getID());
             preparedStatement.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle SQL exception
+        }
+
+        sql = "DELETE FROM guards_verification WHERE report_id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setInt(1, report.getID());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
