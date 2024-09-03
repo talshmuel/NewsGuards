@@ -20,13 +20,12 @@ import logic.engine.user.UsersManager;
 import newsGuardServer.DatabaseConfig;
 import org.springframework.stereotype.Service;
 
-import java.awt.geom.Point2D;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 public class Engine {
+    public static int staticLoginUserId;
     private final UsersManager usersManager;
     private final ReportsManager reportsManager;
     private LocationHistoryManager locationHistoryManager;
@@ -44,7 +43,9 @@ public class Engine {
         usersManager.addNewUser(newUserData);
     }
     public LoginResponseDTO checkLoginDetails(LoginDTO loginDTO){
-        return usersManager.checkLoginDetailsAndGetUserID(loginDTO);
+        LoginResponseDTO loginResponseDTO= usersManager.checkLoginDetailsAndGetUserID(loginDTO);
+        staticLoginUserId = loginResponseDTO.getUserId();
+        return loginResponseDTO;
     }
     public void addNewReportAndStartVerificationProcess(NewReportDTO newReportDTO){
         User reporter = usersManager.findUserByID(newReportDTO.getReporterID());

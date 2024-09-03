@@ -3,6 +3,7 @@ package logic.engine.user;
 import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
+import logic.engine.Engine;
 import logic.engine.notification.Notification;
 import logic.engine.reliability.management.Verification;
 //import logic.engine.reliability.management.Rate;
@@ -29,14 +30,14 @@ public class User {
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
 
-    public User(NewUserDTO newUserData, float reliability_Rate, Boolean isUserRestoration, Boolean isLoggedInUser)
+    public User(NewUserDTO newUserData, float reliability_Rate, Boolean isUserRestoration)
     {
         if(isUserRestoration) {
             restoreUser(newUserData);
             restoreUserReports();
             //restoreUserGuardReports();
-            reportsThatTheUserIsAGuardOf = new HashMap<>();//todo delete this, it is just checking
-            if(isLoggedInUser)
+            //reportsThatTheUserIsAGuardOf = new HashMap<>();//todo delete this, it is just checking
+            if(ID == Engine.staticLoginUserId)
                 restoreReportsThatNeedToVerify();
         }
         else{
