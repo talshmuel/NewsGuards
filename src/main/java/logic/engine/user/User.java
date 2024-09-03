@@ -29,14 +29,15 @@ public class User {
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
 
-    public User(NewUserDTO newUserData, float reliability_Rate, Boolean isUserRestoration)
+    public User(NewUserDTO newUserData, float reliability_Rate, Boolean isUserRestoration, Boolean isLoggedInUser)
     {
         if(isUserRestoration) {
             restoreUser(newUserData);
             restoreUserReports();
             //restoreUserGuardReports();
             reportsThatTheUserIsAGuardOf = new HashMap<>();//todo delete this, it is just checking
-            restoreReportsThatNeedToVerify();
+            if(isLoggedInUser)
+                restoreReportsThatNeedToVerify();
         }
         else{
             createNewID();
@@ -305,11 +306,12 @@ public class User {
 
     private void restoreReportsThatNeedToVerify()
     {
+        ReportsManager reportsManager = new ReportsManager();
         reportsThatNeedToVerify = new HashMap<>();
         String query = "SELECT report_id FROM guards_verification WHERE user_id = ? AND user_response = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
-             PreparedStatement stmt = connection.prepareStatement(query)) {
+            PreparedStatement stmt = connection.prepareStatement(query)) {
 
             stmt.setInt(1, ID);
             stmt.setInt(2, (Verification.Pending).toInt());
@@ -317,7 +319,6 @@ public class User {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     int reportID = rs.getInt("report_id");
-                    ReportsManager reportsManager = new ReportsManager();
                     Report report = reportsManager.findAndRestoreReportFromDB(reportID);
                     reportsThatNeedToVerify.put(reportID,report);
                 }
