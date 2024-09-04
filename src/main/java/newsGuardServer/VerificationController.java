@@ -24,7 +24,6 @@ public class VerificationController {
     @GetMapping("/get-reports-that-guard-need-to-verify")
     public ResponseEntity<ArrayList<ReportDTO>> getReportsThatGuardNeedToVerify(@RequestParam int guardID) {
         try {
-            System.out.println("hiiiii");
             ArrayList<ReportDTO> response = engine.getReportsThatGuardNeedToVerify(guardID);
             for (ReportDTO report: response)
                 System.out.println("nitzan" + report.getReportID());
