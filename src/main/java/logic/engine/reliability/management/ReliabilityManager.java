@@ -1,5 +1,6 @@
 package logic.engine.reliability.management;
 
+import logic.engine.Engine;
 import logic.engine.report.Report;
 import logic.engine.user.User;
 
@@ -13,19 +14,23 @@ public class ReliabilityManager {
 
     public ReliabilityManager(){
         runningVerificationProcesses = new HashMap<>();
-    }
 
-    public void startReportVerificationProcess(Report reportToVerify, List<Integer> reportGuards){
-        ReportVerificationProcess newVerificationProcess = new ReportVerificationProcess(reportToVerify, reportGuards);
-        runningVerificationProcesses.put(newVerificationProcess.getID(), newVerificationProcess);
-        //newVerificationProcess.sendVerificationRequestToGuards();
-        
-    }
-    public void getRunningVerificationProcesses(){
 
     }
-    public void setGuardVerificationResponse(int verificationProcessID, Integer guard, GuardResponse response){
-        runningVerificationProcesses.get(verificationProcessID).setGuardResponse(guard, response);
+
+    public void startReportVerificationProcess(Report report, List<User> guards){
+        Map<User, Verification> guardsVerification = new HashMap<>();
+        for (User guard : guards)
+            guardsVerification.put(guard, Verification.Pending);
+        runningVerificationProcesses.put(report.getID(), new ReportVerificationProcess(report, guardsVerification));
+    }
+
+    public void updateGuardVerification(int reportID, int guardID, Verification verification){
+        runningVerificationProcesses.get(reportID).updateGuardVerification(guardID, verification);
+    }
+
+    public void restoreVerificationProcess(Map<Integer ,ReportVerificationProcess> reportVerificationProcesses){
+        runningVerificationProcesses = reportVerificationProcesses;
     }
 
 }

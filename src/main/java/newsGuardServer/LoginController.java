@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173") // Your frontend origin
+
 @RestController
 @RequestMapping("/login")
 public class LoginController {
@@ -18,21 +20,23 @@ public class LoginController {
         this.engine = engine;
     }
 
-    @CrossOrigin(origins = "http://192.168.1.157:5173") // Your frontend origin
     @PostMapping()
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginDTO userLoginDTO) {
         try {
-            Integer userID = engine.checkLoginDetails(userLoginDTO);
+            //LoginResponseDTO loginResponseDTO = engine.checkLoginDetails(userLoginDTO);
 
-            LoginResponseDTO response = new LoginResponseDTO("Login successful", userID);
+            //LoginResponseDTO response = new LoginResponseDTO("Login successful", userID, );
+            LoginResponseDTO response = engine.checkLoginDetails(userLoginDTO);
             return ResponseEntity.ok(response);
 
         } catch (InvalidPasswordException | IllegalArgumentException e) {
-            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null);
+            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null, null);
+            System.out.print(e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 
         } catch (Exception e) {
-            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null);
+            System.out.print(e.getMessage());
+            LoginResponseDTO response = new LoginResponseDTO(e.getMessage(), null, null);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }

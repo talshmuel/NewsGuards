@@ -4,6 +4,8 @@ import data.transfer.object.location.LocationDTO;
 
 import javax.xml.stream.Location;
 import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,7 +14,7 @@ public final class NewReportDTO {
     private final String imageURL;
     private final int reporterID;
     private final boolean isAnonymousReport;
-    private Date dateTime;
+    private Date dateTime; // Ensure this is LocalDateTime
     private double latitude;
     private double longitude;
 

@@ -40,28 +40,24 @@ public class UserRegistrationDetails {
     public boolean checkUserPassword(String passwordToCheck){
         return Objects.equals(passwordToCheck, this.password);
     }
-    public void pushUserToDB(int id)
+    public void pushRegistrationDetailsToDB(int user_id)
     {
-
-        String sql = "INSERT INTO users (user_id, first_name, last_name, country, email, phone_number, password, reliability_scale, imageurl,location_access_permission) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "UPDATE users SET first_name = ?, last_name = ?, country = ?, email = ?, phone_number = ?, password = ?, imageurl = ?, location_access_permission = ? WHERE user_id = ?";
 
         // Establish a database connection
         try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(),DB_CONFIG.getUsername(),DB_CONFIG.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             // Set the parameters
-            preparedStatement.setInt(1, id);
-            preparedStatement.setString(2, firstName);
-            preparedStatement.setString(3, lastName);
-            preparedStatement.setString(4, country);
-            preparedStatement.setString(5, email);
-            preparedStatement.setString(6, phoneNumber);
-            preparedStatement.setString(7, password);
-            preparedStatement.setInt(8, 3); // Reliability scale
-            preparedStatement.setString(9, imageURL);
-            preparedStatement.setBoolean(10, locationAccessPermission);
-
+            preparedStatement.setString(1,firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, country);
+            preparedStatement.setString(4, email);
+            preparedStatement.setString(5, phoneNumber);
+            preparedStatement.setString(6, password);
+            preparedStatement.setString(7, imageURL);
+            preparedStatement.setBoolean(8, locationAccessPermission);
+            preparedStatement.setInt(9, user_id);
 
             // Execute the insert operation
             preparedStatement.executeUpdate();
@@ -69,6 +65,34 @@ public class UserRegistrationDetails {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
+
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public boolean getLocationAccessPermission() {
+        return locationAccessPermission;
+    }
 }

@@ -3,22 +3,24 @@ package data.transfer.object.report;
 public final class CommentDTO {
     private final int reportID;
     private final String text;
-    private final int writerUserID;
+    private final String commenterFullName;
+    private final int commenterUserID;
     private final boolean isAGuardComment;
 
-    public CommentDTO(int reportID, String text, int writerUserID, boolean isAGuardComment) {
+    public CommentDTO(int reportID, String text, int commenterUserID, boolean isAGuardComment, String commenterFullName) {
         this.reportID = reportID;
         this.text = text;
-        this.writerUserID = writerUserID;
+        this.commenterUserID = commenterUserID;
         this.isAGuardComment = isAGuardComment;
+        this.commenterFullName = commenterFullName;
     }
 
     public String getText() {
         return text;
     }
 
-    public int getWriterUserID() {
-        return writerUserID;
+    public int getCommenterUserID() {
+        return commenterUserID;
     }
 
     public boolean isAGuardComment() {
@@ -27,5 +29,9 @@ public final class CommentDTO {
 
     public int getReportID() {
         return reportID;
+    }
+
+    public String getCommenterFullName() {
+        return commenterFullName;
     }
 }
