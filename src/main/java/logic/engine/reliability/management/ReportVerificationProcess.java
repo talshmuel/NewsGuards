@@ -31,7 +31,7 @@ public class ReportVerificationProcess {
         guardsVerification = new HashMap<>();
         guards.forEach((guard, verification)->{
             guardsVerification.put(guard.getID(), new GuardVerification(guard, verification));
-            guard.addReportToVerify(report);
+            //guard.addReportToVerify(report);
         });
 //        for(User guard : guards){
 //            guardsVerification.put(guard.getID(), new GuardVerification(guard, Verification.Pending));
