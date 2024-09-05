@@ -143,7 +143,7 @@ public class Report {
         }
         return new ReportDTO(ID ,text, imageURL, usersWhoLiked,countUsersWhoLiked, commentsDTO,
                 reliabilityRate, reporter.getID(), reporter.createFullName(), isAnonymousReport,
-                location, timeReported);
+                location, timeReported, reporter.getReliabilityRate());
     }
     public void pushReportToDB(int reporter_id)
     {

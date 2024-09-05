@@ -20,8 +20,9 @@ public final class ReportDTO {
     private Date timeReported; // Ensure this is LocalDateTime
     private int countUsersWhoLiked;
 
+    private float reporterReliabilityRate;
 
-    public ReportDTO(int reportID, String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked,int likesNumber, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported) {
+    public ReportDTO(int reportID, String text, String imageURL, ArrayList<Integer> IDOfUsersWhoLiked,int likesNumber, ArrayList<CommentDTO> comments, float reliabilityRate, int reporterID, String reporterFullName, boolean isAnonymousReport, Point2D.Double location, Date timeReported, float reporterReliabilityRate) {
         this.reportID = reportID;
         this.text = text;
         this.imageURL = imageURL;
@@ -35,6 +36,7 @@ public final class ReportDTO {
         this.isAnonymousReport = isAnonymousReport;
         this.location = location;
         this.timeReported = timeReported;
+        this.reporterReliabilityRate = reporterReliabilityRate;
     }
 
     public String getText() {
@@ -86,5 +88,7 @@ public final class ReportDTO {
     public int getCountUsersWhoLiked() {
         return countUsersWhoLiked;
     }
+
+    public float getReporterReliabilityRate(){return reporterReliabilityRate;}
 
 }

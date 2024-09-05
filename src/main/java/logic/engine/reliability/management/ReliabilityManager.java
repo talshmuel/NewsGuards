@@ -25,8 +25,8 @@ public class ReliabilityManager {
         runningVerificationProcesses.put(report.getID(), new ReportVerificationProcess(report, guardsVerification));
     }
 
-    public void updateGuardVerification(int reportID, int guardID, Verification verification){
-        runningVerificationProcesses.get(reportID).updateGuardVerification(guardID, verification);
+    public void updateGuardVerification(int reportID, int guardID, Verification verification, User guard){
+        runningVerificationProcesses.get(reportID).updateGuardVerification(guardID, verification, guard);
     }
 
     public void restoreVerificationProcess(Map<Integer ,ReportVerificationProcess> reportVerificationProcesses){

@@ -103,7 +103,7 @@ public class Engine {
         if(reportsManager.findAndRestoreReportFromDB(reportID) == null){
             throw new NoSuchElementException("Error - there is no report in the system whose ID number is: " + reportID);
         }
-        reliabilityManager.updateGuardVerification(reportID, guardID, verificationEnum);
+        reliabilityManager.updateGuardVerification(reportID, guardID, verificationEnum,usersManager.getUser(guardID));
     }
 
     public void restoreReportsInVerificationProcessFromDB()

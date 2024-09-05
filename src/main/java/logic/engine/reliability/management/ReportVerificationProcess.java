@@ -39,11 +39,11 @@ public class ReportVerificationProcess {
 //        }
         scheduler.schedule(this::stopWindowToVerify, timeWindowToVerify, units);
     }
-    public void updateGuardVerification(int guardID, Verification verification){
+    public void updateGuardVerification(int guardID, Verification verification,User guard){
         report.updateGuardVerification(guardID, verification);
         GuardVerification guardVerification = guardsVerification.get(guardID);
         guardVerification.setVerification(verification);
-        guardVerification.getGuard().updateGuardVerification(report.getID(), verification);
+        guard.updateGuardVerification(report.getID(), verification);
     }
     private void stopWindowToVerify() {
         scheduler.shutdown();

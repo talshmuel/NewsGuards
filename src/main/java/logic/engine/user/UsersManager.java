@@ -99,6 +99,7 @@ public class UsersManager {
     }
     public boolean isUserExistInLocalOrInDBAndRestore(int userID) {
         if (usersByID.containsKey(userID)) {
+            System.out.println("checkingggg");
             return true;
         }
 
@@ -185,6 +186,11 @@ public class UsersManager {
                 throw new NoSuchElementException("Error - there is no user in the system whose ID number is: " + guardID);
         }
         return guards;
+    }
+
+    public User getUser(int id)
+    {
+        return  usersByID.get(id);
     }
 
 }

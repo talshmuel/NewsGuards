@@ -39,8 +39,8 @@ public class User {
 
         else{
             createNewID();
-            reportsThatTheUserIsAGuardOf = new HashMap<>();
-            reportsThatNeedToVerify = new HashMap<>();
+            //reportsThatTheUserIsAGuardOf = new HashMap<>();
+           // reportsThatNeedToVerify = new HashMap<>();
         }
         reliabilityRate = reliability_Rate;
         this.registrationDetails = getRegistrationDetails(newUserData);
