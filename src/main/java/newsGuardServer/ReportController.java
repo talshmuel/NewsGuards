@@ -37,8 +37,7 @@ public class ReportController {
     @PostMapping("/add-new-report")
     public ResponseEntity<String> createReport(@RequestBody NewReportDTO newReportDTO) {
         try {
-            System.out.println(newReportDTO.getDateTime());
-
+            System.out.println(newReportDTO.getIsAnonymousReport());
             engine.addNewReportAndStartVerificationProcess(newReportDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Report created successfully");
         }catch (NoSuchElementException e){

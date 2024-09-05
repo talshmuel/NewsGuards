@@ -99,7 +99,6 @@ public class UsersManager {
     }
     public boolean isUserExistInLocalOrInDBAndRestore(int userID) {
         if (usersByID.containsKey(userID)) {
-            System.out.println("checkingggg");
             return true;
         }
 

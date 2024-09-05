@@ -53,7 +53,7 @@ public class ReportsManager {
     }
     public Report addNewReport(NewReportDTO newReportDTO, User reporter) {
         Report newReport = new Report(newReportDTO.getText(), newReportDTO.getImageURL(),
-                reporter, newReportDTO.isAnonymousReport()
+                reporter, newReportDTO.getIsAnonymousReport()
                 , new Point2D.Double(newReportDTO.getLatitude(),
                 newReportDTO.getLongitude()), newReportDTO.getDateTime(), 0, false, 0); //לבדוק את ציון הריפורט!!!!
         reports.put(newReport.getID(), newReport);
