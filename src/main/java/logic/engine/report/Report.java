@@ -33,7 +33,7 @@ public class Report {
     private java.util.Date timeReported; // Ensure this is LocalDateTime
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, java.util.Date timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
+    public Report(int id, String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, java.util.Date timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
         if(!isReportRestoration) {
             createNewID();
             this.reliabilityRate = -1;
@@ -41,8 +41,7 @@ public class Report {
         }
         else {
             this.reliabilityRate = reliabilityRate;
-
-
+            ID = id;
         }
         this.text = text;
         this.imageURL = imageURL;
@@ -479,4 +478,30 @@ public class Report {
     public Map<Integer, Verification> getGuardsVerifications() {
         return guardsVerifications;
     }
+
+//    public boolean checkIfUserGuardOfTheReport(int userID)
+//    {
+//        String query = "SELECT COUNT(*) AS count FROM guards_verification WHERE report_id = ? AND user_id = ?";
+//
+//        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+//             PreparedStatement stmt = connection.prepareStatement(query)) {
+//
+//            // Set parameters for the query
+//            stmt.setInt(1, ID);
+//            stmt.setInt(2, userID);
+//
+//            try (ResultSet rs = stmt.executeQuery()) {
+//                // Check if the count is greater than 0
+//                if (rs.next()) {
+//                    int count = rs.getInt("count");
+//                    return count > 0; // Return true if count is greater than 0, otherwise false
+//                }
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace(); // Log or handle exceptions as needed
+//        }
+//
+//        return false;
+//    }
 }

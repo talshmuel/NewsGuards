@@ -52,7 +52,7 @@ public class ReportsManager {
             return reportDTOs;
     }
     public Report addNewReport(NewReportDTO newReportDTO, User reporter) {
-        Report newReport = new Report(newReportDTO.getText(), newReportDTO.getImageURL(),
+        Report newReport = new Report(-1 ,newReportDTO.getText(), newReportDTO.getImageURL(),
                 reporter, newReportDTO.getIsAnonymousReport()
                 , new Point2D.Double(newReportDTO.getLatitude(),
                 newReportDTO.getLongitude()), newReportDTO.getDateTime(), 0, false, 0); //לבדוק את ציון הריפורט!!!!
@@ -113,7 +113,7 @@ public class ReportsManager {
 
                     User reporter = UsersManager.findAndRestoreUserByIDFromDB(reporterID);
                     Point2D.Double location = new Point2D.Double(locationX, locationY);
-                    Report report = new Report(text, imageURL, reporter,isAnonymousReport,location,timeReported, reportRate, true,likesNumber);
+                    Report report = new Report(reportID, text, imageURL, reporter,isAnonymousReport,location,timeReported, reportRate, true,likesNumber);
                     report.restoreReportID(reportID);
                     report.restoreComments();
                     report.restoreLikes();

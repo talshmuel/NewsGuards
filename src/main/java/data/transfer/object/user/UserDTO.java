@@ -15,11 +15,12 @@ public final class UserDTO {
     private String phoneNumber;
     private boolean locationAccessPermission;
     private ArrayList<ReportDTO> reports;
+    private ArrayList<ReportDTO> reportsThatTheUserIsAGuardOf = new ArrayList<>();
     //private ArrayList<NotificationDTO> notifications;
     //private ArrayList<ReportDTO> IDReportsThatTheUserIsAGuardOf;
     private float reliabilityRate;
 
-    public UserDTO(int ID, String firstName, String lastName, String country, String email, String imageURL, String phoneNumber, boolean locationAccessPermission, ArrayList<ReportDTO> reports, float reliabilityRate) {
+    public UserDTO(int ID, String firstName, String lastName, String country, String email, String imageURL, String phoneNumber, boolean locationAccessPermission, ArrayList<ReportDTO> reports,ArrayList<ReportDTO> reportsThatTheUserIsAGuardOf, float reliabilityRate) {
         this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,6 +30,7 @@ public final class UserDTO {
         this.phoneNumber = phoneNumber;
         this.locationAccessPermission = locationAccessPermission;
         this.reports = reports;
+        this.reportsThatTheUserIsAGuardOf = reportsThatTheUserIsAGuardOf;
         //this.notifications = notifications;
         //this.IDReportsThatTheUserIsAGuardOf = IDReportsThatTheUserIsAGuardOf;
         this.reliabilityRate = reliabilityRate;
@@ -68,6 +70,10 @@ public final class UserDTO {
 
     public ArrayList<ReportDTO> getReports() {
         return reports;
+    }
+
+    public ArrayList<ReportDTO> getReportsThatTheUserIsAGuardOf() {
+        return reportsThatTheUserIsAGuardOf;
     }
 
 //    public ArrayList<NotificationDTO> getNotifications() {
