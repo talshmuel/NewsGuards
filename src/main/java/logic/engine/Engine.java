@@ -84,7 +84,12 @@ public class Engine {
         if(user == null){
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ userID);
         }
-        return user.gerUserDTO();
+
+        ArrayList<ReportDTO> reportsThatUserGuardDTOS = new ArrayList<>();
+        for(int reportIDUserGuardOf : user.getReportsThatTheUserIsAGuardOf().keySet()) {
+            reportsThatUserGuardDTOS.add(reportsManager.getReports().get(reportIDUserGuardOf).getReportDTO());
+        }
+        return user.gerUserDTO(reportsThatUserGuardDTOS,reportsManager.getReports());
     }
     public ArrayList<ReportDTO> getLastTwentyReportsToHomePage(){
         return reportsManager.getLastTwentyReportsToHomePage();
@@ -103,6 +108,7 @@ public class Engine {
         if(reportsManager.findAndRestoreReportFromDB(reportID) == null){
             throw new NoSuchElementException("Error - there is no report in the system whose ID number is: " + reportID);
         }
+        //usersManager.getUser(guardID);
         reliabilityManager.updateGuardVerification(reportID, guardID, verificationEnum,usersManager.getUser(guardID));
     }
 

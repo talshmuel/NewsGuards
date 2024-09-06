@@ -165,9 +165,9 @@ public class UsersManager {
         }
         return true;
     }
-    public UserDTO getUserProfile(int userID){
-        return usersByID.get(userID).gerUserDTO();
-    }
+//    public UserDTO getUserProfile(int userID){
+//        return usersByID.get(userID).gerUserDTO();
+//    }
     public ArrayList<ReportDTO> getReportsThatGuardNeedToVerify(int guardID) {
         return usersByID.get(guardID).getReportsThatGuardNeedToVerify();
     }

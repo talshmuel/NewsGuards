@@ -64,6 +64,10 @@ public class User {
         return ID;
     }
 
+    public ArrayList<Report> getReports() {
+        return reports;
+    }
+
     public UserRegistrationDetails getRegistrationDetails() {
         return registrationDetails;
     }
@@ -250,22 +254,14 @@ public class User {
 //        }
 //    }
 
-    public UserDTO gerUserDTO(){
+    public UserDTO gerUserDTO(ArrayList<ReportDTO> reportsThatUserGuardDTOS, Map<Integer,Report> allReportsInSystem){
         ArrayList<ReportDTO> reportDTOS = new ArrayList<>();
-        ArrayList<ReportDTO> reportsThatUserGuardDTOS = new ArrayList<>();
-       // Report reportThatGuardOf;
+        Report reportThatGuardOf;
 
-//        reports = new ArrayList<>();
-//        restoreUserReports();
-
+        System.out.println("reports profile count :" + reports.size());
         for(Report report : reports){
-            reportDTOS.add(report.getReportDTO());
+            reportDTOS.add(allReportsInSystem.get(report.getID()).getReportDTO());
         }
-//
-//        for(int reportID : reportsThatTheUserIsAGuardOf.keySet()){
-//            reportThatGuardOf = restoreReportThatGuardOf(reportID);
-//            reportsThatUserGuardDTOS.add(reportThatGuardOf.getReportDTO());
-//        }
 
         return new UserDTO(ID, registrationDetails.getFirstName(), registrationDetails.getLastName(), registrationDetails.getCountry(),
                 registrationDetails.getEmail(), registrationDetails.getImageURL(), registrationDetails.getPhoneNumber(), registrationDetails.getLocationAccessPermission(),
@@ -279,6 +275,10 @@ public class User {
         });
         return reportsDTOThatNeedToVerify;
     }
+    public  Map<Integer, Verification> getReportsThatTheUserIsAGuardOf() {
+        return reportsThatTheUserIsAGuardOf;
+    }
+
     public void updateGuardVerification(int reportID, Verification verification){
         reportsThatTheUserIsAGuardOf.put(reportID, verification);
         removeReportToVerify(reportID);
@@ -311,52 +311,6 @@ public class User {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
-    }
-
-    public Report restoreReportThatGuardOf(int reportID)
-    {
-        String query = "SELECT  text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number " +
-                "FROM reports WHERE report_id = ?";
-
-        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
-             PreparedStatement stmt = connection.prepareStatement(query)) {
-
-            stmt.setInt(1, reportID);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                // Check if result set contains a row
-                if (rs.next()) {
-                    // Extract user details
-                    String text = rs.getString("text");
-                    int reporterID = rs.getInt("user_id");
-                    float reportRate = rs.getFloat("report_rate");
-                    String imageURL = rs.getString("imageurl");
-                    boolean isAnonymousReport = rs.getBoolean("is_anonymous_report");
-                    //Date timeReported = (java.util.Date)(rs.getDate("time_reported"));
-                    Timestamp timeStamp = rs.getTimestamp("time_reported");
-                    Date timeReported = timeStamp;
-                    // Convert SQL Date and Timestamp to LocalDate and LocalDateTime
-                    double locationX = rs.getDouble("location_x");
-                    double locationY = rs.getDouble("location_y");
-                    int likesNumber = rs.getInt("likes_number");
-
-                    // Create NewUserDTO and User objects
-
-                    User reporter = UsersManager.findAndRestoreUserByIDFromDB(reporterID);
-                    Point2D.Double location = new Point2D.Double(locationX, locationY);
-                    Report report = new Report(reportID, text, imageURL, reporter,isAnonymousReport,location,timeReported, reportRate, true,likesNumber);
-                    report.restoreReportID(reportID);
-                    report.restoreComments();
-                    report.restoreLikes();
-                    return report;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 }

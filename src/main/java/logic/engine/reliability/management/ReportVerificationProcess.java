@@ -139,15 +139,15 @@ public class ReportVerificationProcess {
             e.printStackTrace(); // Handle SQL exception
         }
 
-        sql = "DELETE FROM guards_verification WHERE report_id = ?";
-
-        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-            preparedStatement.setInt(1, report.getID());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle SQL exception
-        }
+//        sql = "DELETE FROM guards_verification WHERE report_id = ?";
+//
+//        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+//             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+//
+//            preparedStatement.setInt(1, report.getID());
+//            preparedStatement.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace(); // Handle SQL exception
+//        }
     }
 }

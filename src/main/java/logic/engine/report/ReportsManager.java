@@ -57,6 +57,7 @@ public class ReportsManager {
                 , new Point2D.Double(newReportDTO.getLatitude(),
                 newReportDTO.getLongitude()), newReportDTO.getDateTime(), 0, false, 0); //לבדוק את ציון הריפורט!!!!
         reports.put(newReport.getID(), newReport);
+        reporter.getReports().add(newReport);
         newReport.pushReportToDB((reporter.getID()));
         newReport.addReportToVerificationProcessInDB();
         return newReport;
@@ -133,5 +134,8 @@ public class ReportsManager {
     public void updateGuardVerification(int reportID, int guardID, Verification verification){
         reports.get(reportID).updateGuardVerification(guardID, verification);
     }
-
+    public Map<Integer, Report> getReports()
+    {
+        return  reports;
+    }
 }
