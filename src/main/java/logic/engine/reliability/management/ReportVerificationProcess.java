@@ -11,8 +11,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ReportVerificationProcess {
-    int timeWindowToVerify = 7; //todo change, it is just a try
-    TimeUnit units = TimeUnit.HOURS;//todo change, it is just a try
+    int timeWindowToVerify = 5; //todo change, it is just a try
+    TimeUnit units = TimeUnit.MINUTES;//todo change, it is just a try
     float maxNumberOfReliabilityStars = 5;
     float minNumberOfReliabilityStars = 0;
     float guardsRatingDecrease = 0.2f;
@@ -85,17 +85,17 @@ public class ReportVerificationProcess {
                 }
                 else {
                     guard.setReliabilityRate(currentGuardReliabilityRate - guardsRatingDecrease);
-                    guard.setReliabilityRateInDB(minNumberOfReliabilityStars);
+                    guard.setReliabilityRateInDB(currentGuardReliabilityRate - guardsRatingDecrease);
                 }
             }
-            if(reportReliabilityRate == maxNumberOfReliabilityStars && verification == Verification.Deny){
+            if(reportReliabilityRate >= 4 && verification == Verification.Deny){
                 if(currentGuardReliabilityRate + guardRatingIncrease >= maxNumberOfReliabilityStars) {
                     guard.setReliabilityRate(maxNumberOfReliabilityStars);
-                    guard.setReliabilityRateInDB(minNumberOfReliabilityStars);
+                    guard.setReliabilityRateInDB(maxNumberOfReliabilityStars);
                 }
                 else {
                     guard.setReliabilityRate(currentGuardReliabilityRate + guardRatingIncrease);
-                    guard.setReliabilityRateInDB(minNumberOfReliabilityStars);
+                    guard.setReliabilityRateInDB(currentGuardReliabilityRate + guardRatingIncrease);
                 }
             }
         }
@@ -110,17 +110,17 @@ public class ReportVerificationProcess {
             }
             else {
                 reporter.setReliabilityRate(currentReporterReliabilityRate - reporterRatingDecrease);
-                reporter.setReliabilityRateInDB(minNumberOfReliabilityStars);
+                reporter.setReliabilityRateInDB(currentReporterReliabilityRate - reporterRatingDecrease);
             }
         }
         if(reportReliabilityRate == maxNumberOfReliabilityStars){
             if(currentReporterReliabilityRate + reporterRatingIncrease >= maxNumberOfReliabilityStars) {
                 reporter.setReliabilityRate(maxNumberOfReliabilityStars);
-                reporter.setReliabilityRateInDB(minNumberOfReliabilityStars);
+                reporter.setReliabilityRateInDB(maxNumberOfReliabilityStars);
             }
             else {
                 reporter.setReliabilityRate(currentReporterReliabilityRate + reporterRatingIncrease);
-                reporter.setReliabilityRateInDB(minNumberOfReliabilityStars);
+                reporter.setReliabilityRateInDB(currentReporterReliabilityRate + reporterRatingIncrease);
             }
         }
     }
