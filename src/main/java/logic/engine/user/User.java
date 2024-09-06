@@ -275,7 +275,7 @@ public class User {
     public ArrayList<ReportDTO> getReportsThatGuardNeedToVerify(){
         ArrayList<ReportDTO> reportsDTOThatNeedToVerify = new ArrayList<>();
         reportsThatNeedToVerify.forEach((reportID, report)->{
-            reportsDTOThatNeedToVerify.add(report.getReportDTO());
+            reportsDTOThatNeedToVerify.add(report.getReportDTO());//
         });
         return reportsDTOThatNeedToVerify;
     }
