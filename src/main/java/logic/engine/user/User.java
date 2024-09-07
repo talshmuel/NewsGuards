@@ -3,19 +3,15 @@ package logic.engine.user;
 import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
 import data.transfer.object.user.UserDTO;
-import logic.engine.Engine;
 import logic.engine.notification.Notification;
 import logic.engine.reliability.management.Verification;
 //import logic.engine.reliability.management.Rate;
 import logic.engine.report.Report;
-import logic.engine.report.ReportsManager;
 import logic.engine.user.registration.UserRegistrationDetails;
 import newsGuardServer.DatabaseConfig;
 
 import java.awt.geom.Point2D;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Date;
 
@@ -279,7 +275,7 @@ public class User {
         return reportsThatTheUserIsAGuardOf;
     }
 
-    public void updateGuardVerification(int reportID, Verification verification){
+    public void updateGuardVerificationAndRemoveReportToVerify(int reportID, Verification verification){
         reportsThatTheUserIsAGuardOf.put(reportID, verification);
         removeReportToVerify(reportID);
     }
@@ -289,6 +285,7 @@ public class User {
 
     public void removeReportToVerify(int reportID){
         reportsThatNeedToVerify.remove(reportID);
+
     }
 
     public float getReliabilityRate() {
