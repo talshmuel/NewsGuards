@@ -53,10 +53,9 @@ public class ReportVerificationProcess {
             User guard = guardVerification.getGuard();
             Verification verification = guardVerification.getVerification();
             if(verification == Verification.Pending){
-                guard.updateGuardVerificationAndRemoveReportToVerify(report.getID(), Verification.No_Answer);
-            }else {
-                guard.removeReportToVerify(report.getID());
+                report.updateGuardVerificationInDB(guard.getID(), Verification.No_Answer);
             }
+                guard.removeReportToVerify(report.getID());
         }
         calculateReliabilityRate();
         deleteReportFromVerificationProcessInDB();

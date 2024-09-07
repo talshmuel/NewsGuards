@@ -20,8 +20,10 @@ import logic.engine.user.UsersManager;
 import newsGuardServer.DatabaseConfig;
 import org.springframework.stereotype.Service;
 
+import java.awt.geom.Point2D;
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 @Service
 public class Engine {
@@ -38,6 +40,7 @@ public class Engine {
         locationHistoryManager = new LocationHistoryManager();
         reliabilityManager = new ReliabilityManager();
         restoreReportsInVerificationProcessFromDB();
+        //restoreAllReportsInDB();
     }
     public void createNewUser(NewUserDTO newUserData){
         usersManager.addNewUser(newUserData);
@@ -170,6 +173,41 @@ public class Engine {
             }
         } catch (SQLException e) {
             e.printStackTrace(); // Handle exceptions (e.g., log errors)
+        }
+    }
+
+    public void restoreAllReportsInDB()
+    {
+        String query = "SELECT * (report_id, text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number) " +
+                "FROM reports ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            // Set the reporterID parameter
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Loop through each row in the result set
+                while (rs.next()) {
+                    int reportID = rs.getInt("report_id");
+                    String text = rs.getString("text");
+                    int user_id = rs.getInt("user_id");
+                    int reportRate = rs.getInt("report_rate");
+                    String imageURL = rs.getString("imageurl");
+                    boolean isAnonymousReport = rs.getBoolean("is_anonymous_report");
+                    Date timeReported = rs.getDate("time_reported");
+                    double locationX = rs.getDouble("location_x");
+                    double locationY = rs.getDouble("location_y");
+                    int likesNumber = rs.getInt("likes_number");
+
+                    Point2D.Double location = new Point2D.Double(locationX, locationY);
+                    User user = usersManager.findUserByID(user_id);
+                    Report report = new Report(reportID, text, imageURL, user, isAnonymousReport, location, timeReported, reportRate,true,likesNumber);
+                    reportsManager.getReports().put(reportID,report);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log or handle exceptions as needed
         }
     }
 

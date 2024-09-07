@@ -275,10 +275,10 @@ public class User {
         return reportsThatTheUserIsAGuardOf;
     }
 
-    public void updateGuardVerificationAndRemoveReportToVerify(int reportID, Verification verification){
-        reportsThatTheUserIsAGuardOf.put(reportID, verification);
-        removeReportToVerify(reportID);
-    }
+//    public void updateGuardVerificationAndRemoveReportToVerify(int reportID, Verification verification){
+//        reportsThatTheUserIsAGuardOf.put(reportID, verification); //לשאול את טל אם למחוק כי אולי לא נוסיף את הריפורטים שהוא לא ענה עליהם
+//        removeReportToVerify(reportID);
+//    }
     public void addReportToVerify(Report reportToVerify){
         reportsThatNeedToVerify.put(reportToVerify.getID(), reportToVerify);
     }
