@@ -59,7 +59,7 @@ public class ReportController {
             Files.write(filePath, file.getBytes());
 
             // Construct the URL for the image
-            String imageUrl = "http://localhost:8080/images/" + fileName; //כאן צריך לשנות ךכתובת של הסרבר שבענן!!
+            String imageUrl = "https://news-guard-c0fjanc7ethue7dn.eastus-01.azurewebsites.net/images/" + fileName; //כאן צריך לשנות ךכתובת של הסרבר שבענן!!
 
             // Return the URL as part of the response
             Map<String, String> response = new HashMap<>();
