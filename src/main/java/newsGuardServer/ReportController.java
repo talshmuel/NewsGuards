@@ -1,5 +1,4 @@
 package newsGuardServer;
-import data.transfer.object.location.LocationDTO;
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.NewReportDTO;
 import logic.engine.Engine;
@@ -7,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +45,6 @@ public class ReportController {
     }
 
 
-    // GON: //////////////////////////////////////////////////////////////////////
     @PostMapping("/upload-image")
     public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
         try {
@@ -63,7 +59,7 @@ public class ReportController {
             Files.write(filePath, file.getBytes());
 
             // Construct the URL for the image
-            String imageUrl = "http://localhost:8080/images/" + fileName;
+            String imageUrl = "http://localhost:8080/images/" + fileName; //כאן צריך לשנות ךכתובת של הסרבר שבענן!!
 
             // Return the URL as part of the response
             Map<String, String> response = new HashMap<>();
@@ -75,8 +71,6 @@ public class ReportController {
                     .body(Collections.singletonMap("message", "Image upload failed"));
         }
     }
-    // GON: //////////////////////////////////////////////////////////////////////
-
 
 
     @PostMapping("/add-comment")

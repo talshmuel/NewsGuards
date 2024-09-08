@@ -1,7 +1,5 @@
 package data.transfer.object.user;
 
-import java.util.ArrayList;
-
 public final class NewUserDTO {
     private final String firstName;
     private final String lastName;

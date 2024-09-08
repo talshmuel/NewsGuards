@@ -25,8 +25,6 @@ public class VerificationController {
     public ResponseEntity<ArrayList<ReportDTO>> getReportsThatGuardNeedToVerify(@RequestParam int guardID) {
         try {
             ArrayList<ReportDTO> response = engine.getReportsThatGuardNeedToVerify(guardID);
-            for (ReportDTO report: response)
-                System.out.println("nitzan" + report.getReportID());
             return ResponseEntity.ok(response);
 
         } catch (IllegalArgumentException e) {

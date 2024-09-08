@@ -21,7 +21,6 @@ public class ReportVerificationProcess {
     float reporterRatingIncrease = 0.1f;
     int notEnoughInformation = -2;
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    //private boolean isRunning = true;
     private Report report;
     private Map<Integer, GuardVerification> guardsVerification;
     private float reportReliabilityRate;
@@ -32,12 +31,8 @@ public class ReportVerificationProcess {
         guardsVerification = new HashMap<>();
         guards.forEach((guard, verification)->{
             guardsVerification.put(guard.getID(), new GuardVerification(guard, verification));
-            //guard.addReportToVerify(report);
         });
-//        for(User guard : guards){
-//            guardsVerification.put(guard.getID(), new GuardVerification(guard, Verification.Pending));
-//            guard.addReportToVerify(report);
-//        }
+
         scheduler.schedule(this::stopWindowToVerify, timeWindowToVerify, units);
     }
     public void updateGuardVerification(int guardID, Verification verification,User guard){
@@ -149,16 +144,5 @@ public class ReportVerificationProcess {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
-
-//        sql = "DELETE FROM guards_verification WHERE report_id = ?";
-//
-//        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
-//             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-//
-//            preparedStatement.setInt(1, report.getID());
-//            preparedStatement.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace(); // Handle SQL exception
-//        }
     }
 }

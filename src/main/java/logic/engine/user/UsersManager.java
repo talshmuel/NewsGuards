@@ -4,7 +4,6 @@ import data.transfer.object.LoginDTO;
 import data.transfer.object.LoginResponseDTO;
 import data.transfer.object.report.ReportDTO;
 import data.transfer.object.user.NewUserDTO;
-import data.transfer.object.user.UserDTO;
 import logic.engine.exception.InvalidPasswordException;
 import newsGuardServer.DatabaseConfig;
 
@@ -165,9 +164,7 @@ public class UsersManager {
         }
         return true;
     }
-//    public UserDTO getUserProfile(int userID){
-//        return usersByID.get(userID).gerUserDTO();
-//    }
+
     public ArrayList<ReportDTO> getReportsThatGuardNeedToVerify(int guardID) {
         return usersByID.get(guardID).getReportsThatGuardNeedToVerify();
     }

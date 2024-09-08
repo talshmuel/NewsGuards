@@ -24,9 +24,7 @@ public class ProfileController {
     @GetMapping("/get-profile")
     public ResponseEntity<UserDTO> getUserProfile(@RequestParam int userID) {
         try {
-            System.out.print("helooo gon");
             UserDTO response = engine.getUserProfile(userID);
-            System.out.print("goodbye gon");
             return ResponseEntity.ok(response);
 
         } catch (IllegalArgumentException e) {

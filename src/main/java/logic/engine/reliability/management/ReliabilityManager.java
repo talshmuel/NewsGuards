@@ -1,10 +1,7 @@
 package logic.engine.reliability.management;
 
-import logic.engine.Engine;
 import logic.engine.report.Report;
 import logic.engine.user.User;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +11,6 @@ public class ReliabilityManager {
 
     public ReliabilityManager(){
         runningVerificationProcesses = new HashMap<>();
-
-
     }
 
     public void startReportVerificationProcess(Report report, List<User> guards){

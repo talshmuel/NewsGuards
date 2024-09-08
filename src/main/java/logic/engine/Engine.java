@@ -27,7 +27,6 @@ import java.util.Date;
 
 @Service
 public class Engine {
-    public static int staticLoginUserId;
     private final UsersManager usersManager;
     private final ReportsManager reportsManager;
     private LocationHistoryManager locationHistoryManager;
@@ -40,7 +39,6 @@ public class Engine {
         locationHistoryManager = new LocationHistoryManager();
         reliabilityManager = new ReliabilityManager();
         restoreReportsInVerificationProcessFromDB();
-        //restoreAllReportsInDB();
     }
     public void createNewUser(NewUserDTO newUserData){
         usersManager.addNewUser(newUserData);
@@ -111,7 +109,6 @@ public class Engine {
         if(reportsManager.findAndRestoreReportFromDB(reportID) == null){
             throw new NoSuchElementException("Error - there is no report in the system whose ID number is: " + reportID);
         }
-        //usersManager.getUser(guardID);
         reliabilityManager.updateGuardVerification(reportID, guardID, verificationEnum,usersManager.getUser(guardID));
     }
 
@@ -210,18 +207,4 @@ public class Engine {
             e.printStackTrace(); // Log or handle exceptions as needed
         }
     }
-
-//    public Verification convertIntToGuardVerificationEnum(int guardVerificationInt){
-//        switch (guardVerificationInt){
-//            case 1:
-//                return Verification.Approve;
-//            case 2:
-//                return Verification.Deny;
-//            case 3:
-//                return Verification.Avoid;
-//            default:
-//                throw new IllegalArgumentException("Guard verification should be number 1-3");
-//        }
-//    }
-
 }

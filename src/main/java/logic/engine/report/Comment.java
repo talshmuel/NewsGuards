@@ -1,7 +1,6 @@
 package logic.engine.report;
 
 import data.transfer.object.report.CommentDTO;
-import logic.engine.user.User;
 import newsGuardServer.DatabaseConfig;
 
 import java.sql.*;

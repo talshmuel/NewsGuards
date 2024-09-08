@@ -1,6 +1,5 @@
 package data.transfer.object.user;
 
-import data.transfer.object.NotificationDTO;
 import data.transfer.object.report.ReportDTO;
 
 import java.util.ArrayList;
@@ -16,8 +15,6 @@ public final class UserDTO {
     private boolean locationAccessPermission;
     private ArrayList<ReportDTO> reports;
     private ArrayList<ReportDTO> reportsThatTheUserIsAGuardOf = new ArrayList<>();
-    //private ArrayList<NotificationDTO> notifications;
-    //private ArrayList<ReportDTO> IDReportsThatTheUserIsAGuardOf;
     private float reliabilityRate;
 
     public UserDTO(int ID, String firstName, String lastName, String country, String email, String imageURL, String phoneNumber, boolean locationAccessPermission, ArrayList<ReportDTO> reports,ArrayList<ReportDTO> reportsThatTheUserIsAGuardOf, float reliabilityRate) {
@@ -75,14 +72,6 @@ public final class UserDTO {
     public ArrayList<ReportDTO> getReportsThatTheUserIsAGuardOf() {
         return reportsThatTheUserIsAGuardOf;
     }
-
-//    public ArrayList<NotificationDTO> getNotifications() {
-//        return notifications;
-//    }
-
-//    public ArrayList<ReportDTO> getIDReportsThatTheUserIsAGuardOf() {
-//        return IDReportsThatTheUserIsAGuardOf;
-//    }
 
     public float getReliabilityRate() {
         return reliabilityRate;

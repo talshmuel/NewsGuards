@@ -24,10 +24,6 @@ public enum Verification {
         }
     }
 
-
-
-
-
     public int toInt() {
         switch (this) {
             case Approve:
