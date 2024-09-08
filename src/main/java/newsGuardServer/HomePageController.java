@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://news-guard.vercel.app/")
 
 @RestController
 @RequestMapping("/home-page")
