@@ -33,43 +33,7 @@ public class Server {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(Server.class, args);
-//        Engine engine = new Engine();
-//        ArrayList<ReportDTO> reports =  engine.getLastTwentyReportsToHomePage();
-//        System.out.println("the timeee" + reports.get(0).getTimeReported());
-        //Engine engine = new Engine();
-//
-//        // Create a LocalDateTime for timeReported and LocalDate for dateReported
-//        LocalDateTime timeReported = LocalDateTime.now();
-//        // Create a NewReportDTO instance
-//        NewReportDTO newReport = new NewReportDTO(
-//                "nitzan gon tal are the queensssssss",               // text
-//                "http://",                  // imageURL
-//                1,                          // reporterID
-//                true,                       // isAnonymousReport
-//                timeReported,               // timeReported
-//                1.0,                        // locationX
-//                1.0                         // locationY
-//        );
-
-        // Add the new report and start the verification process
-//        engine.addNewReportAndStartVerificationProcess(newReport);
-//        Verification ver = Verification.Approve;
-//        int user = 2;
-//        updateGuardVerificationInDB(user,ver);
-//        Engine engine = new Engine();
-//        LocationDTO location = new LocationDTO(12,1,3);
-//        engine.saveUserLocation(location);
-        //checkLoginDetails();
-        //checkComments();
-        //checkLikes();
-
-//       check();
-//        ReportsManager manager = new ReportsManager();
-//        Report report = manager.findAndRestoreReportFromDB(1);
-//        System.out.print(report.getComments().size());
-//        System.out.print(report.getCountUsersWhoLiked());
     }
-
 
 //    public static void updateGuardVerificationInDB(int guardID, Verification verification) {
 //        int verificationInt = verification.toInt();

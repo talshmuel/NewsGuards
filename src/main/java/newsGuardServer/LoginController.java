@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:5173") // Your frontend origin
+@CrossOrigin(origins = "https://news-guard.vercel.app") // Your frontend origin
 
 @RestController
 @RequestMapping("/login")
@@ -23,9 +23,6 @@ public class LoginController {
     @PostMapping()
     public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody LoginDTO userLoginDTO) {
         try {
-            //LoginResponseDTO loginResponseDTO = engine.checkLoginDetails(userLoginDTO);
-
-            //LoginResponseDTO response = new LoginResponseDTO("Login successful", userID, );
             LoginResponseDTO response = engine.checkLoginDetails(userLoginDTO);
             return ResponseEntity.ok(response);
 

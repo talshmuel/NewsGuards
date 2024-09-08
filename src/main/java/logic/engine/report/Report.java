@@ -2,18 +2,12 @@ package logic.engine.report;
 
 import data.transfer.object.report.CommentDTO;
 import data.transfer.object.report.ReportDTO;
-import logic.engine.location.history.management.OpenCageGeocodingService;
 import logic.engine.reliability.management.Verification;
 import logic.engine.user.User;
 import newsGuardServer.DatabaseConfig;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import java.awt.geom.Point2D;
 import java.sql.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -29,11 +23,10 @@ public class Report {
     private User reporter;
     private boolean isAnonymousReport;
     private Point2D.Double location;
-    //private Date timeReported;
     private java.util.Date timeReported; // Ensure this is LocalDateTime
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
-    public Report(String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, java.util.Date timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
+    public Report(int id, String text, String imageURL, User reporter, boolean isAnonymousReport, Point2D.Double location, java.util.Date timeReported, float reliabilityRate, boolean isReportRestoration, int likesNumber) {
         if(!isReportRestoration) {
             createNewID();
             this.reliabilityRate = -1;
@@ -41,8 +34,7 @@ public class Report {
         }
         else {
             this.reliabilityRate = reliabilityRate;
-
-
+            ID = id;
         }
         this.text = text;
         this.imageURL = imageURL;
@@ -83,9 +75,6 @@ public class Report {
 
     public void restoreReportID(int report_id){ ID = report_id;}
 
-//    public void setReporter(User reporter){
-//        this.reporter = reporter;
-//    }
     public ArrayList<Comment> getComments()
     {
         return comments;
@@ -120,22 +109,11 @@ public class Report {
         }
     }
 
-    public String getCountry() throws Exception {
-        //GeocodingService geocodingService = new GeocodingService();
-        //String country = geocodingService.getCountry(location);
-
-        //String country = NominatimExample.getCountry(location);
-        OpenCageGeocodingService openCageGeocodingService = new OpenCageGeocodingService();
-        String country = openCageGeocodingService.getCountry(location);
-        if (country == null) {
-            throw new NoSuchElementException("Country not found for the provided location");
-        }
-        return country;
-    }
 
     public float getReliabilityRate() {
         return reliabilityRate;
     }
+
     public ReportDTO getReportDTO(){
         ArrayList<CommentDTO> commentsDTO = new ArrayList<>();
         for (Comment comment : comments){
@@ -143,12 +121,10 @@ public class Report {
         }
         return new ReportDTO(ID ,text, imageURL, usersWhoLiked,countUsersWhoLiked, commentsDTO,
                 reliabilityRate, reporter.getID(), reporter.createFullName(), isAnonymousReport,
-                location, timeReported);
+                location, timeReported, reporter.getReliabilityRate());
     }
     public void pushReportToDB(int reporter_id)
     {
-//        java.util.Date utilDate = new java.util.Date();
-//        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         Timestamp timestamp = new Timestamp(timeReported.getTime());
         String sql = "INSERT INTO reports (report_id, text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -175,7 +151,7 @@ public class Report {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
-    } //צריך לאתחל את report_rate
+    }
 
     public void removeLikeFromDatabase(int userID) {
         int likesNumber = 0;
@@ -377,28 +353,6 @@ public class Report {
             e.printStackTrace(); // Handle exceptions (e.g., log errors)
         }
     }
-//    public void restoreGuardsVerifications()
-//    {
-//        String query = "SELECT (user_id, user_response) FROM guards_verification WHERE report_id = ?";
-//
-//        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
-//             PreparedStatement stmt = connection.prepareStatement(query)) {
-//
-//            stmt.setInt(1, ID);
-//
-//            try (ResultSet rs = stmt.executeQuery()) {
-//                while (rs.next()) {
-//                    int userId = rs.getInt("user_id");
-//                    int userResponseInteger = rs.getInt("user_response");
-//                    Verification userResponse = Verification.fromInt(userResponseInteger);
-//                   guardsVerifications.put(userId, userResponse);
-//                }
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace(); // Handle exceptions (e.g., log errors)
-//        }
-//    }
 
     public void restoreGuardsVerifications() {
         String query = "SELECT user_id, user_response FROM guards_verification WHERE report_id = ?";

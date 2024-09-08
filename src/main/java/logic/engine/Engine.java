@@ -20,12 +20,13 @@ import logic.engine.user.UsersManager;
 import newsGuardServer.DatabaseConfig;
 import org.springframework.stereotype.Service;
 
+import java.awt.geom.Point2D;
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 @Service
 public class Engine {
-    public static int staticLoginUserId;
     private final UsersManager usersManager;
     private final ReportsManager reportsManager;
     private LocationHistoryManager locationHistoryManager;
@@ -84,7 +85,12 @@ public class Engine {
         if(user == null){
             throw new NoSuchElementException("Error - there is no user in the system whose ID number is: "+ userID);
         }
-        return user.gerUserDTO();
+
+        ArrayList<ReportDTO> reportsThatUserGuardDTOS = new ArrayList<>();
+        for(int reportIDUserGuardOf : user.getReportsThatTheUserIsAGuardOf().keySet()) {
+            reportsThatUserGuardDTOS.add(reportsManager.getReports().get(reportIDUserGuardOf).getReportDTO());
+        }
+        return user.gerUserDTO(reportsThatUserGuardDTOS,reportsManager.getReports());
     }
     public ArrayList<ReportDTO> getLastTwentyReportsToHomePage(){
         return reportsManager.getLastTwentyReportsToHomePage();
@@ -103,7 +109,7 @@ public class Engine {
         if(reportsManager.findAndRestoreReportFromDB(reportID) == null){
             throw new NoSuchElementException("Error - there is no report in the system whose ID number is: " + reportID);
         }
-        reliabilityManager.updateGuardVerification(reportID, guardID, verificationEnum);
+        reliabilityManager.updateGuardVerification(reportID, guardID, verificationEnum,usersManager.getUser(guardID));
     }
 
     public void restoreReportsInVerificationProcessFromDB()
@@ -167,17 +173,38 @@ public class Engine {
         }
     }
 
-//    public Verification convertIntToGuardVerificationEnum(int guardVerificationInt){
-//        switch (guardVerificationInt){
-//            case 1:
-//                return Verification.Approve;
-//            case 2:
-//                return Verification.Deny;
-//            case 3:
-//                return Verification.Avoid;
-//            default:
-//                throw new IllegalArgumentException("Guard verification should be number 1-3");
-//        }
-//    }
+    public void restoreAllReportsInDB()
+    {
+        String query = "SELECT * (report_id, text, user_id, report_rate, imageurl, is_anonymous_report, time_reported, location_x, location_y, likes_number) " +
+                "FROM reports ?";
 
+        try (Connection connection = DriverManager.getConnection(DB_CONFIG.getUrl(), DB_CONFIG.getUsername(), DB_CONFIG.getPassword());
+             PreparedStatement stmt = connection.prepareStatement(query)) {
+
+            // Set the reporterID parameter
+            try (ResultSet rs = stmt.executeQuery()) {
+                // Loop through each row in the result set
+                while (rs.next()) {
+                    int reportID = rs.getInt("report_id");
+                    String text = rs.getString("text");
+                    int user_id = rs.getInt("user_id");
+                    int reportRate = rs.getInt("report_rate");
+                    String imageURL = rs.getString("imageurl");
+                    boolean isAnonymousReport = rs.getBoolean("is_anonymous_report");
+                    Date timeReported = rs.getDate("time_reported");
+                    double locationX = rs.getDouble("location_x");
+                    double locationY = rs.getDouble("location_y");
+                    int likesNumber = rs.getInt("likes_number");
+
+                    Point2D.Double location = new Point2D.Double(locationX, locationY);
+                    User user = usersManager.findUserByID(user_id);
+                    Report report = new Report(reportID, text, imageURL, user, isAnonymousReport, location, timeReported, reportRate,true,likesNumber);
+                    reportsManager.getReports().put(reportID,report);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Log or handle exceptions as needed
+        }
+    }
 }

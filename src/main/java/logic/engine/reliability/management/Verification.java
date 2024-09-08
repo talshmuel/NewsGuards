@@ -3,8 +3,9 @@ package logic.engine.reliability.management;
 public enum Verification {
     Approve,
     Deny,
-    Avoid,
-    Pending;
+    Dont_Know,
+    Pending,
+    No_Answer;
 
     public static Verification fromInt(int i) {
         switch (i){
@@ -13,17 +14,15 @@ public enum Verification {
             case 2:
                 return Verification.Deny;
             case 3:
-                return Verification.Avoid;
+                return Verification.Dont_Know;
             case 4:
                 return Verification.Pending;
+            case 5:
+                return Verification.No_Answer;
             default:
                 throw new IllegalArgumentException("Guard verification should be number 1-3");
         }
     }
-
-
-
-
 
     public int toInt() {
         switch (this) {
@@ -31,10 +30,12 @@ public enum Verification {
                 return 1;
             case Deny:
                 return 2;
-            case Avoid:
+            case Dont_Know:
                 return 3;
             case Pending:
                 return 4;
+            case No_Answer:
+                return 5;
             default:
                 throw new IllegalArgumentException("Unexpected value");
         }

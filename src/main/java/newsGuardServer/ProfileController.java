@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "https://news-guard.vercel.app")
 
 @RestController
 @RequestMapping("/profile-page")
@@ -24,7 +24,6 @@ public class ProfileController {
     @GetMapping("/get-profile")
     public ResponseEntity<UserDTO> getUserProfile(@RequestParam int userID) {
         try {
-            System.out.print("helooo gon");
             UserDTO response = engine.getUserProfile(userID);
             return ResponseEntity.ok(response);
 

@@ -1,12 +1,8 @@
 package logic.engine.location.history.management;
 
 import newsGuardServer.DatabaseConfig;
-
-import java.awt.geom.Point2D;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class LocationHistoryManager {
     double radiusMetersToLookingForUsers = 50;//todo:maybe change
@@ -61,8 +57,3 @@ public class LocationHistoryManager {
         return userIds;
     }
 }
-//
-//        //todo delete this (it is just a try)
-//        ArrayList<Integer> res = new ArrayList<>();
-//        res.add(1);
-//        return res;

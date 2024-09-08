@@ -22,33 +22,6 @@ public class OpenCageGeocodingService {
         this.objectMapper = new ObjectMapper();
     }
 
-//    public String getCountry(Point2D.Double location) throws IOException {
-//        String url = String.format("%s?q=%s,%s&key=%s",
-//                GEOCODING_API_URL, location.getY(), location.getX(), API_KEY);
-//
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .build();
-//
-//        try (Response response = client.newCall(request).execute()) {
-//            if (!response.isSuccessful()) {
-//                throw new IOException("Unexpected code " + response);
-//            }
-//
-//            JsonNode root = objectMapper.readTree(response.body().string());
-//            JsonNode results = root.path("results");
-//
-//            for (JsonNode result : results) {
-//                JsonNode components = result.path("components");
-//                if (components.has("country")) {
-//                    return components.get("country").asText();
-//                }
-//            }
-//        }
-//
-//        return null;
-//    }
-
     public String getCountry(Point2D.Double location) throws IOException {
         String url = String.format("%s?q=%s,%s&key=%s",
                 GEOCODING_API_URL, location.getY(), location.getX(), API_KEY);

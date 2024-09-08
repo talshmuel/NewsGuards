@@ -1,13 +1,10 @@
 package logic.engine.user.registration;
 
 import newsGuardServer.DatabaseConfig;
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class UserRegistrationDetails {
