@@ -36,7 +36,7 @@ public class ReportsManager {
         } catch (SQLException e) {
             e.printStackTrace(); // Handle SQL exception
         }
-        for(int i = lastReportID; i >= lastReportID - 20; i--)
+        for(int i = lastReportID; i >= lastReportID - 10; i--)
         {
             Report report;
             if(reports.containsKey(i))
