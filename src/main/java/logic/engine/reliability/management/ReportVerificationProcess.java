@@ -85,7 +85,8 @@ public class ReportVerificationProcess {
                 User guard = guardsVerification.getGuard();
                 float currentGuardReliabilityRate = guard.getReliabilityRate();
 
-                if (reportReliabilityRate <= 1 && verification == Verification.Approve) {
+                if ((reportReliabilityRate <= 1 && verification == Verification.Approve)
+                ||(reportReliabilityRate >= 4 && verification == Verification.Deny)) {
                     if (currentGuardReliabilityRate - guardsRatingDecrease <= minNumberOfReliabilityStars) {
                         guard.setReliabilityRate(minNumberOfReliabilityStars);
                         guard.setReliabilityRateInDB(minNumberOfReliabilityStars);
@@ -94,7 +95,8 @@ public class ReportVerificationProcess {
                         guard.setReliabilityRateInDB(currentGuardReliabilityRate - guardsRatingDecrease);
                     }
                 }
-                if (reportReliabilityRate >= 4 && verification == Verification.Deny) {
+                if ((reportReliabilityRate >= 4 && verification == Verification.Approve)
+                ||(reportReliabilityRate <= 1 && verification == Verification.Deny)) {
                     if (currentGuardReliabilityRate + guardRatingIncrease >= maxNumberOfReliabilityStars) {
                         guard.setReliabilityRate(maxNumberOfReliabilityStars);
                         guard.setReliabilityRateInDB(maxNumberOfReliabilityStars);
@@ -119,7 +121,7 @@ public class ReportVerificationProcess {
                     reporter.setReliabilityRateInDB(currentReporterReliabilityRate - reporterRatingDecrease);
                 }
             }
-            if (reportReliabilityRate == maxNumberOfReliabilityStars) {
+            if (reportReliabilityRate >= 4) {
                 if (currentReporterReliabilityRate + reporterRatingIncrease >= maxNumberOfReliabilityStars) {
                     reporter.setReliabilityRate(maxNumberOfReliabilityStars);
                     reporter.setReliabilityRateInDB(maxNumberOfReliabilityStars);
