@@ -16,8 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-@CrossOrigin(origins = "https://news-guard.vercel.app")
-
+//@CrossOrigin(origins = "https://news-guard.vercel.app")
+@CrossOrigin(origins = "http://localhost:5173")
 // ReportController.java
 @RestController
 @RequestMapping("/report")
