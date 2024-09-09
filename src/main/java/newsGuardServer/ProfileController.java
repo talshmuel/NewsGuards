@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
+
 @CrossOrigin(origins = "https://news-guard.vercel.app")
 //@CrossOrigin(origins = "http://localhost:5173")
 @RestController
