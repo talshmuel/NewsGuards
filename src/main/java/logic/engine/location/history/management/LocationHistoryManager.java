@@ -5,7 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class LocationHistoryManager {
-    double radiusMetersToLookingForUsers = 50;//todo:maybe change
+    double radiusMetersToLookingForUsers = 100;//todo:maybe change
     private static final DatabaseConfig DB_CONFIG = DatabaseConfig.POSTGRESQL;
 
     public void saveUserLocation(int userID, double lat, double lon) {
