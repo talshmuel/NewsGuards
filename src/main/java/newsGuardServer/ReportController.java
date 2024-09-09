@@ -123,7 +123,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/report")
+@RequestMapping("/report")//
 @CrossOrigin(origins = "https://news-guard.vercel.app")
 public class ReportController {
     Engine engine;
