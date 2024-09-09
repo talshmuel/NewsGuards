@@ -25,7 +25,7 @@ public class UsersManager {
         {
             throw new IllegalArgumentException("Please fill all fields.");
         }
-        User newUser = new User(newUserData,3,false);
+        User newUser = new User(newUserData,4.5f,false);
         usersByID.put(newUser.getID(), newUser);
         newUser.pushUserToDB();
     }
