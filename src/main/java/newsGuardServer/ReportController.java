@@ -25,6 +25,10 @@ public class ReportController {
     Engine engine;
 
     private final String uploadDir = "images/"; // GON: Directory to save uploaded images
+
+    @Autowired
+    private FirebaseStorageService firebaseStorageService;
+
     @Autowired
     public  ReportController(Engine engine)
     {
@@ -46,32 +50,25 @@ public class ReportController {
 
 
     @PostMapping("/upload-image")
-    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("file") MultipartFile file) {
+    public Map<String, String> uploadImage(@RequestParam("file") MultipartFile file) {
+        Map<String, String> response = new HashMap<>();
         try {
             if (file.isEmpty()) {
-                return ResponseEntity.badRequest().body(Collections.singletonMap("message", "File is empty"));
+                response.put("message", "File is empty");
+                return response;
             }
 
-            // Save the file to the local directory
             String fileName = file.getOriginalFilename();
-            Path filePath = Paths.get(uploadDir + fileName);
-            Files.createDirectories(filePath.getParent());
-            Files.write(filePath, file.getBytes());
+            byte[] content = file.getBytes();
+            String imageUrl = firebaseStorageService.uploadImage(fileName, content);
 
-            // Construct the URL for the image
-            String imageUrl = "https://news-guard-c0fjanc7ethue7dn.eastus-01.azurewebsites.net/images/" + fileName; //כאן צריך לשנות ךכתובת של הסרבר שבענן!!
-
-            // Return the URL as part of the response
-            Map<String, String> response = new HashMap<>();
             response.put("imageUrl", imageUrl);
-
-            return ResponseEntity.ok(response);
+            return response;
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Collections.singletonMap("message", "Image upload failed"));
+            response.put("message", "Image upload failed");
+            return response;
         }
     }
-
 
     @PostMapping("/add-comment")
     public ResponseEntity<String> comment(@RequestBody CommentDTO commentDTO) {
