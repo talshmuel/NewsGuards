@@ -130,7 +130,7 @@ public class ReportController {
     @Value("${azure.storage.connection-string}")
     private String connectionString;
 
-    @Value("${azure.storage.container-name}")////
+    @Value("${azure.storage.container-name}")
     private String containerName;
 
     @PostMapping("/upload-image")
